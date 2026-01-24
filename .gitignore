@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs (uncomment if you want to exclude from repo)
+# build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+.phpunit.result.cache
+coverage/
+
+# Package files
+*.zip
+*.tar.gz
+
+# Local environment
+.env
+.env.local
