@@ -16,7 +16,7 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 
 - WordPress 6.8+
 - PHP 8.3+
-- Virtual Media Folders plugin
+- [Virtual Media Folders](https://github.com/soderlind/virtual-media-folders) plugin
 
 ## Installation
 
