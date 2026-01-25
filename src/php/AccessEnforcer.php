@@ -72,6 +72,9 @@ class AccessEnforcer {
 		// AJAX move enforcement - intercept VMF drag-drop and bulk move actions.
 		add_action( 'wp_ajax_vmfo_move_to_folder', array( $this, 'enforce_ajax_move_permission' ), 1 );
 		add_action( 'wp_ajax_vmfo_bulk_move_to_folder', array( $this, 'enforce_ajax_move_permission' ), 1 );
+
+		// Folder deletion enforcement.
+		add_filter( 'vmfo_can_delete_folder', array( $this, 'enforce_folder_delete_permission' ), 20, 3 );
 	}
 
 	/**
@@ -282,17 +285,6 @@ class AccessEnforcer {
 					);
 				}
 			}
-
-			// DELETE = removing media from folder.
-			if ( 'DELETE' === $method ) {
-				if ( ! $this->access_checker->can_remove_from_folder( $folder_id ) ) {
-					return new WP_Error(
-						'vmfa_permission_denied',
-						__( 'You do not have permission to remove media from this folder.', 'vmfa-editorial-workflow' ),
-						array( 'status' => 403 )
-					);
-				}
-			}
 		}
 
 		// Match /vmfo/v1/folders/{id} routes for single folder operations.
@@ -320,9 +312,9 @@ class AccessEnforcer {
 	 * Intercepts vmfo_move_to_folder and vmfo_bulk_move_to_folder AJAX actions
 	 * to check folder-level permissions before VMF processes the request.
 	 *
-	 * Checks:
-	 * - "Move To" permission on the destination folder (if moving TO a folder)
-	 * - "Remove From" permission on the source folder (if media is currently in a folder)
+	 * Permission model:
+	 * - Moving TO a folder: Requires "Move To" permission on destination
+	 * - Moving TO Uncategorized: Allowed for all users (no special permission needed)
 	 *
 	 * @return void Sends JSON error and exits if permission denied.
 	 */
@@ -343,52 +335,22 @@ class AccessEnforcer {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
 		$target_folder = isset( $_POST[ 'folder_id' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'folder_id' ] ) ) : '';
 
-		// Get the media ID(s) to check source folder permissions.
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
-		$media_id = isset( $_POST[ 'media_id' ] ) ? absint( $_POST[ 'media_id' ] ) : 0;
-
-		// For bulk moves, get the first media ID to check source folder.
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
-		$media_ids_raw = isset( $_POST[ 'media_ids' ] ) ? wp_unslash( $_POST[ 'media_ids' ] ) : '';
-		if ( ! $media_id && $media_ids_raw ) {
-			if ( is_string( $media_ids_raw ) ) {
-				$decoded = json_decode( $media_ids_raw, true );
-				if ( is_array( $decoded ) && ! empty( $decoded ) ) {
-					$media_id = absint( $decoded[ 0 ] );
-				}
-			} elseif ( is_array( $media_ids_raw ) && ! empty( $media_ids_raw ) ) {
-				$media_id = absint( $media_ids_raw[ 0 ] );
-			}
+		// Allow removing to Uncategorized for all users.
+		$is_remove_to_uncategorized = ( '' === $target_folder || 'uncategorized' === $target_folder || 'root' === $target_folder );
+		if ( $is_remove_to_uncategorized ) {
+			return;
 		}
 
-		// Check source folder "Remove From" permission.
-		if ( $media_id ) {
-			$source_folders = $this->get_media_folders( $media_id );
-			foreach ( $source_folders as $source_folder_id ) {
-				if ( ! $this->access_checker->can_remove_from_folder( $source_folder_id, $user_id ) ) {
-					wp_send_json_error(
-						array(
-							'message' => __( 'You do not have permission to remove media from this folder.', 'vmfa-editorial-workflow' ),
-						),
-						403
-					);
-				}
-			}
-		}
+		// Moving to a folder requires "Move To" permission on destination.
+		$target_folder_id = absint( $target_folder );
 
-		// Check destination folder "Move To" permission.
-		// Empty, 'uncategorized', or 'root' means removing from folder - no destination permission needed.
-		if ( '' !== $target_folder && 'uncategorized' !== $target_folder && 'root' !== $target_folder ) {
-			$target_folder_id = absint( $target_folder );
-
-			if ( ! $this->access_checker->can_move_to_folder( $target_folder_id, $user_id ) ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'You do not have permission to move media to this folder.', 'vmfa-editorial-workflow' ),
-					),
-					403
-				);
-			}
+		if ( ! $this->access_checker->can_move_to_folder( $target_folder_id, $user_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permission to move media to this folder.', 'vmfa-editorial-workflow' ),
+				),
+				403
+			);
 		}
 	}
 
@@ -533,5 +495,45 @@ class AccessEnforcer {
 				return true;
 			}
 		);
+	}
+
+	/**
+	 * Enforce folder delete permission.
+	 *
+	 * Hooks into vmfo_can_delete_folder filter to check if user has
+	 * "Delete" permission on the folder before allowing deletion.
+	 *
+	 * @param bool|\WP_Error $can_delete Whether folder can be deleted.
+	 * @param int            $folder_id  Folder term ID.
+	 * @param \WP_Term       $term       Folder term object.
+	 * @return bool|\WP_Error
+	 */
+	public function enforce_folder_delete_permission( $can_delete, int $folder_id, \WP_Term $term ) {
+		// If already denied (e.g., system folder), respect that.
+		if ( is_wp_error( $can_delete ) || false === $can_delete ) {
+			return $can_delete;
+		}
+
+		// Skip for administrators.
+		if ( current_user_can( 'manage_options' ) ) {
+			return $can_delete;
+		}
+
+		$user_id = get_current_user_id();
+
+		// Skip for editors with default full access (no explicit permissions configured).
+		if ( current_user_can( 'edit_others_posts' ) && ! $this->access_checker->user_has_any_configured_permissions( $user_id ) ) {
+			return $can_delete;
+		}
+
+		// Check delete permission.
+		if ( ! $this->access_checker->can_delete_folder( $folder_id, $user_id ) ) {
+			return new \WP_Error(
+				'vmfa_permission_denied',
+				__( 'You do not have permission to delete this folder.', 'vmfa-editorial-workflow' )
+			);
+		}
+
+		return $can_delete;
 	}
 }

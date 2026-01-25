@@ -28,7 +28,7 @@ class AccessChecker {
 	public const ACTION_VIEW   = 'view';
 	public const ACTION_MOVE   = 'move';
 	public const ACTION_UPLOAD = 'upload';
-	public const ACTION_REMOVE = 'remove';
+	public const ACTION_DELETE = 'delete';
 
 	/**
 	 * All available actions.
@@ -39,7 +39,7 @@ class AccessChecker {
 		self::ACTION_VIEW,
 		self::ACTION_MOVE,
 		self::ACTION_UPLOAD,
-		self::ACTION_REMOVE,
+		self::ACTION_DELETE,
 	];
 
 	/**
@@ -109,14 +109,14 @@ class AccessChecker {
 	}
 
 	/**
-	 * Check if a user can remove media from a folder.
+	 * Check if a user can delete a folder.
 	 *
 	 * @param int      $folder_id Folder term ID.
 	 * @param int|null $user_id   User ID. Defaults to current user.
 	 * @return bool
 	 */
-	public function can_remove_from_folder( int $folder_id, ?int $user_id = null ): bool {
-		return $this->can_perform_action( $folder_id, self::ACTION_REMOVE, $user_id );
+	public function can_delete_folder( int $folder_id, ?int $user_id = null ): bool {
+		return $this->can_perform_action( $folder_id, self::ACTION_DELETE, $user_id );
 	}
 
 	/**

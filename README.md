@@ -66,9 +66,9 @@ Out of the box, the plugin applies sensible defaults:
 | **View** | Can see the folder in the sidebar and browse media inside it |
 | **Move To** | Can drag-and-drop or assign media INTO this folder |
 | **Upload To** | New uploads from this role can be routed to this folder via Inbox Mapping |
-| **Remove From** | Can move media OUT of this folder (to another folder or Uncategorized) |
+| **Delete** | Can delete this folder (system folders are always protected) |
 
-> **Note:** Moving media between folders requires **both** "Remove From" permission on the source folder **and** "Move To" permission on the destination folder.
+> **Note:** Moving media from Folder A to Folder B only requires "Move To" permission on Folder B (and "View" on both). Anyone can remove media to Uncategorized.
 
 ### Workflow Folders
 

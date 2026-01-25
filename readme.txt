@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,14 +95,26 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 == Changelog ==
 
+= 1.3.5 =
+
+**Changed**
+
+* Replaced "Remove From" permission with "Delete Folder" permission
+* Delete permission controls who can delete folders (system folders always protected)
+* Moving between folders now only requires "Move To" on destination
+* Removing media to Uncategorized no longer requires special permission
+
+**Fixed**
+
+* Permission enforcement now blocks drag-drop moves in Media Library for users without permission
+* Added AJAX interception for `vmfo_move_to_folder` and `vmfo_bulk_move_to_folder` actions
+
 = 1.3.4 =
 
 **Fixed**
 
 * Permission enforcement now blocks drag-drop moves in Media Library for users without permission
 * Added AJAX interception for `vmfo_move_to_folder` and `vmfo_bulk_move_to_folder` actions
-* "Move To" permission checked on destination folder before allowing move
-* "Remove From" permission checked on source folder before allowing media to be moved out
 
 = 1.3.3 =
 
