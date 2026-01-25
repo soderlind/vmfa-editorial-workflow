@@ -12,8 +12,8 @@
 		"test": "vitest"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^27.9.0",
-		"vitest": "^1.6.1"
+		"@wordpress/scripts": "^31.3.0",
+		"vitest": "^4.0.18"
 	},
 	"dependencies": {
 		"@wordpress/api-fetch": "^6.55.0",
