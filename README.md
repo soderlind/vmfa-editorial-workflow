@@ -4,7 +4,7 @@ Role-based folder access, move restrictions, and Inbox workflow for Virtual Medi
 
 ## Description
 
-This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual-media-folders) with enterprise-grade editorial workflow features:
+This add-on extends [Virtual Media Folders](https://wordpress.org/plugins/virtual-media-folders/) with enterprise-grade editorial workflow features:
 
 - **Per-role folder visibility** — Control which folders each role can see
 - **Move/assignment restrictions** — Define who can move media into which folders
@@ -16,7 +16,7 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 
 - WordPress 6.8+
 - PHP 8.3+
-- [Virtual Media Folders](https://github.com/soderlind/virtual-media-folders) plugin
+- [Virtual Media Folders](https://wordpress.org/plugins/virtual-media-folders/) plugin
 
 ## Installation
 
