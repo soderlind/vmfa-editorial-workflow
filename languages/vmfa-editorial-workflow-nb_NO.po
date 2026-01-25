@@ -1,0 +1,440 @@
+# Norwegian Bokmål translation for Virtual Media Folders – Editorial Workflow
+# Copyright (C) 2026 Per Soderlind
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtual Media Folders – Editorial Workflow 1.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/vmfa-editorial-workflow\n"
+"Last-Translator: Per Soderlind <per@soderlind.no>\n"
+"Language-Team: Norwegian Bokmål\n"
+"Language: nb_NO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-01-25T15:53:51+00:00\n"
+"PO-Revision-Date: 2026-01-25 16:00+0100\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: vmfa-editorial-workflow\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Virtual Media Folders – Editorial Workflow"
+msgstr "Virtual Media Folders – Redaksjonell arbeidsflyt"
+
+#. Plugin URI of the plugin
+#: vmfa-editorial-workflow.php
+msgid "https://github.com/soderlind/vmfa-editorial-workflow"
+msgstr "https://github.com/soderlind/vmfa-editorial-workflow"
+
+#. Description of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders."
+msgstr "Rollebasert mappetilgang, flyttebegrensninger og innboks-arbeidsflyt for Virtual Media Folders."
+
+#. Author of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Per Soderlind"
+msgstr "Per Soderlind"
+
+#. Author URI of the plugin
+#: vmfa-editorial-workflow.php
+msgid "https://soderlind.no"
+msgstr "https://soderlind.no"
+
+#: src/php/AccessEnforcer.php:276
+msgid "You do not have permission to add media to this folder."
+msgstr "Du har ikke tillatelse til å legge til media i denne mappen."
+
+#: src/php/AccessEnforcer.php:287
+msgid "You do not have permission to remove media from this folder."
+msgstr "Du har ikke tillatelse til å fjerne media fra denne mappen."
+
+#: src/php/AccessEnforcer.php:303
+msgid "You do not have permission to view this folder."
+msgstr "Du har ikke tillatelse til å se denne mappen."
+
+#: src/php/Admin/ReviewPage.php:98
+msgid "Review"
+msgstr "Gjennomgang"
+
+#: src/php/Admin/ReviewPage.php:109
+#: src/php/Admin/ReviewPage.php:200
+#: src/php/Admin/ReviewPage.php:461
+msgid "Media Review"
+msgstr "Mediegjennomgang"
+
+#: src/php/Admin/ReviewPage.php:163
+#: src/php/Admin/ReviewPage.php:370
+msgid "Approve"
+msgstr "Godkjenn"
+
+#: src/php/Admin/ReviewPage.php:164
+msgid "Assign to…"
+msgstr "Tilordne til…"
+
+#: src/php/Admin/ReviewPage.php:165
+msgid "Select items to perform bulk actions."
+msgstr "Velg elementer for å utføre massehandlinger."
+
+#: src/php/Admin/ReviewPage.php:166
+msgid "Approve selected items?"
+msgstr "Godkjenne valgte elementer?"
+
+#: src/php/Admin/ReviewPage.php:167
+msgid "Move selected items to this folder?"
+msgstr "Flytte valgte elementer til denne mappen?"
+
+#: src/php/Admin/ReviewPage.php:168
+msgid "Action completed successfully."
+msgstr "Handlingen ble fullført."
+
+#: src/php/Admin/ReviewPage.php:169
+msgid "An error occurred."
+msgstr "Det oppstod en feil."
+
+#: src/php/Admin/ReviewPage.php:170
+msgid "Processing…"
+msgstr "Behandler…"
+
+#: src/php/Admin/ReviewPage.php:228
+#: src/php/WorkflowState.php:159
+#: src/js/settings/StatsCard.jsx:59
+msgid "Approved"
+msgstr "Godkjent"
+
+#: src/php/Admin/ReviewPage.php:233
+msgid "Select All"
+msgstr "Velg alle"
+
+#: src/php/Admin/ReviewPage.php:238
+msgid "Select destination…"
+msgstr "Velg destinasjon…"
+
+#. translators: %s is the name of the approved folder.
+#: src/php/Admin/ReviewPage.php:242
+#, php-format
+msgid "Approve → %s"
+msgstr "Godkjenn → %s"
+
+#: src/php/Admin/ReviewPage.php:246
+msgid "Move to folder"
+msgstr "Flytt til mappe"
+
+#: src/php/Admin/ReviewPage.php:257
+msgid "Apply"
+msgstr "Bruk"
+
+#: src/php/Admin/ReviewPage.php:375
+msgid "Edit"
+msgstr "Rediger"
+
+#: src/php/Admin/ReviewPage.php:446
+msgid "All caught up!"
+msgstr "Alt er gjennomgått!"
+
+#: src/php/Admin/ReviewPage.php:447
+msgid "No media items are waiting for review. New uploads will appear here."
+msgstr "Ingen medieelementer venter på gjennomgang. Nye opplastinger vil vises her."
+
+#: src/php/Admin/ReviewPage.php:464
+msgid "Workflow folders have not been set up. Please deactivate and reactivate the plugin."
+msgstr "Arbeidsflytmapper er ikke satt opp. Vennligst deaktiver og reaktiver utvidelsen."
+
+#: src/php/Admin/ReviewPage.php:538
+#: src/php/Admin/ReviewPage.php:554
+#: src/php/Admin/ReviewPage.php:590
+msgid "Permission denied."
+msgstr "Tilgang nektet."
+
+#: src/php/Admin/ReviewPage.php:544
+#: src/php/Admin/ReviewPage.php:597
+msgid "No items selected."
+msgstr "Ingen elementer valgt."
+
+#: src/php/Admin/ReviewPage.php:549
+msgid "Approved folder not found."
+msgstr "Godkjent-mappen ble ikke funnet."
+
+#. translators: %d: number of items approved
+#: src/php/Admin/ReviewPage.php:575
+#, php-format
+msgid "%d items approved."
+msgstr "%d elementer godkjent."
+
+#: src/php/Admin/ReviewPage.php:601
+msgid "No folder selected."
+msgstr "Ingen mappe valgt."
+
+#: src/php/Admin/ReviewPage.php:606
+msgid "Permission denied for this folder."
+msgstr "Tilgang nektet for denne mappen."
+
+#. translators: %d: number of items assigned
+#: src/php/Admin/ReviewPage.php:632
+#, php-format
+msgid "%d items assigned."
+msgstr "%d elementer tilordnet."
+
+#: src/php/Admin/SettingsTab.php:59
+msgid "Editorial Workflow"
+msgstr "Redaksjonell arbeidsflyt"
+
+#: src/php/Admin/SettingsTab.php:109
+msgid "Editorial Workflow Settings"
+msgstr "Innstillinger for redaksjonell arbeidsflyt"
+
+#: src/php/Admin/SettingsTab.php:110
+#: src/js/settings/PermissionsCard.jsx:372
+#: src/js/settings/PermissionsCard.jsx:386
+msgid "Folder Permissions"
+msgstr "Mappetillatelser"
+
+#: src/php/Admin/SettingsTab.php:111
+msgid "Configure which roles can access each folder."
+msgstr "Konfigurer hvilke roller som har tilgang til hver mappe."
+
+#: src/php/Admin/SettingsTab.php:112
+msgid "Inbox Mapping"
+msgstr "Innbokstilordning"
+
+#: src/php/Admin/SettingsTab.php:113
+msgid "Set the default upload folder for each role."
+msgstr "Angi standard opplastingsmappe for hver rolle."
+
+#: src/php/Admin/SettingsTab.php:114
+#: src/js/settings/WorkflowCard.jsx:71
+msgid "Workflow Settings"
+msgstr "Arbeidsflytinnstillinger"
+
+#: src/php/Admin/SettingsTab.php:115
+msgid "Configure workflow states and behavior."
+msgstr "Konfigurer arbeidsflytstatus og oppførsel."
+
+#: src/php/Admin/SettingsTab.php:116
+msgid "Enable workflow folders"
+msgstr "Aktiver arbeidsflytmapper"
+
+#: src/php/Admin/SettingsTab.php:117
+#: src/js/settings/SettingsPanel.jsx:220
+msgid "Save Changes"
+msgstr "Lagre endringer"
+
+#: src/php/Admin/SettingsTab.php:118
+#: src/js/settings/SettingsPanel.jsx:219
+msgid "Saving…"
+msgstr "Lagrer…"
+
+#: src/php/Admin/SettingsTab.php:119
+msgid "Settings saved."
+msgstr "Innstillinger lagret."
+
+#: src/php/Admin/SettingsTab.php:120
+msgid "Error saving settings."
+msgstr "Feil ved lagring av innstillinger."
+
+#: src/php/Admin/SettingsTab.php:121
+msgid "Select folder…"
+msgstr "Velg mappe…"
+
+#: src/php/Admin/SettingsTab.php:122
+#: src/js/settings/InboxMapping.jsx:36
+msgid "No inbox (use default)"
+msgstr "Ingen innboks (bruk standard)"
+
+#: src/php/Admin/SettingsTab.php:123
+#: src/php/Admin/SettingsTab.php:224
+msgid "View"
+msgstr "Vis"
+
+#: src/php/Admin/SettingsTab.php:124
+#: src/php/Admin/SettingsTab.php:228
+msgid "Move to"
+msgstr "Flytt til"
+
+#: src/php/Admin/SettingsTab.php:125
+#: src/php/Admin/SettingsTab.php:232
+msgid "Upload to"
+msgstr "Last opp til"
+
+#: src/php/Admin/SettingsTab.php:126
+#: src/php/Admin/SettingsTab.php:236
+msgid "Remove from"
+msgstr "Fjern fra"
+
+#: src/php/Admin/SettingsTab.php:143
+#: src/js/settings/SettingsPanel.jsx:164
+msgid "Loading settings…"
+msgstr "Laster innstillinger…"
+
+#: src/php/REST/SettingsController.php:158
+msgid "You do not have permission to manage these settings."
+msgstr "Du har ikke tillatelse til å administrere disse innstillingene."
+
+#: src/php/REST/SettingsController.php:175
+msgid "Folder permissions by folder ID and role."
+msgstr "Mappetillatelser etter mappe-ID og rolle."
+
+#: src/php/REST/SettingsController.php:179
+msgid "Inbox folder mapping by role."
+msgstr "Innboksmappetilordning etter rolle."
+
+#: src/php/REST/SettingsController.php:183
+msgid "Workflow configuration."
+msgstr "Arbeidsflytkonfigurasjon."
+
+#: src/php/REST/SettingsController.php:319
+msgid "Invalid inbox data."
+msgstr "Ugyldige innboksdata."
+
+#: src/php/REST/SettingsController.php:405
+msgid "Invalid permissions data."
+msgstr "Ugyldige tillatelsesdata."
+
+#: src/php/WorkflowState.php:141
+msgid "Workflow"
+msgstr "Arbeidsflyt"
+
+#: src/php/WorkflowState.php:152
+#: src/js/settings/StatsCard.jsx:54
+msgid "Needs Review"
+msgstr "Trenger gjennomgang"
+
+#: src/php/WorkflowState.php:218
+msgid "System workflow folders cannot be deleted."
+msgstr "Systemarbeidsflytmapper kan ikke slettes."
+
+#: src/php/WorkflowState.php:237
+msgid "System workflow folders cannot be renamed."
+msgstr "Systemarbeidsflytmapper kan ikke gis nytt navn."
+
+#: vmfa-editorial-workflow.php:80
+msgid "Virtual Media Folders – Editorial Workflow requires the Virtual Media Folders plugin to be installed and activated."
+msgstr "Virtual Media Folders – Redaksjonell arbeidsflyt krever at Virtual Media Folders-utvidelsen er installert og aktivert."
+
+#: src/js/settings/InboxCard.jsx:36
+msgid "Use workflow inbox"
+msgstr "Bruk arbeidsflytinnboks"
+
+#: src/js/settings/InboxCard.jsx:66
+msgid "Role Inbox Folders"
+msgstr "Rolleinnboksmapper"
+
+#: src/js/settings/InboxCard.jsx:70
+msgid "Override the default workflow inbox for specific roles. If not set, uploads will go to the \"Needs Review\" folder."
+msgstr "Overstyr standard arbeidsflytinnboks for spesifikke roller. Hvis ikke angitt, vil opplastinger gå til «Trenger gjennomgang»-mappen."
+
+#: src/js/settings/InboxMapping.jsx:65
+msgid "No roles available."
+msgstr "Ingen roller tilgjengelig."
+
+#: src/js/settings/InboxMapping.jsx:86
+msgid "New uploads from this role will be placed in the selected folder."
+msgstr "Nye opplastinger fra denne rollen vil bli plassert i den valgte mappen."
+
+#: src/js/settings/PermissionMatrix.jsx:133
+#: src/js/settings/PermissionsCard.jsx:376
+msgid "No roles or folders available."
+msgstr "Ingen roller eller mapper tilgjengelig."
+
+#: src/js/settings/PermissionMatrix.jsx:143
+#: src/js/settings/PermissionsCard.jsx:466
+msgid "Folder"
+msgstr "Mappe"
+
+#: src/js/settings/PermissionMatrix.jsx:174
+#: src/js/settings/PermissionsCard.jsx:509
+msgid "System folder"
+msgstr "Systemmappe"
+
+#: src/js/settings/PermissionsCard.jsx:343
+msgid "Grant"
+msgstr "Gi"
+
+#: src/js/settings/PermissionsCard.jsx:343
+msgid "to all folders"
+msgstr "til alle mapper"
+
+#: src/js/settings/PermissionsCard.jsx:348
+msgid "Revoke"
+msgstr "Opphev"
+
+#: src/js/settings/PermissionsCard.jsx:348
+msgid "from all folders"
+msgstr "fra alle mapper"
+
+#: src/js/settings/PermissionsCard.jsx:354
+msgid "Grant all permissions"
+msgstr "Gi alle tillatelser"
+
+#: src/js/settings/PermissionsCard.jsx:358
+msgid "Revoke all permissions"
+msgstr "Opphev alle tillatelser"
+
+#: src/js/settings/PermissionsCard.jsx:390
+msgid "Configure which roles can access each folder. Administrators and Editors have full access by default. Click column headers to toggle all."
+msgstr "Konfigurer hvilke roller som har tilgang til hver mappe. Administratorer og redaktører har full tilgang som standard. Klikk på kolonneoverskrifter for å veksle alle."
+
+#: src/js/settings/PermissionsCard.jsx:421
+msgid "Full access"
+msgstr "Full tilgang"
+
+#: src/js/settings/PermissionsCard.jsx:423
+msgid "default"
+msgstr "standard"
+
+#: src/js/settings/PermissionsCard.jsx:429
+msgid "permissions"
+msgstr "tillatelser"
+
+#: src/js/settings/PermissionsCard.jsx:436
+msgid "Bulk actions"
+msgstr "Massehandlinger"
+
+#: src/js/settings/PermissionsCard.jsx:448
+msgid "This role has full access to all folders. Permissions cannot be restricted."
+msgstr "Denne rollen har full tilgang til alle mapper. Tillatelser kan ikke begrenses."
+
+#: src/js/settings/PermissionsCard.jsx:457
+msgid "This role has full access by default. Configure permissions below to override."
+msgstr "Denne rollen har full tilgang som standard. Konfigurer tillatelser nedenfor for å overstyre."
+
+#: src/js/settings/PermissionsCard.jsx:486
+msgid "Revoke all"
+msgstr "Opphev alle"
+
+#: src/js/settings/PermissionsCard.jsx:487
+msgid "Grant all"
+msgstr "Gi alle"
+
+#: src/js/settings/StatsCard.jsx:50
+msgid "Total Media"
+msgstr "Totalt media"
+
+#: src/js/settings/StatsCard.jsx:64
+msgid "Roles Configured"
+msgstr "Roller konfigurert"
+
+#: src/js/settings/WorkflowCard.jsx:39
+msgid "Use default \"Approved\" folder"
+msgstr "Bruk standard «Godkjent»-mappe"
+
+#: src/js/settings/WorkflowCard.jsx:76
+msgid "Media uploaded by non-admin roles will be placed in the \"Needs Review\" folder for editorial approval."
+msgstr "Media lastet opp av ikke-administrator-roller vil bli plassert i «Trenger gjennomgang»-mappen for redaksjonell godkjenning."
+
+#: src/js/settings/WorkflowCard.jsx:84
+msgid "Approved folder"
+msgstr "Godkjent-mappe"
+
+#: src/js/settings/WorkflowCard.jsx:85
+msgid "Where approved media will be moved. Leave empty to use the default \"Approved\" system folder."
+msgstr "Hvor godkjent media vil bli flyttet. La stå tom for å bruke standard «Godkjent»-systemmappe."
+
+#: src/js/settings/WorkflowCard.jsx:92
+msgid "Allow Editors to review media"
+msgstr "Tillat redaktører å gjennomgå media"
+
+#: src/js/settings/WorkflowCard.jsx:93
+msgid "When enabled, Editors can access the Review page. When disabled, only Administrators can review."
+msgstr "Når aktivert, kan redaktører få tilgang til gjennomgangssiden. Når deaktivert, kan bare administratorer gjennomgå."

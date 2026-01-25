@@ -96,6 +96,12 @@ class SettingsTab {
 			true
 		);
 
+		wp_set_script_translations(
+			'vmfa-settings',
+			'vmfa-editorial-workflow',
+			VMFA_EDITORIAL_WORKFLOW_PATH . 'languages'
+		);
+
 		wp_localize_script(
 			'vmfa-settings',
 			'vmfaSettings',

@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,14 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 4. Workflow settings
 
 == Changelog ==
+
+= 1.3.0 =
+
+**Added**
+
+* Internationalization (i18n) support with Norwegian Bokmål translation
+* NPM scripts for translation workflow (`npm run i18n`)
+* JavaScript translation loading via `wp_set_script_translations()`
 
 = 1.2.0 =
 

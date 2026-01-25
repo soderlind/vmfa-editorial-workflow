@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-01-25
+
+### Added
+
+- Internationalization (i18n) support with Norwegian Bokmål translation
+- NPM scripts for translation workflow (`npm run i18n`)
+- `wp_set_script_translations()` for JavaScript translations
+
 ## [1.2.0] - 2026-01-25
 
 ### Added
