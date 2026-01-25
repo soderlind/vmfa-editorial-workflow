@@ -1,6 +1,6 @@
 {
 	"name": "vmfa-editorial-workflow",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"description": "Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders.",
 	"author": "Per Soderlind",
 	"license": "GPL-2.0-or-later",
@@ -9,7 +9,13 @@
 		"build": "wp-scripts build",
 		"lint:js": "wp-scripts lint-js src/js",
 		"lint:css": "wp-scripts lint-style src/css",
-		"test": "vitest"
+		"test": "vitest",
+		"i18n": "npm run i18n:make-pot && npm run i18n:update-po && npm run i18n:make-mo && npm run i18n:make-json && npm run i18n:make-php",
+		"i18n:make-pot": "wp i18n make-pot . languages/vmfa-editorial-workflow.pot --exclude=node_modules,vendor,tests,build --domain=vmfa-editorial-workflow",
+		"i18n:update-po": "wp i18n update-po languages/vmfa-editorial-workflow.pot languages/",
+		"i18n:make-mo": "wp i18n make-mo languages/",
+		"i18n:make-json": "wp i18n make-json languages/ --no-purge --use-map=i18n-map.json",
+		"i18n:make-php": "wp i18n make-php languages/"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^27.9.0",

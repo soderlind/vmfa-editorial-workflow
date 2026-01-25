@@ -141,6 +141,12 @@ class ReviewPage {
 			true
 		);
 
+		wp_set_script_translations(
+			'vmfa-review',
+			'vmfa-editorial-workflow',
+			VMFA_EDITORIAL_WORKFLOW_PATH . 'languages'
+		);
+
 		wp_enqueue_style(
 			'vmfa-review',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/review.css',
@@ -237,7 +243,10 @@ class ReviewPage {
 				<select id="vmfa-destination-folder" disabled>
 					<option value=""><?php esc_html_e( 'Select destination…', 'vmfa-editorial-workflow' ); ?></option>
 					<option value="approve">✓
-						<?php echo esc_html( sprintf( __( 'Approve → %s', 'vmfa-editorial-workflow' ), $approved_name ) ); ?>
+						<?php
+						// translators: %s is the name of the approved folder.
+						echo esc_html( sprintf( __( 'Approve → %s', 'vmfa-editorial-workflow' ), $approved_name ) );
+						?>
 					</option>
 					<?php if ( ! empty( $hierarchical_folders ) ) : ?>
 						<optgroup label="<?php esc_attr_e( 'Move to folder', 'vmfa-editorial-workflow' ); ?>">

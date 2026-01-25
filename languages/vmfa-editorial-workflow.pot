@@ -1,0 +1,437 @@
+# Copyright (C) 2026 Per Soderlind
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtual Media Folders – Editorial Workflow 1.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/vmfa-editorial-workflow\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-01-25T15:53:51+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: vmfa-editorial-workflow\n"
+
+#. Plugin Name of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Virtual Media Folders – Editorial Workflow"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: vmfa-editorial-workflow.php
+msgid "https://github.com/soderlind/vmfa-editorial-workflow"
+msgstr ""
+
+#. Description of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders."
+msgstr ""
+
+#. Author of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Per Soderlind"
+msgstr ""
+
+#. Author URI of the plugin
+#: vmfa-editorial-workflow.php
+msgid "https://soderlind.no"
+msgstr ""
+
+#: src/php/AccessEnforcer.php:276
+msgid "You do not have permission to add media to this folder."
+msgstr ""
+
+#: src/php/AccessEnforcer.php:287
+msgid "You do not have permission to remove media from this folder."
+msgstr ""
+
+#: src/php/AccessEnforcer.php:303
+msgid "You do not have permission to view this folder."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:98
+msgid "Review"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:109
+#: src/php/Admin/ReviewPage.php:200
+#: src/php/Admin/ReviewPage.php:461
+msgid "Media Review"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:163
+#: src/php/Admin/ReviewPage.php:370
+msgid "Approve"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:164
+msgid "Assign to…"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:165
+msgid "Select items to perform bulk actions."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:166
+msgid "Approve selected items?"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:167
+msgid "Move selected items to this folder?"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:168
+msgid "Action completed successfully."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:169
+msgid "An error occurred."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:170
+msgid "Processing…"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:228
+#: src/php/WorkflowState.php:159
+#: src/js/settings/StatsCard.jsx:59
+msgid "Approved"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:233
+msgid "Select All"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:238
+msgid "Select destination…"
+msgstr ""
+
+#. translators: %s is the name of the approved folder.
+#: src/php/Admin/ReviewPage.php:242
+#, php-format
+msgid "Approve → %s"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:246
+msgid "Move to folder"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:257
+msgid "Apply"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:375
+msgid "Edit"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:446
+msgid "All caught up!"
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:447
+msgid "No media items are waiting for review. New uploads will appear here."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:464
+msgid "Workflow folders have not been set up. Please deactivate and reactivate the plugin."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:538
+#: src/php/Admin/ReviewPage.php:554
+#: src/php/Admin/ReviewPage.php:590
+msgid "Permission denied."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:544
+#: src/php/Admin/ReviewPage.php:597
+msgid "No items selected."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:549
+msgid "Approved folder not found."
+msgstr ""
+
+#. translators: %d: number of items approved
+#: src/php/Admin/ReviewPage.php:575
+#, php-format
+msgid "%d items approved."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:601
+msgid "No folder selected."
+msgstr ""
+
+#: src/php/Admin/ReviewPage.php:606
+msgid "Permission denied for this folder."
+msgstr ""
+
+#. translators: %d: number of items assigned
+#: src/php/Admin/ReviewPage.php:632
+#, php-format
+msgid "%d items assigned."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:59
+msgid "Editorial Workflow"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:109
+msgid "Editorial Workflow Settings"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:110
+#: src/js/settings/PermissionsCard.jsx:372
+#: src/js/settings/PermissionsCard.jsx:386
+msgid "Folder Permissions"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:111
+msgid "Configure which roles can access each folder."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:112
+msgid "Inbox Mapping"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:113
+msgid "Set the default upload folder for each role."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:114
+#: src/js/settings/WorkflowCard.jsx:71
+msgid "Workflow Settings"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:115
+msgid "Configure workflow states and behavior."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:116
+msgid "Enable workflow folders"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:117
+#: src/js/settings/SettingsPanel.jsx:220
+msgid "Save Changes"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:118
+#: src/js/settings/SettingsPanel.jsx:219
+msgid "Saving…"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:119
+msgid "Settings saved."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:120
+msgid "Error saving settings."
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:121
+msgid "Select folder…"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:122
+#: src/js/settings/InboxMapping.jsx:36
+msgid "No inbox (use default)"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:123
+#: src/php/Admin/SettingsTab.php:224
+msgid "View"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:124
+#: src/php/Admin/SettingsTab.php:228
+msgid "Move to"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:125
+#: src/php/Admin/SettingsTab.php:232
+msgid "Upload to"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:126
+#: src/php/Admin/SettingsTab.php:236
+msgid "Remove from"
+msgstr ""
+
+#: src/php/Admin/SettingsTab.php:143
+#: src/js/settings/SettingsPanel.jsx:164
+msgid "Loading settings…"
+msgstr ""
+
+#: src/php/REST/SettingsController.php:158
+msgid "You do not have permission to manage these settings."
+msgstr ""
+
+#: src/php/REST/SettingsController.php:175
+msgid "Folder permissions by folder ID and role."
+msgstr ""
+
+#: src/php/REST/SettingsController.php:179
+msgid "Inbox folder mapping by role."
+msgstr ""
+
+#: src/php/REST/SettingsController.php:183
+msgid "Workflow configuration."
+msgstr ""
+
+#: src/php/REST/SettingsController.php:319
+msgid "Invalid inbox data."
+msgstr ""
+
+#: src/php/REST/SettingsController.php:405
+msgid "Invalid permissions data."
+msgstr ""
+
+#: src/php/WorkflowState.php:141
+msgid "Workflow"
+msgstr ""
+
+#: src/php/WorkflowState.php:152
+#: src/js/settings/StatsCard.jsx:54
+msgid "Needs Review"
+msgstr ""
+
+#: src/php/WorkflowState.php:218
+msgid "System workflow folders cannot be deleted."
+msgstr ""
+
+#: src/php/WorkflowState.php:237
+msgid "System workflow folders cannot be renamed."
+msgstr ""
+
+#: vmfa-editorial-workflow.php:80
+msgid "Virtual Media Folders – Editorial Workflow requires the Virtual Media Folders plugin to be installed and activated."
+msgstr ""
+
+#: src/js/settings/InboxCard.jsx:36
+msgid "Use workflow inbox"
+msgstr ""
+
+#: src/js/settings/InboxCard.jsx:66
+msgid "Role Inbox Folders"
+msgstr ""
+
+#: src/js/settings/InboxCard.jsx:70
+msgid "Override the default workflow inbox for specific roles. If not set, uploads will go to the \"Needs Review\" folder."
+msgstr ""
+
+#: src/js/settings/InboxMapping.jsx:65
+msgid "No roles available."
+msgstr ""
+
+#: src/js/settings/InboxMapping.jsx:86
+msgid "New uploads from this role will be placed in the selected folder."
+msgstr ""
+
+#: src/js/settings/PermissionMatrix.jsx:133
+#: src/js/settings/PermissionsCard.jsx:376
+msgid "No roles or folders available."
+msgstr ""
+
+#: src/js/settings/PermissionMatrix.jsx:143
+#: src/js/settings/PermissionsCard.jsx:466
+msgid "Folder"
+msgstr ""
+
+#: src/js/settings/PermissionMatrix.jsx:174
+#: src/js/settings/PermissionsCard.jsx:509
+msgid "System folder"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:343
+msgid "Grant"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:343
+msgid "to all folders"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:348
+msgid "Revoke"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:348
+msgid "from all folders"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:354
+msgid "Grant all permissions"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:358
+msgid "Revoke all permissions"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:390
+msgid "Configure which roles can access each folder. Administrators and Editors have full access by default. Click column headers to toggle all."
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:421
+msgid "Full access"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:423
+msgid "default"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:429
+msgid "permissions"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:436
+msgid "Bulk actions"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:448
+msgid "This role has full access to all folders. Permissions cannot be restricted."
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:457
+msgid "This role has full access by default. Configure permissions below to override."
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:486
+msgid "Revoke all"
+msgstr ""
+
+#: src/js/settings/PermissionsCard.jsx:487
+msgid "Grant all"
+msgstr ""
+
+#: src/js/settings/StatsCard.jsx:50
+msgid "Total Media"
+msgstr ""
+
+#: src/js/settings/StatsCard.jsx:64
+msgid "Roles Configured"
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:39
+msgid "Use default \"Approved\" folder"
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:76
+msgid "Media uploaded by non-admin roles will be placed in the \"Needs Review\" folder for editorial approval."
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:84
+msgid "Approved folder"
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:85
+msgid "Where approved media will be moved. Leave empty to use the default \"Approved\" system folder."
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:92
+msgid "Allow Editors to review media"
+msgstr ""
+
+#: src/js/settings/WorkflowCard.jsx:93
+msgid "When enabled, Editors can access the Review page. When disabled, only Administrators can review."
+msgstr ""

@@ -1,0 +1,11 @@
+{
+	"src/js/settings/index.jsx": "build/settings.js",
+	"src/js/settings/InboxCard.jsx": "build/settings.js",
+	"src/js/settings/InboxMapping.jsx": "build/settings.js",
+	"src/js/settings/PermissionMatrix.jsx": "build/settings.js",
+	"src/js/settings/PermissionsCard.jsx": "build/settings.js",
+	"src/js/settings/SettingsPanel.jsx": "build/settings.js",
+	"src/js/settings/StatsCard.jsx": "build/settings.js",
+	"src/js/settings/WorkflowCard.jsx": "build/settings.js",
+	"src/js/review/index.js": "build/review.js"
+}
