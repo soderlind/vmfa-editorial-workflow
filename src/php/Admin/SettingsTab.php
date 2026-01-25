@@ -129,7 +129,7 @@ class SettingsTab {
 					'view'            => __( 'View', 'vmfa-editorial-workflow' ),
 					'move'            => __( 'Move to', 'vmfa-editorial-workflow' ),
 					'upload'          => __( 'Upload to', 'vmfa-editorial-workflow' ),
-					'remove'          => __( 'Remove from', 'vmfa-editorial-workflow' ),
+					'delete'          => __( 'Delete', 'vmfa-editorial-workflow' ),
 				],
 			]
 		);
@@ -238,8 +238,8 @@ class SettingsTab {
 				'label' => __( 'Upload to', 'vmfa-editorial-workflow' ),
 			],
 			[
-				'key'   => 'remove',
-				'label' => __( 'Remove from', 'vmfa-editorial-workflow' ),
+				'key'   => 'delete',
+				'label' => __( 'Delete', 'vmfa-editorial-workflow' ),
 			],
 		];
 	}

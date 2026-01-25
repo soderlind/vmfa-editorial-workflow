@@ -1,26 +1,18 @@
-# Norwegian Bokmål translation for Virtual Media Folders – Editorial Workflow
-# Copyright (C) 2026 Per Soderlind
-# This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtual Media Folders – Editorial Workflow 1.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/vmfa-editorial-workflow\n"
 "Last-Translator: Per Soderlind <per@soderlind.no>\n"
 "Language-Team: Norwegian Bokmål\n"
-"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-01-25T15:53:51+00:00\n"
 "PO-Revision-Date: 2026-01-25 16:00+0100\n"
+"Language: nb_NO\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: vmfa-editorial-workflow\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. Plugin Name of the plugin
-#: vmfa-editorial-workflow.php
-msgid "Virtual Media Folders – Editorial Workflow"
-msgstr "Virtual Media Folders – Redaksjonell arbeidsflyt"
 
 #. Plugin URI of the plugin
 #: vmfa-editorial-workflow.php
@@ -42,15 +34,11 @@ msgstr "Per Soderlind"
 msgid "https://soderlind.no"
 msgstr "https://soderlind.no"
 
-#: src/php/AccessEnforcer.php:276
+#: src/php/AccessEnforcer.php:283
 msgid "You do not have permission to add media to this folder."
 msgstr "Du har ikke tillatelse til å legge til media i denne mappen."
 
-#: src/php/AccessEnforcer.php:287
-msgid "You do not have permission to remove media from this folder."
-msgstr "Du har ikke tillatelse til å fjerne media fra denne mappen."
-
-#: src/php/AccessEnforcer.php:303
+#: src/php/AccessEnforcer.php:299
 msgid "You do not have permission to view this folder."
 msgstr "Du har ikke tillatelse til å se denne mappen."
 
@@ -59,119 +47,119 @@ msgid "Review"
 msgstr "Gjennomgang"
 
 #: src/php/Admin/ReviewPage.php:109
-#: src/php/Admin/ReviewPage.php:200
-#: src/php/Admin/ReviewPage.php:461
+#: src/php/Admin/ReviewPage.php:206
+#: src/php/Admin/ReviewPage.php:467
 msgid "Media Review"
 msgstr "Mediegjennomgang"
 
-#: src/php/Admin/ReviewPage.php:163
-#: src/php/Admin/ReviewPage.php:370
+#: src/php/Admin/ReviewPage.php:169
+#: src/php/Admin/ReviewPage.php:376
 msgid "Approve"
 msgstr "Godkjenn"
 
-#: src/php/Admin/ReviewPage.php:164
+#: src/php/Admin/ReviewPage.php:170
 msgid "Assign to…"
 msgstr "Tilordne til…"
 
-#: src/php/Admin/ReviewPage.php:165
+#: src/php/Admin/ReviewPage.php:171
 msgid "Select items to perform bulk actions."
 msgstr "Velg elementer for å utføre massehandlinger."
 
-#: src/php/Admin/ReviewPage.php:166
+#: src/php/Admin/ReviewPage.php:172
 msgid "Approve selected items?"
 msgstr "Godkjenne valgte elementer?"
 
-#: src/php/Admin/ReviewPage.php:167
+#: src/php/Admin/ReviewPage.php:173
 msgid "Move selected items to this folder?"
 msgstr "Flytte valgte elementer til denne mappen?"
 
-#: src/php/Admin/ReviewPage.php:168
+#: src/php/Admin/ReviewPage.php:174
 msgid "Action completed successfully."
 msgstr "Handlingen ble fullført."
 
-#: src/php/Admin/ReviewPage.php:169
+#: src/php/Admin/ReviewPage.php:175
 msgid "An error occurred."
 msgstr "Det oppstod en feil."
 
-#: src/php/Admin/ReviewPage.php:170
+#: src/php/Admin/ReviewPage.php:176
 msgid "Processing…"
 msgstr "Behandler…"
 
-#: src/php/Admin/ReviewPage.php:228
+#: src/php/Admin/ReviewPage.php:234
 #: src/php/WorkflowState.php:159
 #: src/js/settings/StatsCard.jsx:59
 msgid "Approved"
 msgstr "Godkjent"
 
-#: src/php/Admin/ReviewPage.php:233
+#: src/php/Admin/ReviewPage.php:239
 msgid "Select All"
 msgstr "Velg alle"
 
-#: src/php/Admin/ReviewPage.php:238
+#: src/php/Admin/ReviewPage.php:244
 msgid "Select destination…"
 msgstr "Velg destinasjon…"
 
 #. translators: %s is the name of the approved folder.
-#: src/php/Admin/ReviewPage.php:242
+#: src/php/Admin/ReviewPage.php:248
 #, php-format
 msgid "Approve → %s"
 msgstr "Godkjenn → %s"
 
-#: src/php/Admin/ReviewPage.php:246
+#: src/php/Admin/ReviewPage.php:252
 msgid "Move to folder"
 msgstr "Flytt til mappe"
 
-#: src/php/Admin/ReviewPage.php:257
+#: src/php/Admin/ReviewPage.php:263
 msgid "Apply"
 msgstr "Bruk"
 
-#: src/php/Admin/ReviewPage.php:375
+#: src/php/Admin/ReviewPage.php:381
 msgid "Edit"
 msgstr "Rediger"
 
-#: src/php/Admin/ReviewPage.php:446
+#: src/php/Admin/ReviewPage.php:452
 msgid "All caught up!"
 msgstr "Alt er gjennomgått!"
 
-#: src/php/Admin/ReviewPage.php:447
+#: src/php/Admin/ReviewPage.php:453
 msgid "No media items are waiting for review. New uploads will appear here."
 msgstr "Ingen medieelementer venter på gjennomgang. Nye opplastinger vil vises her."
 
-#: src/php/Admin/ReviewPage.php:464
+#: src/php/Admin/ReviewPage.php:470
 msgid "Workflow folders have not been set up. Please deactivate and reactivate the plugin."
 msgstr "Arbeidsflytmapper er ikke satt opp. Vennligst deaktiver og reaktiver utvidelsen."
 
-#: src/php/Admin/ReviewPage.php:538
-#: src/php/Admin/ReviewPage.php:554
-#: src/php/Admin/ReviewPage.php:590
+#: src/php/Admin/ReviewPage.php:544
+#: src/php/Admin/ReviewPage.php:560
+#: src/php/Admin/ReviewPage.php:596
 msgid "Permission denied."
 msgstr "Tilgang nektet."
 
-#: src/php/Admin/ReviewPage.php:544
-#: src/php/Admin/ReviewPage.php:597
+#: src/php/Admin/ReviewPage.php:550
+#: src/php/Admin/ReviewPage.php:603
 msgid "No items selected."
 msgstr "Ingen elementer valgt."
 
-#: src/php/Admin/ReviewPage.php:549
+#: src/php/Admin/ReviewPage.php:555
 msgid "Approved folder not found."
 msgstr "Godkjent-mappen ble ikke funnet."
 
 #. translators: %d: number of items approved
-#: src/php/Admin/ReviewPage.php:575
+#: src/php/Admin/ReviewPage.php:581
 #, php-format
 msgid "%d items approved."
 msgstr "%d elementer godkjent."
 
-#: src/php/Admin/ReviewPage.php:601
+#: src/php/Admin/ReviewPage.php:607
 msgid "No folder selected."
 msgstr "Ingen mappe valgt."
 
-#: src/php/Admin/ReviewPage.php:606
+#: src/php/Admin/ReviewPage.php:612
 msgid "Permission denied for this folder."
 msgstr "Tilgang nektet for denne mappen."
 
 #. translators: %d: number of items assigned
-#: src/php/Admin/ReviewPage.php:632
+#: src/php/Admin/ReviewPage.php:638
 #, php-format
 msgid "%d items assigned."
 msgstr "%d elementer tilordnet."
@@ -180,89 +168,84 @@ msgstr "%d elementer tilordnet."
 msgid "Editorial Workflow"
 msgstr "Redaksjonell arbeidsflyt"
 
-#: src/php/Admin/SettingsTab.php:109
+#: src/php/Admin/SettingsTab.php:115
 msgid "Editorial Workflow Settings"
 msgstr "Innstillinger for redaksjonell arbeidsflyt"
 
-#: src/php/Admin/SettingsTab.php:110
+#: src/php/Admin/SettingsTab.php:116
 #: src/js/settings/PermissionsCard.jsx:372
 #: src/js/settings/PermissionsCard.jsx:386
 msgid "Folder Permissions"
 msgstr "Mappetillatelser"
 
-#: src/php/Admin/SettingsTab.php:111
+#: src/php/Admin/SettingsTab.php:117
 msgid "Configure which roles can access each folder."
 msgstr "Konfigurer hvilke roller som har tilgang til hver mappe."
 
-#: src/php/Admin/SettingsTab.php:112
+#: src/php/Admin/SettingsTab.php:118
 msgid "Inbox Mapping"
 msgstr "Innbokstilordning"
 
-#: src/php/Admin/SettingsTab.php:113
+#: src/php/Admin/SettingsTab.php:119
 msgid "Set the default upload folder for each role."
 msgstr "Angi standard opplastingsmappe for hver rolle."
 
-#: src/php/Admin/SettingsTab.php:114
+#: src/php/Admin/SettingsTab.php:120
 #: src/js/settings/WorkflowCard.jsx:71
 msgid "Workflow Settings"
 msgstr "Arbeidsflytinnstillinger"
 
-#: src/php/Admin/SettingsTab.php:115
+#: src/php/Admin/SettingsTab.php:121
 msgid "Configure workflow states and behavior."
 msgstr "Konfigurer arbeidsflytstatus og oppførsel."
 
-#: src/php/Admin/SettingsTab.php:116
+#: src/php/Admin/SettingsTab.php:122
 msgid "Enable workflow folders"
 msgstr "Aktiver arbeidsflytmapper"
 
-#: src/php/Admin/SettingsTab.php:117
+#: src/php/Admin/SettingsTab.php:123
 #: src/js/settings/SettingsPanel.jsx:220
 msgid "Save Changes"
 msgstr "Lagre endringer"
 
-#: src/php/Admin/SettingsTab.php:118
+#: src/php/Admin/SettingsTab.php:124
 #: src/js/settings/SettingsPanel.jsx:219
 msgid "Saving…"
 msgstr "Lagrer…"
 
-#: src/php/Admin/SettingsTab.php:119
+#: src/php/Admin/SettingsTab.php:125
 msgid "Settings saved."
 msgstr "Innstillinger lagret."
 
-#: src/php/Admin/SettingsTab.php:120
+#: src/php/Admin/SettingsTab.php:126
 msgid "Error saving settings."
 msgstr "Feil ved lagring av innstillinger."
 
-#: src/php/Admin/SettingsTab.php:121
+#: src/php/Admin/SettingsTab.php:127
 msgid "Select folder…"
 msgstr "Velg mappe…"
 
-#: src/php/Admin/SettingsTab.php:122
+#: src/php/Admin/SettingsTab.php:128
 #: src/js/settings/InboxMapping.jsx:36
 msgid "No inbox (use default)"
 msgstr "Ingen innboks (bruk standard)"
 
-#: src/php/Admin/SettingsTab.php:123
-#: src/php/Admin/SettingsTab.php:224
+#: src/php/Admin/SettingsTab.php:129
+#: src/php/Admin/SettingsTab.php:230
 msgid "View"
 msgstr "Vis"
 
-#: src/php/Admin/SettingsTab.php:124
-#: src/php/Admin/SettingsTab.php:228
+#: src/php/Admin/SettingsTab.php:130
+#: src/php/Admin/SettingsTab.php:234
 msgid "Move to"
 msgstr "Flytt til"
 
-#: src/php/Admin/SettingsTab.php:125
-#: src/php/Admin/SettingsTab.php:232
+#: src/php/Admin/SettingsTab.php:131
+#: src/php/Admin/SettingsTab.php:238
 msgid "Upload to"
 msgstr "Last opp til"
 
-#: src/php/Admin/SettingsTab.php:126
-#: src/php/Admin/SettingsTab.php:236
-msgid "Remove from"
-msgstr "Fjern fra"
-
-#: src/php/Admin/SettingsTab.php:143
+#: src/php/Admin/SettingsTab.php:149
 #: src/js/settings/SettingsPanel.jsx:164
 msgid "Loading settings…"
 msgstr "Laster innstillinger…"
@@ -308,7 +291,7 @@ msgstr "Systemarbeidsflytmapper kan ikke slettes."
 msgid "System workflow folders cannot be renamed."
 msgstr "Systemarbeidsflytmapper kan ikke gis nytt navn."
 
-#: vmfa-editorial-workflow.php:80
+#: vmfa-editorial-workflow.php:84
 msgid "Virtual Media Folders – Editorial Workflow requires the Virtual Media Folders plugin to be installed and activated."
 msgstr "Virtual Media Folders – Redaksjonell arbeidsflyt krever at Virtual Media Folders-utvidelsen er installert og aktivert."
 
@@ -427,14 +410,32 @@ msgstr "Media lastet opp av ikke-administrator-roller vil bli plassert i «Treng
 msgid "Approved folder"
 msgstr "Godkjent-mappe"
 
-#: src/js/settings/WorkflowCard.jsx:85
-msgid "Where approved media will be moved. Leave empty to use the default \"Approved\" system folder."
-msgstr "Hvor godkjent media vil bli flyttet. La stå tom for å bruke standard «Godkjent»-systemmappe."
-
 #: src/js/settings/WorkflowCard.jsx:92
 msgid "Allow Editors to review media"
 msgstr "Tillat redaktører å gjennomgå media"
 
+#. Plugin Name of the plugin
+#: vmfa-editorial-workflow.php
+msgid "Virtual Media Folders - Editorial Workflow"
+msgstr "Virtual Media Folders – Redaksjonell arbeidsflyt"
+
+#: src/php/AccessEnforcer.php:350
+msgid "You do not have permission to move media to this folder."
+msgstr "Du har ikke tillatelse til å flytte media til denne mappen."
+
+#: src/php/AccessEnforcer.php:533
+msgid "You do not have permission to delete this folder."
+msgstr "Du har ikke tillatelse til å slette denne mappen."
+
+#: src/php/Admin/SettingsTab.php:132
+#: src/php/Admin/SettingsTab.php:242
+msgid "Delete"
+msgstr "Slett"
+
+#: src/js/settings/WorkflowCard.jsx:85
+msgid "Destination folder for approved media."
+msgstr "Målmappe for godkjent media."
+
 #: src/js/settings/WorkflowCard.jsx:93
-msgid "When enabled, Editors can access the Review page. When disabled, only Administrators can review."
-msgstr "Når aktivert, kan redaktører få tilgang til gjennomgangssiden. Når deaktivert, kan bare administratorer gjennomgå."
+msgid "Editors can access the Review page. Otherwise, only Administrators can review."
+msgstr "Redaktører kan få tilgang til gjennomgangssiden. Ellers kan bare administratorer gjennomgå."
