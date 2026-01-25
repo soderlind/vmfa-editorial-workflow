@@ -57,17 +57,21 @@ class AccessEnforcer {
 	 */
 	public function init(): void {
 		// REST API enforcement.
-		add_filter( 'rest_pre_dispatch', [ $this, 'filter_rest_pre_dispatch' ], 10, 3 );
-		add_filter( 'rest_request_before_callbacks', [ $this, 'enforce_rest_permissions' ], 10, 3 );
+		add_filter( 'rest_pre_dispatch', array( $this, 'filter_rest_pre_dispatch' ), 10, 3 );
+		add_filter( 'rest_request_before_callbacks', array( $this, 'enforce_rest_permissions' ), 10, 3 );
 
 		// AJAX media query enforcement.
-		add_filter( 'ajax_query_attachments_args', [ $this, 'filter_media_query_args' ], 20 );
+		add_filter( 'ajax_query_attachments_args', array( $this, 'filter_media_query_args' ), 20 );
 
 		// REST API media query enforcement (for /wp/v2/media endpoint).
-		add_filter( 'rest_attachment_query', [ $this, 'filter_rest_attachment_query' ], 20, 2 );
+		add_filter( 'rest_attachment_query', array( $this, 'filter_rest_attachment_query' ), 20, 2 );
 
 		// Admin folder list filtering.
-		add_filter( 'get_terms', [ $this, 'filter_folder_terms' ], 10, 4 );
+		add_filter( 'get_terms', array( $this, 'filter_folder_terms' ), 10, 4 );
+
+		// AJAX move enforcement - intercept VMF drag-drop and bulk move actions.
+		add_action( 'wp_ajax_vmfo_move_to_folder', array( $this, 'enforce_ajax_move_permission' ), 1 );
+		add_action( 'wp_ajax_vmfo_bulk_move_to_folder', array( $this, 'enforce_ajax_move_permission' ), 1 );
 	}
 
 	/**
@@ -88,12 +92,12 @@ class AccessEnforcer {
 
 		// Filter GET /vmfo/v1/folders to only show accessible folders.
 		if ( '/vmfo/v1/folders' === $route && 'GET' === $request->get_method() ) {
-			add_filter( 'rest_post_dispatch', [ $this, 'filter_folders_response' ], 10, 3 );
+			add_filter( 'rest_post_dispatch', array( $this, 'filter_folders_response' ), 10, 3 );
 		}
 
 		// Filter GET /vmfo/v1/folders/counts to only count accessible folders.
 		if ( '/vmfo/v1/folders/counts' === $route && 'GET' === $request->get_method() ) {
-			add_filter( 'rest_post_dispatch', [ $this, 'filter_folder_counts_response' ], 10, 3 );
+			add_filter( 'rest_post_dispatch', array( $this, 'filter_folder_counts_response' ), 10, 3 );
 		}
 
 		return $result;
@@ -109,7 +113,7 @@ class AccessEnforcer {
 	 */
 	public function filter_folders_response( WP_REST_Response $response, $server, WP_REST_Request $request ): WP_REST_Response {
 		// Remove this filter to prevent duplicate processing.
-		remove_filter( 'rest_post_dispatch', [ $this, 'filter_folders_response' ], 10 );
+		remove_filter( 'rest_post_dispatch', array( $this, 'filter_folders_response' ), 10 );
 
 		if ( '/vmfo/v1/folders' !== $request->get_route() ) {
 			return $response;
@@ -161,7 +165,7 @@ class AccessEnforcer {
 	 */
 	public function filter_folder_counts_response( WP_REST_Response $response, $server, WP_REST_Request $request ): WP_REST_Response {
 		// Remove this filter to prevent duplicate processing.
-		remove_filter( 'rest_post_dispatch', [ $this, 'filter_folder_counts_response' ], 10 );
+		remove_filter( 'rest_post_dispatch', array( $this, 'filter_folder_counts_response' ), 10 );
 
 		if ( '/vmfo/v1/folders/counts' !== $request->get_route() ) {
 			return $response;
@@ -189,7 +193,7 @@ class AccessEnforcer {
 		$allowed_folders = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_VIEW );
 
 		// Filter counts to only include accessible folders.
-		$filtered = [];
+		$filtered = array();
 		foreach ( $data as $folder_id => $count ) {
 			$folder_int = (int) $folder_id;
 
@@ -228,19 +232,19 @@ class AccessEnforcer {
 			? \VirtualMediaFolders\Taxonomy::TAXONOMY
 			: 'vmfo_folder';
 
-		$args = [
+		$args = array(
 			'post_type'      => 'attachment',
 			'post_status'    => 'inherit',
 			'author'         => $user_id,
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
-			'tax_query'      => [
-				[
+			'tax_query'      => array(
+				array(
 					'taxonomy' => $taxonomy,
 					'operator' => 'NOT EXISTS',
-				],
-			],
-		];
+				),
+			),
+		);
 
 		$query = new \WP_Query( $args );
 
@@ -274,7 +278,7 @@ class AccessEnforcer {
 					return new WP_Error(
 						'vmfa_permission_denied',
 						__( 'You do not have permission to add media to this folder.', 'vmfa-editorial-workflow' ),
-						[ 'status' => 403 ]
+						array( 'status' => 403 )
 					);
 				}
 			}
@@ -285,7 +289,7 @@ class AccessEnforcer {
 					return new WP_Error(
 						'vmfa_permission_denied',
 						__( 'You do not have permission to remove media from this folder.', 'vmfa-editorial-workflow' ),
-						[ 'status' => 403 ]
+						array( 'status' => 403 )
 					);
 				}
 			}
@@ -301,13 +305,111 @@ class AccessEnforcer {
 					return new WP_Error(
 						'vmfa_permission_denied',
 						__( 'You do not have permission to view this folder.', 'vmfa-editorial-workflow' ),
-						[ 'status' => 403 ]
+						array( 'status' => 403 )
 					);
 				}
 			}
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Enforce move permissions for VMF AJAX actions.
+	 *
+	 * Intercepts vmfo_move_to_folder and vmfo_bulk_move_to_folder AJAX actions
+	 * to check folder-level permissions before VMF processes the request.
+	 *
+	 * Checks:
+	 * - "Move To" permission on the destination folder (if moving TO a folder)
+	 * - "Remove From" permission on the source folder (if media is currently in a folder)
+	 *
+	 * @return void Sends JSON error and exits if permission denied.
+	 */
+	public function enforce_ajax_move_permission(): void {
+		// Skip for administrators.
+		if ( current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$user_id = get_current_user_id();
+
+		// Skip for editors with default full access (no explicit permissions configured).
+		if ( current_user_can( 'edit_others_posts' ) && ! $this->access_checker->user_has_any_configured_permissions( $user_id ) ) {
+			return;
+		}
+
+		// Get the target folder ID from the request.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
+		$target_folder = isset( $_POST[ 'folder_id' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'folder_id' ] ) ) : '';
+
+		// Get the media ID(s) to check source folder permissions.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
+		$media_id = isset( $_POST[ 'media_id' ] ) ? absint( $_POST[ 'media_id' ] ) : 0;
+
+		// For bulk moves, get the first media ID to check source folder.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by VMF.
+		$media_ids_raw = isset( $_POST[ 'media_ids' ] ) ? wp_unslash( $_POST[ 'media_ids' ] ) : '';
+		if ( ! $media_id && $media_ids_raw ) {
+			if ( is_string( $media_ids_raw ) ) {
+				$decoded = json_decode( $media_ids_raw, true );
+				if ( is_array( $decoded ) && ! empty( $decoded ) ) {
+					$media_id = absint( $decoded[ 0 ] );
+				}
+			} elseif ( is_array( $media_ids_raw ) && ! empty( $media_ids_raw ) ) {
+				$media_id = absint( $media_ids_raw[ 0 ] );
+			}
+		}
+
+		// Check source folder "Remove From" permission.
+		if ( $media_id ) {
+			$source_folders = $this->get_media_folders( $media_id );
+			foreach ( $source_folders as $source_folder_id ) {
+				if ( ! $this->access_checker->can_remove_from_folder( $source_folder_id, $user_id ) ) {
+					wp_send_json_error(
+						array(
+							'message' => __( 'You do not have permission to remove media from this folder.', 'vmfa-editorial-workflow' ),
+						),
+						403
+					);
+				}
+			}
+		}
+
+		// Check destination folder "Move To" permission.
+		// Empty, 'uncategorized', or 'root' means removing from folder - no destination permission needed.
+		if ( '' !== $target_folder && 'uncategorized' !== $target_folder && 'root' !== $target_folder ) {
+			$target_folder_id = absint( $target_folder );
+
+			if ( ! $this->access_checker->can_move_to_folder( $target_folder_id, $user_id ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'You do not have permission to move media to this folder.', 'vmfa-editorial-workflow' ),
+					),
+					403
+				);
+			}
+		}
+	}
+
+	/**
+	 * Get folder IDs for a media attachment.
+	 *
+	 * @param int $media_id Attachment ID.
+	 * @return array<int> Array of folder term IDs.
+	 */
+	private function get_media_folders( int $media_id ): array {
+		$taxonomy = defined( 'VirtualMediaFolders\Taxonomy::TAXONOMY' )
+			? \VirtualMediaFolders\Taxonomy::TAXONOMY
+			: 'vmfo_folder';
+
+		$terms = wp_get_object_terms( $media_id, $taxonomy, array( 'fields' => 'ids' ) );
+
+		if ( is_wp_error( $terms ) ) {
+			return array();
+		}
+
+		return array_map( 'intval', $terms );
 	}
 
 	/**
@@ -359,14 +461,14 @@ class AccessEnforcer {
 			}
 		} else {
 			// No folder filter set - restrict to allowed folders only.
-			$query[ 'tax_query' ] = [
-				[
+			$query[ 'tax_query' ] = array(
+				array(
 					'taxonomy' => $taxonomy,
 					'field'    => 'term_id',
 					'terms'    => $allowed_folders,
 					'operator' => 'IN',
-				],
-			];
+				),
+			);
 		}
 
 		return $query;

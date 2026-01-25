@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,14 +91,18 @@ Yes, you can configure the approved folder destination in the Workflow settings.
 
 Existing media is not affected. The workflow only applies to new uploads and explicit move actions.
 
-== Screenshots ==
 
-1. Permission matrix for configuring folder access per role
-2. Inbox mapping configuration
-3. Review screen with pending items
-4. Workflow settings
 
 == Changelog ==
+
+= 1.3.4 =
+
+**Fixed**
+
+* Permission enforcement now blocks drag-drop moves in Media Library for users without permission
+* Added AJAX interception for `vmfo_move_to_folder` and `vmfo_bulk_move_to_folder` actions
+* "Move To" permission checked on destination folder before allowing move
+* "Remove From" permission checked on source folder before allowing media to be moved out
 
 = 1.3.3 =
 
