@@ -69,73 +69,9 @@ Access **Media → Review** to:
 - Bulk assign items to destination folders
 - See notification badge with count of pending items
 
-## Hooks Reference
-
-### Actions
-
-| Hook | Description | Parameters |
-|------|-------------|------------|
-| `vmfa_inbox_assigned` | Fired after upload is routed to inbox | `$attachment_id, $folder_id, $user_id` |
-| `vmfa_marked_needs_review` | Fired after item marked for review | `$attachment_id, $folder_id` |
-| `vmfa_approved` | Fired after item is approved | `$attachment_id, $folder_id` |
-
-### Filters
-
-The plugin integrates with VMF core hooks:
-
-| Filter | Description |
-|--------|-------------|
-| `vmfo_can_delete_folder` | Used to protect system folders |
-
-## REST API
-
-### Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/vmfa-editorial/v1/settings` | Get all settings |
-| POST | `/vmfa-editorial/v1/settings` | Update all settings |
-| GET | `/vmfa-editorial/v1/permissions` | Get folder permissions |
-| POST | `/vmfa-editorial/v1/permissions` | Update folder permissions |
-| GET | `/vmfa-editorial/v1/inbox` | Get inbox mapping |
-| POST | `/vmfa-editorial/v1/inbox` | Update inbox mapping |
-| GET | `/vmfa-editorial/v1/workflow` | Get workflow settings |
-| POST | `/vmfa-editorial/v1/workflow` | Update workflow settings |
-
-All endpoints require `manage_options` capability.
-
 ## Development
 
-### Build Assets
-
-```bash
-npm install
-npm run build
-```
-
-### Run Tests
-
-```bash
-# PHP tests
-composer install
-composer test
-
-# JavaScript tests
-npm test
-```
-
-### Generate Translations
-
-```bash
-npm run i18n
-```
-
-### Lint Code
-
-```bash
-composer lint
-npm run lint:js
-```
+See [docs/development.md](docs/development.md) for build instructions, testing, hooks reference, and REST API documentation.
 
 ## License
 
