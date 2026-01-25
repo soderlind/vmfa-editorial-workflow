@@ -24,6 +24,8 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 2. Upload via  `Plugins → Add New → Upload Plugin`
 3. Activate via `WordPress Admin → Plugins`
 
+Plugin [updates are handled automatically](https://github.com/soderlind/wordpress-plugin-github-updater#readme) via GitHub. No need to manually download and install updates.
+
 ## Configuration
 
 ### Folder Permissions
