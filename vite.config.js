@@ -4,6 +4,12 @@ import { resolve } from 'path';
 
 export default defineConfig({
 	plugins: [react()],
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: ['./src/js/test-setup.js'],
+		include: ['src/js/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+	},
 	build: {
 		outDir: 'build',
 		emptyOutDir: true,
