@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-01-25
+
+### Changed
+
+- Improved color contrast for WCAG AA accessibility compliance
+- Simplified workflow settings help text for clarity
+- Review page badge now properly vertically aligned with title
+
+### Removed
+
+- Unused VMFA Rules Engine integration code and documentation
+
 ## [1.3.1] - 2026-01-25
 
 ### Added
@@ -18,6 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated `vitest` to v4.0.18
 - Added `vite`, `@vitejs/plugin-react`, `@testing-library/react`, `@testing-library/jest-dom`, and `jsdom` dev dependencies
+- Improved color contrast for WCAG AA accessibility compliance (green stats now use `#008a20`)
+- Darkened description text color for better readability on light backgrounds
+- Simplified workflow settings help text for clarity
+- Review page badge now properly vertically aligned with title
+
+### Removed
+
+- Unused VMFA Rules Engine integration code and documentation
 
 ## [1.3.0] - 2026-01-25
 

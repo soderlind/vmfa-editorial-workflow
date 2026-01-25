@@ -57,7 +57,7 @@ export default function StatsCard( { stats = {} } ) {
 			<StatItem
 				value={ approved }
 				label={ __( 'Approved', 'vmfa-editorial-workflow' ) }
-				color={ approved > 0 ? '#00a32a' : undefined }
+				color={ approved > 0 ? '#008a20' : undefined }
 			/>
 			<StatItem
 				value={ rolesConfigured }
