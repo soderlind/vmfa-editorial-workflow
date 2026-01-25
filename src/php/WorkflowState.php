@@ -195,7 +195,7 @@ class WorkflowState {
 			return false;
 		}
 
-		$term_id = $result['term_id'];
+		$term_id = $result[ 'term_id' ];
 
 		// Mark as system folder.
 		update_term_meta( $term_id, self::META_SYSTEM_FOLDER, true );

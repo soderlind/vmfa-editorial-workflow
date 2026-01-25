@@ -123,7 +123,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 		$permissions = $checker->get_all_folder_permissions( 123 );
 
 		$this->assertArrayHasKey( 'editor', $permissions );
-		$this->assertEquals( [ 'view', 'move' ], $permissions['editor'] );
+		$this->assertEquals( [ 'view', 'move' ], $permissions[ 'editor' ] );
 	}
 
 	/**
@@ -134,7 +134,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 	public function test_permission_results_are_cached(): void {
 		$userDataCallCount = 0;
 		Functions\when( 'user_can' )->justReturn( false ); // Not admin.
-		Functions\when( 'get_userdata' )->alias( function () use ( &$userDataCallCount ) {
+		Functions\when( 'get_userdata' )->alias( function () use (&$userDataCallCount) {
 			$userDataCallCount++;
 			return (object) [ 'roles' => [ 'editor' ] ];
 		} );
@@ -161,7 +161,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 	 */
 	public function test_clear_cache(): void {
 		$callCount = 0;
-		Functions\when( 'user_can' )->alias( function () use ( &$callCount ) {
+		Functions\when( 'user_can' )->alias( function () use (&$callCount) {
 			$callCount++;
 			return true;
 		} );

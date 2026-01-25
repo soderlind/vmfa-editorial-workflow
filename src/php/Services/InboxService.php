@@ -214,7 +214,7 @@ class InboxService {
 	 * @return bool True on success.
 	 */
 	public function set_role_inbox( string $role, int $folder_id ): bool {
-		$map                        = $this->get_inbox_map();
+		$map                          = $this->get_inbox_map();
 		$map[ sanitize_key( $role ) ] = $folder_id;
 
 		return $this->set_inbox_map( $map );

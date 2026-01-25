@@ -140,7 +140,7 @@ class AccessEnforcer {
 		$filtered = array_filter(
 			$data,
 			function ( $folder ) use ( $allowed_folders ) {
-				$folder_id = (int) $folder['id'];
+				$folder_id = (int) $folder[ 'id' ];
 				return in_array( $folder_id, $allowed_folders, true );
 			}
 		);
@@ -266,7 +266,7 @@ class AccessEnforcer {
 
 		// Match /vmfo/v1/folders/{id}/media routes.
 		if ( preg_match( '#^/vmfo/v1/folders/(\d+)/media$#', $route, $matches ) ) {
-			$folder_id = (int) $matches[1];
+			$folder_id = (int) $matches[ 1 ];
 
 			// POST = adding media to folder.
 			if ( 'POST' === $method ) {
@@ -293,7 +293,7 @@ class AccessEnforcer {
 
 		// Match /vmfo/v1/folders/{id} routes for single folder operations.
 		if ( preg_match( '#^/vmfo/v1/folders/(\d+)$#', $route, $matches ) ) {
-			$folder_id = (int) $matches[1];
+			$folder_id = (int) $matches[ 1 ];
 
 			// GET = viewing folder.
 			if ( 'GET' === $method ) {
@@ -339,19 +339,19 @@ class AccessEnforcer {
 
 		// If user has no allowed folders, restrict to only their own uploads.
 		if ( empty( $allowed_folders ) ) {
-			$query['author'] = $user_id;
+			$query[ 'author' ] = $user_id;
 			return $query;
 		}
 
 		// Check if query already has a folder filter.
-		if ( isset( $query['tax_query'] ) && is_array( $query['tax_query'] ) ) {
+		if ( isset( $query[ 'tax_query' ] ) && is_array( $query[ 'tax_query' ] ) ) {
 			// Find and modify vmfo_folder tax query.
-			foreach ( $query['tax_query'] as $key => $tax_query ) {
-				if ( isset( $tax_query['taxonomy'] ) && $taxonomy === $tax_query['taxonomy'] ) {
+			foreach ( $query[ 'tax_query' ] as $key => $tax_query ) {
+				if ( isset( $tax_query[ 'taxonomy' ] ) && $taxonomy === $tax_query[ 'taxonomy' ] ) {
 					// Intersect requested folders with allowed folders.
-					if ( isset( $tax_query['terms'] ) && is_array( $tax_query['terms'] ) ) {
-						$query['tax_query'][ $key ]['terms'] = array_intersect(
-							$tax_query['terms'],
+					if ( isset( $tax_query[ 'terms' ] ) && is_array( $tax_query[ 'terms' ] ) ) {
+						$query[ 'tax_query' ][ $key ][ 'terms' ] = array_intersect(
+							$tax_query[ 'terms' ],
 							$allowed_folders
 						);
 					}
@@ -359,7 +359,7 @@ class AccessEnforcer {
 			}
 		} else {
 			// No folder filter set - restrict to allowed folders only.
-			$query['tax_query'] = [
+			$query[ 'tax_query' ] = [
 				[
 					'taxonomy' => $taxonomy,
 					'field'    => 'term_id',

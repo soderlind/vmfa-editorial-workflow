@@ -32,7 +32,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 			return false;
 		} );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertTrue( $workflow->is_system_folder( 123 ) );
@@ -51,7 +51,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 			return false;
 		} );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$term   = new \WP_Term( (object) [ 'term_id' => 123, 'name' => 'Needs Review' ] );
@@ -69,7 +69,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	public function test_protect_system_folders_allows_regular_folders(): void {
 		Functions\when( 'get_term_meta' )->justReturn( false );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$term   = new \WP_Term( (object) [ 'term_id' => 456, 'name' => 'My Folder' ] );
@@ -86,7 +86,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	public function test_get_needs_review_folder(): void {
 		Functions\when( 'get_term_by' )->justReturn( new \WP_Term( (object) [ 'term_id' => 100 ] ) );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertEquals( 100, $workflow->get_needs_review_folder() );
@@ -105,7 +105,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 			->once()
 			->with( 50, 100 );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertTrue( $workflow->mark_needs_review( 50 ) );
@@ -132,7 +132,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 			->once()
 			->with( 50, 101 );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertTrue( $workflow->mark_approved( 50 ) );
@@ -146,7 +146,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	public function test_is_workflow_enabled(): void {
 		Functions\when( 'get_option' )->justReturn( true );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertTrue( $workflow->is_workflow_enabled() );
@@ -158,7 +158,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	 * @return void
 	 */
 	public function test_workflow_is_always_enabled(): void {
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		// is_workflow_enabled always returns true when plugin is active.
@@ -177,7 +177,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	public function test_get_review_count_uses_transient(): void {
 		Functions\when( 'get_transient' )->justReturn( 5 );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$this->assertEquals( 5, $workflow->get_review_count() );
@@ -196,7 +196,7 @@ class WorkflowStateTest extends \VMFA_TestCase {
 			return true;
 		} );
 
-		$access_checker = $this->createMock( AccessChecker::class );
+		$access_checker = $this->createMock( AccessChecker::class);
 		$workflow       = new WorkflowState( $access_checker );
 
 		$workflow->invalidate_review_count_cache();

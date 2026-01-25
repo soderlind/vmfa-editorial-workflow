@@ -136,8 +136,8 @@ class ReviewPage {
 		wp_enqueue_script(
 			'vmfa-review',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/review.js',
-			$asset['dependencies'],
-			$asset['version'],
+			$asset[ 'dependencies' ],
+			$asset[ 'version' ],
 			true
 		);
 
@@ -145,7 +145,7 @@ class ReviewPage {
 			'vmfa-review',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/review.css',
 			[],
-			$asset['version']
+			$asset[ 'version' ]
 		);
 
 		// Enqueue dashicons for icons.
@@ -155,11 +155,11 @@ class ReviewPage {
 			'vmfa-review',
 			'vmfaReview',
 			[
-				'nonce'           => wp_create_nonce( 'vmfa_review_actions' ),
-				'needsReviewId'   => $this->workflow_state->get_needs_review_folder(),
-				'approvedId'      => $this->workflow_state->get_approved_folder(),
-				'allowedFolders'  => $this->get_allowed_destination_folders(),
-				'i18n'            => [
+				'nonce'          => wp_create_nonce( 'vmfa_review_actions' ),
+				'needsReviewId'  => $this->workflow_state->get_needs_review_folder(),
+				'approvedId'     => $this->workflow_state->get_approved_folder(),
+				'allowedFolders' => $this->get_allowed_destination_folders(),
+				'i18n'           => [
 					'approve'        => __( 'Approve', 'vmfa-editorial-workflow' ),
 					'assignTo'       => __( 'Assign to…', 'vmfa-editorial-workflow' ),
 					'selectItems'    => __( 'Select items to perform bulk actions.', 'vmfa-editorial-workflow' ),
@@ -188,7 +188,7 @@ class ReviewPage {
 
 		$items = $this->workflow_state->get_items_needing_review( [
 			'posts_per_page' => 50,
-			'paged'          => isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1,
+			'paged'          => isset( $_GET[ 'paged' ] ) ? absint( $_GET[ 'paged' ] ) : 1,
 		] );
 
 		$total_items = $this->workflow_state->get_review_count( true );
@@ -236,12 +236,14 @@ class ReviewPage {
 			<div class="vmfa-toolbar-actions">
 				<select id="vmfa-destination-folder" disabled>
 					<option value=""><?php esc_html_e( 'Select destination…', 'vmfa-editorial-workflow' ); ?></option>
-					<option value="approve">✓ <?php echo esc_html( sprintf( __( 'Approve → %s', 'vmfa-editorial-workflow' ), $approved_name ) ); ?></option>
+					<option value="approve">✓
+						<?php echo esc_html( sprintf( __( 'Approve → %s', 'vmfa-editorial-workflow' ), $approved_name ) ); ?>
+					</option>
 					<?php if ( ! empty( $hierarchical_folders ) ) : ?>
 						<optgroup label="<?php esc_attr_e( 'Move to folder', 'vmfa-editorial-workflow' ); ?>">
 							<?php foreach ( $hierarchical_folders as $folder ) : ?>
-								<option value="<?php echo esc_attr( (string) $folder['id'] ); ?>">
-									<?php echo esc_html( $folder['name'] ); ?>
+								<option value="<?php echo esc_attr( (string) $folder[ 'id' ] ); ?>">
+									<?php echo esc_html( $folder[ 'name' ] ); ?>
 								</option>
 							<?php endforeach; ?>
 						</optgroup>
@@ -298,15 +300,15 @@ class ReviewPage {
 			return;
 		}
 
-		$title       = get_the_title( $attachment_id );
-		$edit_link   = get_edit_post_link( $attachment_id );
-		$author      = get_the_author_meta( 'display_name', $attachment->post_author );
-		$date        = get_the_date( '', $attachment );
-		$mime_type   = get_post_mime_type( $attachment_id );
-		$is_image    = strpos( $mime_type, 'image/' ) === 0;
-		$full_url    = wp_get_attachment_url( $attachment_id );
-		$medium_src  = wp_get_attachment_image_src( $attachment_id, 'medium' );
-		$thumbnail   = $medium_src ? $medium_src[0] : '';
+		$title      = get_the_title( $attachment_id );
+		$edit_link  = get_edit_post_link( $attachment_id );
+		$author     = get_the_author_meta( 'display_name', $attachment->post_author );
+		$date       = get_the_date( '', $attachment );
+		$mime_type  = get_post_mime_type( $attachment_id );
+		$is_image   = strpos( $mime_type, 'image/' ) === 0;
+		$full_url   = wp_get_attachment_url( $attachment_id );
+		$medium_src = wp_get_attachment_image_src( $attachment_id, 'medium' );
+		$thumbnail  = $medium_src ? $medium_src[ 0 ] : '';
 
 		// Get file size.
 		$file_path = get_attached_file( $attachment_id );
@@ -318,7 +320,8 @@ class ReviewPage {
 				<input type="checkbox" name="vmfa-items[]" value="<?php echo esc_attr( (string) $attachment_id ); ?>" />
 			</div>
 
-			<div class="vmfa-card-thumbnail" data-full="<?php echo esc_url( $full_url ); ?>" data-title="<?php echo esc_attr( $title ); ?>">
+			<div class="vmfa-card-thumbnail" data-full="<?php echo esc_url( $full_url ); ?>"
+				data-title="<?php echo esc_attr( $title ); ?>">
 				<?php if ( $is_image && $thumbnail ) : ?>
 					<img src="<?php echo esc_url( $thumbnail ); ?>" alt="<?php echo esc_attr( $title ); ?>" />
 					<div class="vmfa-card-preview-overlay">
@@ -358,7 +361,8 @@ class ReviewPage {
 			</div>
 
 			<div class="vmfa-card-actions">
-				<button type="button" class="button button-primary vmfa-approve-single" data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
+				<button type="button" class="button button-primary vmfa-approve-single"
+					data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
 					<span class="dashicons dashicons-yes"></span>
 					<?php esc_html_e( 'Approve', 'vmfa-editorial-workflow' ); ?>
 				</button>
@@ -407,7 +411,7 @@ class ReviewPage {
 	private function render_pagination( int $total_items ): void {
 		$per_page    = 50;
 		$total_pages = (int) ceil( $total_items / $per_page );
-		$current     = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		$current     = isset( $_GET[ 'paged' ] ) ? absint( $_GET[ 'paged' ] ) : 1;
 
 		if ( $total_pages <= 1 ) {
 			return;
@@ -437,7 +441,8 @@ class ReviewPage {
 		<div class="vmfa-review-empty">
 			<span class="dashicons dashicons-yes-alt"></span>
 			<h2><?php esc_html_e( 'All caught up!', 'vmfa-editorial-workflow' ); ?></h2>
-			<p><?php esc_html_e( 'No media items are waiting for review. New uploads will appear here.', 'vmfa-editorial-workflow' ); ?></p>
+			<p><?php esc_html_e( 'No media items are waiting for review. New uploads will appear here.', 'vmfa-editorial-workflow' ); ?>
+			</p>
 		</div>
 		<?php
 	}
@@ -466,7 +471,7 @@ class ReviewPage {
 	 * @return array Array of folder data [ 'id' => int, 'name' => string, 'parent' => int ].
 	 */
 	private function get_allowed_destination_folders(): array {
-		$user_id = get_current_user_id();
+		$user_id    = get_current_user_id();
 		$folder_ids = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_MOVE );
 
 		// Exclude workflow system folders from destinations.
@@ -506,12 +511,12 @@ class ReviewPage {
 		$prefix = str_repeat( '— ', $depth );
 
 		foreach ( $folders as $folder ) {
-			if ( $folder['parent'] === $parent_id ) {
+			if ( $folder[ 'parent' ] === $parent_id ) {
 				$result[] = [
-					'id'   => $folder['id'],
-					'name' => $prefix . $folder['name'],
+					'id'   => $folder[ 'id' ],
+					'name' => $prefix . $folder[ 'name' ],
 				];
-				$result = array_merge( $result, $this->build_folder_hierarchy( $folders, $folder['id'], $depth + 1 ) );
+				$result   = array_merge( $result, $this->build_folder_hierarchy( $folders, $folder[ 'id' ], $depth + 1 ) );
 			}
 		}
 
@@ -530,7 +535,7 @@ class ReviewPage {
 			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'vmfa-editorial-workflow' ) ], 403 );
 		}
 
-		$ids = isset( $_POST['ids'] ) ? array_map( 'absint', (array) $_POST['ids'] ) : [];
+		$ids = isset( $_POST[ 'ids' ] ) ? array_map( 'absint', (array) $_POST[ 'ids' ] ) : [];
 
 		if ( empty( $ids ) ) {
 			wp_send_json_error( [ 'message' => __( 'No items selected.', 'vmfa-editorial-workflow' ) ], 400 );
@@ -582,8 +587,8 @@ class ReviewPage {
 			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'vmfa-editorial-workflow' ) ], 403 );
 		}
 
-		$ids       = isset( $_POST['ids'] ) ? array_map( 'absint', (array) $_POST['ids'] ) : [];
-		$folder_id = isset( $_POST['folder_id'] ) ? absint( $_POST['folder_id'] ) : 0;
+		$ids       = isset( $_POST[ 'ids' ] ) ? array_map( 'absint', (array) $_POST[ 'ids' ] ) : [];
+		$folder_id = isset( $_POST[ 'folder_id' ] ) ? absint( $_POST[ 'folder_id' ] ) : 0;
 
 		if ( empty( $ids ) ) {
 			wp_send_json_error( [ 'message' => __( 'No items selected.', 'vmfa-editorial-workflow' ) ], 400 );

@@ -85,14 +85,14 @@ class SettingsTab {
 			'vmfa-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.css',
 			[ 'wp-components' ],
-			$asset['version']
+			$asset[ 'version' ]
 		);
 
 		wp_enqueue_script(
 			'vmfa-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.js',
-			$asset['dependencies'],
-			$asset['version'],
+			$asset[ 'dependencies' ],
+			$asset[ 'version' ],
 			true
 		);
 
@@ -100,30 +100,30 @@ class SettingsTab {
 			'vmfa-settings',
 			'vmfaSettings',
 			[
-				'restUrl'  => rest_url( 'vmfa-editorial/v1' ),
-				'nonce'    => wp_create_nonce( 'wp_rest' ),
-				'roles'    => $this->get_editable_roles(),
-				'folders'  => $this->get_folders(),
-				'actions'  => $this->get_actions(),
-				'i18n'     => [
-					'title'              => __( 'Editorial Workflow Settings', 'vmfa-editorial-workflow' ),
-					'permissions'        => __( 'Folder Permissions', 'vmfa-editorial-workflow' ),
-					'permissionsDesc'    => __( 'Configure which roles can access each folder.', 'vmfa-editorial-workflow' ),
-					'inbox'              => __( 'Inbox Mapping', 'vmfa-editorial-workflow' ),
-					'inboxDesc'          => __( 'Set the default upload folder for each role.', 'vmfa-editorial-workflow' ),
-					'workflow'           => __( 'Workflow Settings', 'vmfa-editorial-workflow' ),
-					'workflowDesc'       => __( 'Configure workflow states and behavior.', 'vmfa-editorial-workflow' ),
-					'enableWorkflow'     => __( 'Enable workflow folders', 'vmfa-editorial-workflow' ),
-					'save'               => __( 'Save Changes', 'vmfa-editorial-workflow' ),
-					'saving'             => __( 'Saving…', 'vmfa-editorial-workflow' ),
-					'saved'              => __( 'Settings saved.', 'vmfa-editorial-workflow' ),
-					'error'              => __( 'Error saving settings.', 'vmfa-editorial-workflow' ),
-					'selectFolder'       => __( 'Select folder…', 'vmfa-editorial-workflow' ),
-					'noInbox'            => __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
-					'view'               => __( 'View', 'vmfa-editorial-workflow' ),
-					'move'               => __( 'Move to', 'vmfa-editorial-workflow' ),
-					'upload'             => __( 'Upload to', 'vmfa-editorial-workflow' ),
-					'remove'             => __( 'Remove from', 'vmfa-editorial-workflow' ),
+				'restUrl' => rest_url( 'vmfa-editorial/v1' ),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'roles'   => $this->get_editable_roles(),
+				'folders' => $this->get_folders(),
+				'actions' => $this->get_actions(),
+				'i18n'    => [
+					'title'           => __( 'Editorial Workflow Settings', 'vmfa-editorial-workflow' ),
+					'permissions'     => __( 'Folder Permissions', 'vmfa-editorial-workflow' ),
+					'permissionsDesc' => __( 'Configure which roles can access each folder.', 'vmfa-editorial-workflow' ),
+					'inbox'           => __( 'Inbox Mapping', 'vmfa-editorial-workflow' ),
+					'inboxDesc'       => __( 'Set the default upload folder for each role.', 'vmfa-editorial-workflow' ),
+					'workflow'        => __( 'Workflow Settings', 'vmfa-editorial-workflow' ),
+					'workflowDesc'    => __( 'Configure workflow states and behavior.', 'vmfa-editorial-workflow' ),
+					'enableWorkflow'  => __( 'Enable workflow folders', 'vmfa-editorial-workflow' ),
+					'save'            => __( 'Save Changes', 'vmfa-editorial-workflow' ),
+					'saving'          => __( 'Saving…', 'vmfa-editorial-workflow' ),
+					'saved'           => __( 'Settings saved.', 'vmfa-editorial-workflow' ),
+					'error'           => __( 'Error saving settings.', 'vmfa-editorial-workflow' ),
+					'selectFolder'    => __( 'Select folder…', 'vmfa-editorial-workflow' ),
+					'noInbox'         => __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
+					'view'            => __( 'View', 'vmfa-editorial-workflow' ),
+					'move'            => __( 'Move to', 'vmfa-editorial-workflow' ),
+					'upload'          => __( 'Upload to', 'vmfa-editorial-workflow' ),
+					'remove'          => __( 'Remove from', 'vmfa-editorial-workflow' ),
 				],
 			]
 		);
@@ -152,8 +152,8 @@ class SettingsTab {
 	 * @return array Role data.
 	 */
 	private function get_editable_roles(): array {
-		$roles     = [];
-		$wp_roles  = wp_roles();
+		$roles    = [];
+		$wp_roles = wp_roles();
 
 		foreach ( $wp_roles->roles as $role_key => $role_data ) {
 			// Skip administrator - they always have full access.
@@ -162,13 +162,13 @@ class SettingsTab {
 			}
 
 			// Only include roles that can upload files.
-			if ( ! isset( $role_data['capabilities']['upload_files'] ) || ! $role_data['capabilities']['upload_files'] ) {
+			if ( ! isset( $role_data[ 'capabilities' ][ 'upload_files' ] ) || ! $role_data[ 'capabilities' ][ 'upload_files' ] ) {
 				continue;
 			}
 
 			$roles[] = [
 				'key'  => $role_key,
-				'name' => translate_user_role( $role_data['name'] ),
+				'name' => translate_user_role( $role_data[ 'name' ] ),
 			];
 		}
 

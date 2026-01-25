@@ -239,16 +239,16 @@ class SettingsController extends WP_REST_Controller {
 			$workflow_state = new WorkflowState( $this->access_checker );
 			$workflow_data  = $request->get_param( 'workflow' );
 
-			if ( isset( $workflow_data['enabled'] ) ) {
-				$workflow_state->set_workflow_enabled( (bool) $workflow_data['enabled'] );
+			if ( isset( $workflow_data[ 'enabled' ] ) ) {
+				$workflow_state->set_workflow_enabled( (bool) $workflow_data[ 'enabled' ] );
 			}
 
 			if ( array_key_exists( 'editorsCanReview', $workflow_data ) ) {
-				$workflow_state->set_editors_can_review( (bool) $workflow_data['editorsCanReview'] );
+				$workflow_state->set_editors_can_review( (bool) $workflow_data[ 'editorsCanReview' ] );
 			}
 
-			if ( isset( $workflow_data['approvedFolder'] ) ) {
-				$workflow_state->set_approved_folder( (int) $workflow_data['approvedFolder'] );
+			if ( isset( $workflow_data[ 'approvedFolder' ] ) ) {
+				$workflow_state->set_approved_folder( (int) $workflow_data[ 'approvedFolder' ] );
 			}
 		}
 
@@ -353,7 +353,7 @@ class SettingsController extends WP_REST_Controller {
 		$data           = $request->get_json_params();
 
 		if ( array_key_exists( 'editorsCanReview', $data ) ) {
-			$workflow_state->set_editors_can_review( (bool) $data['editorsCanReview'] );
+			$workflow_state->set_editors_can_review( (bool) $data[ 'editorsCanReview' ] );
 		}
 
 		return $this->get_workflow_settings( $request );
@@ -447,7 +447,7 @@ class SettingsController extends WP_REST_Controller {
 		$needs_review_folder = $workflow_state->get_needs_review_folder();
 		$needs_review_count  = 0;
 		if ( $needs_review_folder ) {
-			$query = new \WP_Query( [
+			$query              = new \WP_Query( [
 				'post_type'      => 'attachment',
 				'post_status'    => 'inherit',
 				'posts_per_page' => -1,
@@ -467,7 +467,7 @@ class SettingsController extends WP_REST_Controller {
 		$approved_folder = $workflow_state->get_approved_folder();
 		$approved_count  = 0;
 		if ( $approved_folder ) {
-			$query = new \WP_Query( [
+			$query          = new \WP_Query( [
 				'post_type'      => 'attachment',
 				'post_status'    => 'inherit',
 				'posts_per_page' => -1,
@@ -484,7 +484,7 @@ class SettingsController extends WP_REST_Controller {
 		}
 
 		// Roles with permissions configured.
-		$permissions = $this->get_all_permissions();
+		$permissions      = $this->get_all_permissions();
 		$roles_configured = [];
 		foreach ( $permissions as $folder_perms ) {
 			foreach ( array_keys( $folder_perms ) as $role ) {

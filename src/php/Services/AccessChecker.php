@@ -442,8 +442,8 @@ class AccessChecker {
 		$permissions = [];
 
 		foreach ( array_keys( $wp_roles->roles ) as $role ) {
-			$meta_key    = self::META_PREFIX . sanitize_key( $role );
-			$meta_value  = get_term_meta( $folder_id, $meta_key, true );
+			$meta_key   = self::META_PREFIX . sanitize_key( $role );
+			$meta_value = get_term_meta( $folder_id, $meta_key, true );
 
 			// Only include if the meta exists (is an array).
 			// Empty array means "explicitly deny all" and should be included.
