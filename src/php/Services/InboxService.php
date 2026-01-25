@@ -74,7 +74,6 @@ class InboxService {
 	 */
 	public function init(): void {
 		// Hook into attachment metadata generation (runs after upload).
-		// Priority 15 = before Rules Engine (20) but after VMF core.
 		add_filter( 'wp_generate_attachment_metadata', [ $this, 'route_to_inbox' ], 15, 3 );
 	}
 

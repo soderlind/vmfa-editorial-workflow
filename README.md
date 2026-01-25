@@ -10,16 +10,13 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 - **Move/assignment restrictions** — Define who can move media into which folders
 - **Inbox workflow** — Contributors upload to an inbox; editors triage and move onward
 - **Review workflow** — Track items needing review with dedicated admin screen
+- **Internationalization** — Fully translatable with Norwegian Bokmål included
 
 ## Requirements
 
 - WordPress 6.8+
 - PHP 8.3+
 - Virtual Media Folders plugin
-
-### Optional
-
-- [VMFA Rules Engine](https://github.com/soderlind/vmfa-rules-engine) — For advanced upload routing and conditions
 
 ## Installation
 
@@ -119,8 +116,18 @@ npm run build
 ### Run Tests
 
 ```bash
+# PHP tests
 composer install
 composer test
+
+# JavaScript tests
+npm test
+```
+
+### Generate Translations
+
+```bash
+npm run i18n
 ```
 
 ### Lint Code

@@ -89,7 +89,7 @@
 
 .vmfa-card-description {
 	margin: 0 0 20px;
-	color: #646970;
+	color: #50575e;
 }
 
 /* Stats Card - 4 column layout like other VMF add-ons */
@@ -149,6 +149,10 @@
 
 .vmfa-workflow-settings .components-checkbox-control__label {
 	font-weight: 500;
+}
+
+.vmfa-workflow-settings .components-base-control__help {
+	color: #3c434a;
 }
 
 /* Workflow folder info display */

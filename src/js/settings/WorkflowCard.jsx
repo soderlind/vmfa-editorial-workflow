@@ -79,10 +79,10 @@ export default function WorkflowCard( {
 					) }
 				</p>
 
-				<div className="vmfa-workflow-settings">
+					<div className="vmfa-workflow-settings">
 					<SelectControl
 						label={ __( 'Approved folder', 'vmfa-editorial-workflow' ) }
-						help={ __( 'Where approved media will be moved. Leave empty to use the default "Approved" system folder.', 'vmfa-editorial-workflow' ) }
+						help={ __( 'Destination folder for approved media.', 'vmfa-editorial-workflow' ) }
 						value={ String( approvedFolder || '' ) }
 						options={ folderOptions }
 						onChange={ handleApprovedFolderChange }
@@ -90,7 +90,7 @@ export default function WorkflowCard( {
 
 					<CheckboxControl
 						label={ __( 'Allow Editors to review media', 'vmfa-editorial-workflow' ) }
-						help={ __( 'When enabled, Editors can access the Review page. When disabled, only Administrators can review.', 'vmfa-editorial-workflow' ) }
+						help={ __( 'Editors can access the Review page. Otherwise, only Administrators can review.', 'vmfa-editorial-workflow' ) }
 						checked={ editorsCanReview }
 						onChange={ handleEditorsCanReviewChange }
 					/>

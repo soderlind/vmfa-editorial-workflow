@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,16 +18,13 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 * **Move/assignment restrictions** — Define who can move media into which folders
 * **Inbox workflow** — Contributors upload to an inbox; editors triage and move onward
 * **Review workflow** — Track items needing review with dedicated admin screen
+* **Internationalization** — Fully translatable with Norwegian Bokmål included
 
 = Requirements =
 
 * WordPress 6.8+
 * PHP 8.3+
 * Virtual Media Folders plugin
-
-= Optional =
-
-* [VMFA Rules Engine](https://github.com/soderlind/vmfa-rules-engine) — For advanced upload routing and conditions
 
 == Installation ==
 
@@ -102,6 +99,30 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 4. Workflow settings
 
 == Changelog ==
+
+= 1.3.2 =
+
+**Changed**
+
+* Improved color contrast for WCAG AA accessibility compliance
+* Simplified workflow settings help text for clarity
+* Review page badge now properly vertically aligned with title
+
+**Removed**
+
+* Unused VMFA Rules Engine integration code and documentation
+
+= 1.3.1 =
+
+**Added**
+
+* JavaScript test suite with Vitest for React components and utilities
+
+**Changed**
+
+* Updated `vitest` to v4.0.18
+* Improved color contrast for WCAG AA accessibility compliance
+* Simplified workflow settings help text for clarity
 
 = 1.3.0 =
 
