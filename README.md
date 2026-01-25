@@ -59,6 +59,17 @@ Out of the box, the plugin applies sensible defaults:
 - **Author** — No access by default (must be explicitly granted permissions)
 - **Custom roles** — No access by default (must be explicitly granted permissions)
 
+#### Permission Types
+
+| Permission | Description |
+|------------|-------------|
+| **View** | Can see the folder in the sidebar and browse media inside it |
+| **Move To** | Can drag-and-drop or assign media INTO this folder |
+| **Upload To** | New uploads from this role can be routed to this folder via Inbox Mapping |
+| **Remove From** | Can move media OUT of this folder (to another folder or Uncategorized) |
+
+> **Note:** Moving media between folders requires **both** "Remove From" permission on the source folder **and** "Move To" permission on the destination folder.
+
 ### Workflow Folders
 
 On activation, the plugin creates protected system folders:
