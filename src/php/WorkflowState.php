@@ -61,6 +61,20 @@ class WorkflowState {
 	public const OPTION_WORKFLOW_ENABLED = 'vmfa_workflow_enabled';
 
 	/**
+	 * Option key for editor review access.
+	 *
+	 * @var string
+	 */
+	public const OPTION_EDITORS_CAN_REVIEW = 'vmfa_editors_can_review';
+
+	/**
+	 * Option key for custom approved folder.
+	 *
+	 * @var string
+	 */
+	public const OPTION_APPROVED_FOLDER = 'vmfa_approved_folder';
+
+	/**
 	 * Access checker instance.
 	 *
 	 * @var AccessChecker
@@ -251,12 +265,48 @@ class WorkflowState {
 	/**
 	 * Get the Approved folder ID.
 	 *
+	 * Returns custom folder if set, otherwise falls back to system folder.
+	 *
 	 * @return int|null Folder term ID or null if not found.
 	 */
 	public function get_approved_folder(): ?int {
+		// Check for custom approved folder first.
+		$custom_folder = (int) get_option( self::OPTION_APPROVED_FOLDER, 0 );
+		if ( $custom_folder > 0 ) {
+			// Verify the folder still exists.
+			$term = get_term( $custom_folder, $this->taxonomy );
+			if ( $term instanceof WP_Term ) {
+				return $term->term_id;
+			}
+		}
+
+		// Fall back to system folder.
 		$term = get_term_by( 'slug', self::FOLDER_APPROVED, $this->taxonomy );
 
 		return ( $term instanceof WP_Term ) ? $term->term_id : null;
+	}
+
+	/**
+	 * Set the custom approved folder.
+	 *
+	 * @param int $folder_id Folder term ID, or 0 to use default.
+	 * @return bool True on success.
+	 */
+	public function set_approved_folder( int $folder_id ): bool {
+		if ( $folder_id <= 0 ) {
+			return delete_option( self::OPTION_APPROVED_FOLDER );
+		}
+
+		return (bool) update_option( self::OPTION_APPROVED_FOLDER, $folder_id );
+	}
+
+	/**
+	 * Get the custom approved folder ID (not falling back to system).
+	 *
+	 * @return int Custom folder ID or 0 if using default.
+	 */
+	public function get_custom_approved_folder(): int {
+		return (int) get_option( self::OPTION_APPROVED_FOLDER, 0 );
 	}
 
 	/**
@@ -400,19 +450,50 @@ class WorkflowState {
 	/**
 	 * Check if workflow feature is enabled.
 	 *
-	 * @return bool
+	 * Workflow is always enabled when the plugin is active.
+	 *
+	 * @return bool Always true.
 	 */
 	public function is_workflow_enabled(): bool {
-		return (bool) get_option( self::OPTION_WORKFLOW_ENABLED, true );
+		return true;
 	}
 
 	/**
 	 * Enable or disable workflow feature.
 	 *
+	 * @deprecated Workflow is now always enabled when plugin is active.
+	 *
 	 * @param bool $enabled Whether to enable workflow.
 	 * @return bool True on success.
 	 */
 	public function set_workflow_enabled( bool $enabled ): bool {
-		return update_option( self::OPTION_WORKFLOW_ENABLED, $enabled );
+		// No-op: workflow is always enabled.
+		return true;
+	}
+
+	/**
+	 * Check if editors can access the review page.
+	 *
+	 * @return bool True if editors can review (default true).
+	 */
+	public function editors_can_review(): bool {
+		$value = get_option( self::OPTION_EDITORS_CAN_REVIEW, true );
+
+		// Handle string '0' or '1' from database.
+		if ( '0' === $value || '' === $value ) {
+			return false;
+		}
+
+		return (bool) $value;
+	}
+
+	/**
+	 * Set whether editors can access the review page.
+	 *
+	 * @param bool $can_review Whether editors can review.
+	 * @return bool True on success.
+	 */
+	public function set_editors_can_review( bool $can_review ): bool {
+		return update_option( self::OPTION_EDITORS_CAN_REVIEW, $can_review ? '1' : '0' );
 	}
 }

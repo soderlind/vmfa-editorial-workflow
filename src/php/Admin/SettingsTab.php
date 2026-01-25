@@ -156,7 +156,7 @@ class SettingsTab {
 		$wp_roles  = wp_roles();
 
 		foreach ( $wp_roles->roles as $role_key => $role_data ) {
-			// Skip administrator (always has full access).
+			// Skip administrator - they always have full access.
 			if ( 'administrator' === $role_key ) {
 				continue;
 			}

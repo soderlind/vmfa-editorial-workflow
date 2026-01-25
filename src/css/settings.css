@@ -21,6 +21,33 @@
 
 .vmfa-notice {
 	margin-bottom: 20px;
+	animation: vmfa-notice-fade-in 0.3s ease-out;
+}
+
+.vmfa-notice.is-dismissing {
+	animation: vmfa-notice-fade-out 0.3s ease-out forwards;
+}
+
+@keyframes vmfa-notice-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes vmfa-notice-fade-out {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
 }
 
 /* Card styles - matches VMF add-ons */
@@ -107,6 +134,19 @@
 .vmfa-workflow-field .components-base-control__help {
 	margin-top: 4px;
 	font-size: 12px;
+}
+
+/* Workflow settings checkboxes */
+.vmfa-workflow-settings {
+	margin-bottom: 20px;
+	padding: 16px;
+	background: #f0f6fc;
+	border-radius: 4px;
+	border-left: 4px solid #0073aa;
+}
+
+.vmfa-workflow-settings .components-checkbox-control__label {
+	font-weight: 500;
 }
 
 /* Workflow folder info display */
@@ -349,6 +389,87 @@
 	background: #f9f9f9;
 	border: 1px dashed #dcdcde;
 	border-radius: 4px;
+}
+
+/* Full access role badge */
+.vmfa-role-full-access {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #fff;
+	background: #00a32a;
+	padding: 2px 8px;
+	border-radius: 10px;
+	margin-left: auto;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+}
+
+.vmfa-default-badge {
+	font-size: 9px;
+	font-weight: 400;
+	opacity: 0.85;
+	text-transform: lowercase;
+	letter-spacing: 0;
+}
+
+/* Full access notice */
+.vmfa-full-access-notice {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 16px;
+	margin: 0 0 12px;
+	background: #edfaef;
+	border-left: 4px solid #00a32a;
+	border-radius: 0 4px 4px 0;
+	color: #1e4620;
+	font-size: 13px;
+}
+
+.vmfa-full-access-notice .dashicons {
+	color: #00a32a;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+/* Default access notice (can be overridden) */
+.vmfa-default-access-notice {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 16px;
+	margin: 0 0 12px;
+	background: #f0f6fc;
+	border-left: 4px solid #2271b1;
+	border-radius: 0 4px 4px 0;
+	color: #1d4ed8;
+	font-size: 13px;
+}
+
+.vmfa-default-access-notice .dashicons {
+	color: #2271b1;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+/* Column label (non-interactive for full access roles) */
+.vmfa-column-label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 500;
+	color: #1d2327;
+}
+
+/* Disabled checkbox styling */
+.vmfa-checkbox-cell .components-checkbox-control__input:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
 }
 
 /* Settings actions - sticky footer */

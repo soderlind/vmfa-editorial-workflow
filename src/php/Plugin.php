@@ -100,7 +100,7 @@ final class Plugin {
 	private function init_services(): void {
 		$this->access_checker  = new Services\AccessChecker();
 		$this->workflow_state  = new WorkflowState( $this->access_checker );
-		$this->inbox_service   = new Services\InboxService( $this->access_checker );
+		$this->inbox_service   = new Services\InboxService( $this->access_checker, $this->workflow_state );
 		$this->access_enforcer = new AccessEnforcer( $this->access_checker );
 	}
 

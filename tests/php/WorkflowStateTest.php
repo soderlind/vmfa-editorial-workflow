@@ -117,6 +117,9 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	 * @return void
 	 */
 	public function test_mark_approved(): void {
+		// Mock get_option for custom approved folder (returns empty = use default).
+		Functions\when( 'get_option' )->justReturn( '' );
+
 		Functions\when( 'get_term_by' )->alias( function ( $field, $value, $taxonomy ) {
 			if ( 'vmfa-approved' === $value ) {
 				return new \WP_Term( (object) [ 'term_id' => 101 ] );
@@ -154,20 +157,16 @@ class WorkflowStateTest extends \VMFA_TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_set_workflow_enabled(): void {
-		$updated = false;
-		Functions\when( 'update_option' )->alias( function ( $option, $value ) use ( &$updated ) {
-			$updated = true;
-			$this->assertEquals( 'vmfa_workflow_enabled', $option );
-			$this->assertFalse( $value );
-			return true;
-		} );
-
+	public function test_workflow_is_always_enabled(): void {
 		$access_checker = $this->createMock( AccessChecker::class );
 		$workflow       = new WorkflowState( $access_checker );
 
+		// is_workflow_enabled always returns true when plugin is active.
+		$this->assertTrue( $workflow->is_workflow_enabled() );
+
+		// set_workflow_enabled is deprecated and always returns true (no-op).
 		$this->assertTrue( $workflow->set_workflow_enabled( false ) );
-		$this->assertTrue( $updated );
+		$this->assertTrue( $workflow->set_workflow_enabled( true ) );
 	}
 
 	/**

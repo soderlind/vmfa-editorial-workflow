@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace VmfaEditorialWorkflow\Services;
 
+use VmfaEditorialWorkflow\WorkflowState;
+
 // Prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
@@ -38,6 +40,13 @@ class InboxService {
 	private AccessChecker $access_checker;
 
 	/**
+	 * Workflow state instance.
+	 *
+	 * @var WorkflowState|null
+	 */
+	private ?WorkflowState $workflow_state;
+
+	/**
 	 * VMF taxonomy name.
 	 *
 	 * @var string
@@ -47,10 +56,12 @@ class InboxService {
 	/**
 	 * Constructor.
 	 *
-	 * @param AccessChecker $access_checker Access checker instance.
+	 * @param AccessChecker      $access_checker Access checker instance.
+	 * @param WorkflowState|null $workflow_state Workflow state instance (optional).
 	 */
-	public function __construct( AccessChecker $access_checker ) {
+	public function __construct( AccessChecker $access_checker, ?WorkflowState $workflow_state = null ) {
 		$this->access_checker = $access_checker;
+		$this->workflow_state = $workflow_state;
 		$this->taxonomy       = defined( 'VirtualMediaFolders\Taxonomy::TAXONOMY' )
 			? \VirtualMediaFolders\Taxonomy::TAXONOMY
 			: 'vmfo_folder';
@@ -87,15 +98,18 @@ class InboxService {
 			return $metadata;
 		}
 
-		// Get current user's inbox folder.
+		// Get current user's inbox folder (includes fallback to Needs Review).
 		$inbox_folder_id = $this->get_user_inbox_folder( get_current_user_id() );
 
 		if ( ! $inbox_folder_id ) {
 			return $metadata;
 		}
 
-		// Verify user can upload to this folder.
-		if ( ! $this->access_checker->can_upload_to_folder( $inbox_folder_id ) ) {
+		// Check if this is a workflow system folder (always allow for non-admins with upload_files cap).
+		$is_workflow_folder = $this->is_workflow_folder( $inbox_folder_id );
+
+		// Verify user can upload to this folder (skip check for workflow folders).
+		if ( ! $is_workflow_folder && ! $this->access_checker->can_upload_to_folder( $inbox_folder_id ) ) {
 			return $metadata;
 		}
 
@@ -119,12 +133,19 @@ class InboxService {
 	/**
 	 * Get inbox folder ID for a user based on their role.
 	 *
+	 * Falls back to the "Needs Review" workflow folder if no role-specific inbox is configured.
+	 *
 	 * @param int $user_id User ID.
 	 * @return int|null Folder term ID or null if no inbox configured.
 	 */
 	public function get_user_inbox_folder( int $user_id ): ?int {
 		$user = get_userdata( $user_id );
 		if ( ! $user ) {
+			return null;
+		}
+
+		// Administrators don't need inbox routing.
+		if ( in_array( 'administrator', $user->roles, true ) ) {
 			return null;
 		}
 
@@ -140,6 +161,14 @@ class InboxService {
 				if ( $term && ! is_wp_error( $term ) ) {
 					return $folder_id;
 				}
+			}
+		}
+
+		// Fall back to "Needs Review" workflow folder if available.
+		if ( $this->workflow_state && $this->workflow_state->is_workflow_enabled() ) {
+			$needs_review_folder = $this->workflow_state->get_needs_review_folder();
+			if ( $needs_review_folder ) {
+				return $needs_review_folder;
 			}
 		}
 
@@ -247,5 +276,22 @@ class InboxService {
 		}
 
 		return $roles;
+	}
+
+	/**
+	 * Check if a folder is a workflow system folder (Needs Review or Approved).
+	 *
+	 * @param int $folder_id Folder term ID.
+	 * @return bool True if folder is a workflow folder.
+	 */
+	private function is_workflow_folder( int $folder_id ): bool {
+		if ( ! $this->workflow_state ) {
+			return false;
+		}
+
+		$needs_review = $this->workflow_state->get_needs_review_folder();
+		$approved     = $this->workflow_state->get_approved_folder();
+
+		return $folder_id === $needs_review || $folder_id === $approved;
 	}
 }

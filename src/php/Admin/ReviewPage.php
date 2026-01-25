@@ -86,6 +86,14 @@ class ReviewPage {
 			return;
 		}
 
+		// Determine capability required for review access.
+		// Administrators always have access. Editors only if setting allows.
+		$capability = 'manage_options'; // Admin only by default.
+
+		if ( $this->workflow_state->editors_can_review() ) {
+			$capability = 'edit_others_posts'; // Editors and Admins.
+		}
+
 		$count      = $this->workflow_state->get_review_count();
 		$menu_title = __( 'Review', 'vmfa-editorial-workflow' );
 
@@ -100,7 +108,7 @@ class ReviewPage {
 		add_media_page(
 			__( 'Media Review', 'vmfa-editorial-workflow' ),
 			$menu_title,
-			'upload_files',
+			$capability,
 			self::PAGE_SLUG,
 			[ $this, 'render_page' ]
 		);
@@ -133,6 +141,16 @@ class ReviewPage {
 			true
 		);
 
+		wp_enqueue_style(
+			'vmfa-review',
+			VMFA_EDITORIAL_WORKFLOW_URL . 'build/review.css',
+			[],
+			$asset['version']
+		);
+
+		// Enqueue dashicons for icons.
+		wp_enqueue_style( 'dashicons' );
+
 		wp_localize_script(
 			'vmfa-review',
 			'vmfaReview',
@@ -142,12 +160,14 @@ class ReviewPage {
 				'approvedId'      => $this->workflow_state->get_approved_folder(),
 				'allowedFolders'  => $this->get_allowed_destination_folders(),
 				'i18n'            => [
-					'approve'       => __( 'Approve', 'vmfa-editorial-workflow' ),
-					'assignTo'      => __( 'Assign to…', 'vmfa-editorial-workflow' ),
-					'selectItems'   => __( 'Select items to perform bulk actions.', 'vmfa-editorial-workflow' ),
+					'approve'        => __( 'Approve', 'vmfa-editorial-workflow' ),
+					'assignTo'       => __( 'Assign to…', 'vmfa-editorial-workflow' ),
+					'selectItems'    => __( 'Select items to perform bulk actions.', 'vmfa-editorial-workflow' ),
 					'confirmApprove' => __( 'Approve selected items?', 'vmfa-editorial-workflow' ),
-					'success'       => __( 'Action completed successfully.', 'vmfa-editorial-workflow' ),
-					'error'         => __( 'An error occurred.', 'vmfa-editorial-workflow' ),
+					'confirmMove'    => __( 'Move selected items to this folder?', 'vmfa-editorial-workflow' ),
+					'success'        => __( 'Action completed successfully.', 'vmfa-editorial-workflow' ),
+					'error'          => __( 'An error occurred.', 'vmfa-editorial-workflow' ),
+					'saving'         => __( 'Processing…', 'vmfa-editorial-workflow' ),
 				],
 			]
 		);
@@ -175,22 +195,19 @@ class ReviewPage {
 
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline">
-				<?php esc_html_e( 'Media Review', 'vmfa-editorial-workflow' ); ?>
-			</h1>
-
-			<?php if ( $total_items > 0 ) : ?>
-				<span class="title-count theme-count"><?php echo esc_html( (string) $total_items ); ?></span>
-			<?php endif; ?>
-
-			<hr class="wp-header-end">
+			<div class="vmfa-review-header">
+				<h1>
+					<?php esc_html_e( 'Media Review', 'vmfa-editorial-workflow' ); ?>
+					<?php if ( $total_items > 0 ) : ?>
+						<span class="vmfa-review-count-badge"><?php echo esc_html( (string) $total_items ); ?></span>
+					<?php endif; ?>
+				</h1>
+			</div>
 
 			<?php if ( empty( $items ) ) : ?>
-				<div class="vmfa-review-empty">
-					<p><?php esc_html_e( 'No media items need review.', 'vmfa-editorial-workflow' ); ?></p>
-				</div>
+				<?php $this->render_empty_state(); ?>
 			<?php else : ?>
-				<?php $this->render_bulk_actions(); ?>
+				<?php $this->render_toolbar(); ?>
 				<?php $this->render_media_grid( $items ); ?>
 				<?php $this->render_pagination( $total_items ); ?>
 			<?php endif; ?>
@@ -199,42 +216,58 @@ class ReviewPage {
 	}
 
 	/**
-	 * Render bulk actions bar.
+	 * Render the toolbar with bulk actions.
 	 *
 	 * @return void
 	 */
-	private function render_bulk_actions(): void {
-		$allowed_folders = $this->get_allowed_destination_folders();
+	private function render_toolbar(): void {
+		$allowed_folders      = $this->get_allowed_destination_folders();
+		$hierarchical_folders = $this->build_folder_hierarchy( $allowed_folders );
+		$approved_folder      = $this->workflow_state->get_approved_folder();
+		$approved_term        = $approved_folder ? get_term( $approved_folder ) : null;
+		$approved_name        = $approved_term instanceof \WP_Term ? $approved_term->name : __( 'Approved', 'vmfa-editorial-workflow' );
 		?>
-		<div class="vmfa-review-actions">
-			<label>
+		<div class="vmfa-review-toolbar">
+			<label class="vmfa-toolbar-select-all">
 				<input type="checkbox" id="vmfa-select-all" />
 				<?php esc_html_e( 'Select All', 'vmfa-editorial-workflow' ); ?>
 			</label>
 
-			<div class="vmfa-bulk-buttons">
-				<button type="button" class="button" id="vmfa-bulk-approve" disabled>
-					<?php esc_html_e( 'Approve Selected', 'vmfa-editorial-workflow' ); ?>
+			<div class="vmfa-toolbar-actions">
+				<select id="vmfa-destination-folder" disabled>
+					<option value=""><?php esc_html_e( 'Select destination…', 'vmfa-editorial-workflow' ); ?></option>
+					<option value="approve">✓ <?php echo esc_html( sprintf( __( 'Approve → %s', 'vmfa-editorial-workflow' ), $approved_name ) ); ?></option>
+					<?php if ( ! empty( $hierarchical_folders ) ) : ?>
+						<optgroup label="<?php esc_attr_e( 'Move to folder', 'vmfa-editorial-workflow' ); ?>">
+							<?php foreach ( $hierarchical_folders as $folder ) : ?>
+								<option value="<?php echo esc_attr( (string) $folder['id'] ); ?>">
+									<?php echo esc_html( $folder['name'] ); ?>
+								</option>
+							<?php endforeach; ?>
+						</optgroup>
+					<?php endif; ?>
+				</select>
+				<button type="button" class="button button-primary" id="vmfa-bulk-action" disabled>
+					<span class="dashicons dashicons-yes-alt"></span>
+					<?php esc_html_e( 'Apply', 'vmfa-editorial-workflow' ); ?>
 				</button>
-
-				<?php if ( ! empty( $allowed_folders ) ) : ?>
-					<select id="vmfa-assign-folder" disabled>
-						<option value=""><?php esc_html_e( 'Assign to folder…', 'vmfa-editorial-workflow' ); ?></option>
-						<?php foreach ( $allowed_folders as $folder ) : ?>
-							<option value="<?php echo esc_attr( (string) $folder['id'] ); ?>">
-								<?php echo esc_html( $folder['name'] ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-					<button type="button" class="button" id="vmfa-bulk-assign" disabled>
-						<?php esc_html_e( 'Assign Selected', 'vmfa-editorial-workflow' ); ?>
-					</button>
-				<?php endif; ?>
 			</div>
 
-			<span class="vmfa-selection-count"></span>
+			<div class="vmfa-toolbar-info">
+				<span class="vmfa-selection-count"></span>
+			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render bulk actions bar.
+	 *
+	 * @deprecated Use render_toolbar() instead.
+	 * @return void
+	 */
+	private function render_bulk_actions(): void {
+		$this->render_toolbar();
 	}
 
 	/**
@@ -254,7 +287,7 @@ class ReviewPage {
 	}
 
 	/**
-	 * Render single media item.
+	 * Render single media item as a card.
 	 *
 	 * @param int $attachment_id Attachment ID.
 	 * @return void
@@ -265,46 +298,104 @@ class ReviewPage {
 			return;
 		}
 
-		$thumbnail = wp_get_attachment_image( $attachment_id, 'thumbnail', true );
-		$title     = get_the_title( $attachment_id );
-		$edit_link = get_edit_post_link( $attachment_id );
-		$author    = get_the_author_meta( 'display_name', $attachment->post_author );
-		$date      = get_the_date( '', $attachment );
+		$title       = get_the_title( $attachment_id );
+		$edit_link   = get_edit_post_link( $attachment_id );
+		$author      = get_the_author_meta( 'display_name', $attachment->post_author );
+		$date        = get_the_date( '', $attachment );
+		$mime_type   = get_post_mime_type( $attachment_id );
+		$is_image    = strpos( $mime_type, 'image/' ) === 0;
+		$full_url    = wp_get_attachment_url( $attachment_id );
+		$medium_src  = wp_get_attachment_image_src( $attachment_id, 'medium' );
+		$thumbnail   = $medium_src ? $medium_src[0] : '';
+
+		// Get file size.
+		$file_path = get_attached_file( $attachment_id );
+		$file_size = $file_path && file_exists( $file_path ) ? size_format( filesize( $file_path ), 1 ) : '';
 
 		?>
-		<li class="vmfa-review-item" data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
-			<div class="vmfa-item-checkbox">
+		<li class="vmfa-media-card" data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
+			<div class="vmfa-card-checkbox">
 				<input type="checkbox" name="vmfa-items[]" value="<?php echo esc_attr( (string) $attachment_id ); ?>" />
 			</div>
-			<div class="vmfa-item-thumbnail">
-				<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+			<div class="vmfa-card-thumbnail" data-full="<?php echo esc_url( $full_url ); ?>" data-title="<?php echo esc_attr( $title ); ?>">
+				<?php if ( $is_image && $thumbnail ) : ?>
+					<img src="<?php echo esc_url( $thumbnail ); ?>" alt="<?php echo esc_attr( $title ); ?>" />
+					<div class="vmfa-card-preview-overlay">
+						<span class="dashicons dashicons-visibility"></span>
+					</div>
+				<?php else : ?>
+					<div class="vmfa-file-icon">
+						<span class="dashicons <?php echo esc_attr( $this->get_mime_icon( $mime_type ) ); ?>"></span>
+					</div>
+				<?php endif; ?>
 			</div>
-			<div class="vmfa-item-details">
-				<strong class="vmfa-item-title">
+
+			<div class="vmfa-card-body">
+				<h3 class="vmfa-card-title">
 					<?php if ( $edit_link ) : ?>
 						<a href="<?php echo esc_url( $edit_link ); ?>"><?php echo esc_html( $title ); ?></a>
 					<?php else : ?>
 						<?php echo esc_html( $title ); ?>
 					<?php endif; ?>
-				</strong>
-				<span class="vmfa-item-meta">
-					<?php
-					printf(
-						/* translators: 1: author name, 2: date */
-						esc_html__( 'Uploaded by %1$s on %2$s', 'vmfa-editorial-workflow' ),
-						esc_html( $author ),
-						esc_html( $date )
-					);
-					?>
-				</span>
+				</h3>
+				<div class="vmfa-card-meta">
+					<span class="vmfa-card-meta-item">
+						<span class="dashicons dashicons-admin-users"></span>
+						<?php echo esc_html( $author ); ?>
+					</span>
+					<span class="vmfa-card-meta-item">
+						<span class="dashicons dashicons-calendar-alt"></span>
+						<?php echo esc_html( $date ); ?>
+					</span>
+					<?php if ( $file_size ) : ?>
+						<span class="vmfa-card-meta-item">
+							<span class="dashicons dashicons-media-default"></span>
+							<?php echo esc_html( $file_size ); ?>
+						</span>
+					<?php endif; ?>
+				</div>
 			</div>
-			<div class="vmfa-item-actions">
+
+			<div class="vmfa-card-actions">
 				<button type="button" class="button button-primary vmfa-approve-single" data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
+					<span class="dashicons dashicons-yes"></span>
 					<?php esc_html_e( 'Approve', 'vmfa-editorial-workflow' ); ?>
 				</button>
+				<?php if ( $edit_link ) : ?>
+					<a href="<?php echo esc_url( $edit_link ); ?>" class="button">
+						<span class="dashicons dashicons-edit"></span>
+						<?php esc_html_e( 'Edit', 'vmfa-editorial-workflow' ); ?>
+					</a>
+				<?php endif; ?>
 			</div>
 		</li>
 		<?php
+	}
+
+	/**
+	 * Get appropriate dashicon class for MIME type.
+	 *
+	 * @param string $mime_type MIME type.
+	 * @return string Dashicon class.
+	 */
+	private function get_mime_icon( string $mime_type ): string {
+		if ( strpos( $mime_type, 'image/' ) === 0 ) {
+			return 'dashicons-format-image';
+		}
+		if ( strpos( $mime_type, 'video/' ) === 0 ) {
+			return 'dashicons-format-video';
+		}
+		if ( strpos( $mime_type, 'audio/' ) === 0 ) {
+			return 'dashicons-format-audio';
+		}
+		if ( strpos( $mime_type, 'application/pdf' ) === 0 ) {
+			return 'dashicons-pdf';
+		}
+		if ( strpos( $mime_type, 'application/' ) === 0 ) {
+			return 'dashicons-media-document';
+		}
+		return 'dashicons-media-default';
 	}
 
 	/**
@@ -332,8 +423,23 @@ class ReviewPage {
 		] );
 
 		if ( $page_links ) {
-			echo '<div class="tablenav"><div class="tablenav-pages">' . $page_links . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<div class="vmfa-review-pagination">' . $page_links . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
+	}
+
+	/**
+	 * Render empty state when no items need review.
+	 *
+	 * @return void
+	 */
+	private function render_empty_state(): void {
+		?>
+		<div class="vmfa-review-empty">
+			<span class="dashicons dashicons-yes-alt"></span>
+			<h2><?php esc_html_e( 'All caught up!', 'vmfa-editorial-workflow' ); ?></h2>
+			<p><?php esc_html_e( 'No media items are waiting for review. New uploads will appear here.', 'vmfa-editorial-workflow' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -357,7 +463,7 @@ class ReviewPage {
 	/**
 	 * Get folders the current user can assign media to.
 	 *
-	 * @return array Array of folder data [ 'id' => int, 'name' => string ].
+	 * @return array Array of folder data [ 'id' => int, 'name' => string, 'parent' => int ].
 	 */
 	private function get_allowed_destination_folders(): array {
 		$user_id = get_current_user_id();
@@ -377,13 +483,39 @@ class ReviewPage {
 			$term = get_term( $folder_id );
 			if ( $term && ! is_wp_error( $term ) ) {
 				$folders[] = [
-					'id'   => $term->term_id,
-					'name' => $term->name,
+					'id'     => $term->term_id,
+					'name'   => $term->name,
+					'parent' => $term->parent,
 				];
 			}
 		}
 
 		return $folders;
+	}
+
+	/**
+	 * Build hierarchical folder options for select dropdown.
+	 *
+	 * @param array $folders    All folders.
+	 * @param int   $parent_id  Parent ID to start from.
+	 * @param int   $depth      Current depth level.
+	 * @return array Flattened array with indented names.
+	 */
+	private function build_folder_hierarchy( array $folders, int $parent_id = 0, int $depth = 0 ): array {
+		$result = [];
+		$prefix = str_repeat( '— ', $depth );
+
+		foreach ( $folders as $folder ) {
+			if ( $folder['parent'] === $parent_id ) {
+				$result[] = [
+					'id'   => $folder['id'],
+					'name' => $prefix . $folder['name'],
+				];
+				$result = array_merge( $result, $this->build_folder_hierarchy( $folders, $folder['id'], $depth + 1 ) );
+			}
+		}
+
+		return $result;
 	}
 
 	/**

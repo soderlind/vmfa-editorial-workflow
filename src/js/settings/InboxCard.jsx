@@ -7,6 +7,7 @@
 import { useMemo } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { buildFolderOptions } from './utils/buildFolderOptions';
 
 /**
  * Inbox Card component.
@@ -29,30 +30,16 @@ export default function InboxCard( {
 	/**
 	 * Build folder options with hierarchy.
 	 */
-	const folderOptions = useMemo( () => {
-		const options = [
-			{
-				value: '',
-				label: __( 'Use workflow inbox', 'vmfa-editorial-workflow' ),
-			},
-		];
-
-		const addOptions = ( parentId, prefix = '' ) => {
-			folders
-				.filter( ( f ) => f.parent === parentId )
-				.forEach( ( folder ) => {
-					options.push( {
-						value: String( folder.id ),
-						label: prefix + folder.name,
-					} );
-					addOptions( folder.id, prefix + '— ' );
-				} );
-		};
-
-		addOptions( 0 );
-
-		return options;
-	}, [ folders ] );
+	const folderOptions = useMemo(
+		() =>
+			buildFolderOptions( folders, {
+				emptyLabel: __(
+					'Use workflow inbox',
+					'vmfa-editorial-workflow'
+				),
+			} ),
+		[ folders ]
+	);
 
 	/**
 	 * Handle inbox change for a role.

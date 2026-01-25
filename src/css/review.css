@@ -4,158 +4,464 @@
  * @package VmfaEditorialWorkflow
  */
 
-/* Review Actions Bar */
-.vmfa-review-actions {
+/* Page Header */
+.vmfa-review-header {
 	display: flex;
 	align-items: center;
-	gap: 15px;
-	padding: 15px;
-	background: #f9f9f9;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	margin-bottom: 20px;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #dcdcde;
 }
 
-.vmfa-review-actions label {
+.vmfa-review-header h1 {
+	margin: 0;
+	font-size: 23px;
+	font-weight: 400;
+	line-height: 1.3;
+}
+
+.vmfa-review-count-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 24px;
+	padding: 0 8px;
+	margin-left: 8px;
+	background: #d63638;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+	border-radius: 12px;
+}
+
+/* Toolbar */
+.vmfa-review-toolbar {
 	display: flex;
 	align-items: center;
-	gap: 5px;
+	gap: 12px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.vmfa-toolbar-select-all {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding-right: 16px;
+	border-right: 1px solid #dcdcde;
+	font-size: 13px;
 	cursor: pointer;
 }
 
-.vmfa-bulk-buttons {
+.vmfa-toolbar-select-all input[type="checkbox"] {
+	margin: 0;
+	width: 16px;
+	height: 16px;
+}
+
+.vmfa-toolbar-actions {
 	display: flex;
-	gap: 10px;
 	align-items: center;
+	gap: 8px;
 }
 
-.vmfa-bulk-buttons select {
+.vmfa-toolbar-actions .button {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.vmfa-toolbar-actions .button .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.vmfa-toolbar-actions select {
 	min-width: 180px;
+	height: 32px;
 }
 
-.vmfa-selection-count {
+.vmfa-toolbar-info {
 	margin-left: auto;
-	color: #666;
+	color: #50575e;
 	font-size: 13px;
 }
 
-/* Media Grid */
+.vmfa-selection-count {
+	font-weight: 500;
+	color: #2271b1;
+}
+
+/* Card Grid */
 .vmfa-review-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	gap: 15px;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 20px;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.vmfa-review-item {
+/* Media Card */
+.vmfa-media-card {
+	position: relative;
 	display: flex;
-	align-items: center;
-	gap: 12px;
-	padding: 12px;
+	flex-direction: column;
 	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	transition: box-shadow 0.2s, border-color 0.2s;
-}
-
-.vmfa-review-item:hover {
-	border-color: #2271b1;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.vmfa-item-checkbox {
-	flex-shrink: 0;
-}
-
-.vmfa-item-checkbox input[type="checkbox"] {
-	margin: 0;
-	width: 18px;
-	height: 18px;
-}
-
-.vmfa-item-thumbnail {
-	flex-shrink: 0;
-	width: 60px;
-	height: 60px;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
 	overflow: hidden;
-	border-radius: 4px;
-	background: #f0f0f0;
+	transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.vmfa-item-thumbnail img {
+.vmfa-media-card:hover {
+	border-color: #2271b1;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	transform: translateY(-2px);
+}
+
+.vmfa-media-card.is-selected {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.25);
+}
+
+/* Card Checkbox */
+.vmfa-card-checkbox {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 10;
+}
+
+.vmfa-card-checkbox input[type="checkbox"] {
+	margin: 0;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	background: #fff;
+}
+
+/* Thumbnail Area */
+.vmfa-card-thumbnail {
+	position: relative;
+	height: 160px;
+	background: linear-gradient(135deg, #f6f7f7 0%, #eaeaea 100%);
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.vmfa-card-thumbnail img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	transition: transform 0.3s;
 }
 
-.vmfa-item-details {
+.vmfa-media-card:hover .vmfa-card-thumbnail img {
+	transform: scale(1.05);
+}
+
+/* File type icon for non-image files */
+.vmfa-card-thumbnail .vmfa-file-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: #8c8f94;
+}
+
+.vmfa-card-thumbnail .vmfa-file-icon .dashicons {
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+}
+
+/* Preview overlay */
+.vmfa-card-preview-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.vmfa-card-thumbnail:hover .vmfa-card-preview-overlay {
+	opacity: 1;
+}
+
+.vmfa-card-preview-overlay .dashicons {
+	color: #fff;
+	font-size: 32px;
+	width: 32px;
+	height: 32px;
+}
+
+/* Card Body */
+.vmfa-card-body {
 	flex: 1;
-	min-width: 0;
+	padding: 14px 16px;
 }
 
-.vmfa-item-title {
-	display: block;
+.vmfa-card-title {
+	margin: 0 0 6px;
+	font-size: 14px;
 	font-weight: 600;
-	margin-bottom: 4px;
+	line-height: 1.4;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.vmfa-item-title a {
-	color: inherit;
+.vmfa-card-title a {
+	color: #1d2327;
 	text-decoration: none;
 }
 
-.vmfa-item-title a:hover {
+.vmfa-card-title a:hover {
 	color: #2271b1;
 }
 
-.vmfa-item-meta {
-	display: block;
+.vmfa-card-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
 	font-size: 12px;
-	color: #666;
+	color: #646970;
 }
 
-.vmfa-item-actions {
-	flex-shrink: 0;
+.vmfa-card-meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.vmfa-card-meta-item .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	color: #8c8f94;
+}
+
+/* Card Actions */
+.vmfa-card-actions {
+	display: flex;
+	gap: 8px;
+	padding: 12px 16px;
+	background: #f6f7f7;
+	border-top: 1px solid #dcdcde;
+	margin-top: auto;
+}
+
+.vmfa-card-actions .button {
+	flex: 1;
+	justify-content: center;
+}
+
+.vmfa-card-actions .button-primary {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+
+.vmfa-card-actions .button-primary:hover {
+	background: #135e96;
+	border-color: #135e96;
+}
+
+.vmfa-card-actions .button-link-delete {
+	color: #b32d2e;
+}
+
+.vmfa-card-actions .button-link-delete:hover {
+	color: #a00;
 }
 
 /* Empty State */
 .vmfa-review-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 40px;
+	background: #fff;
+	border: 2px dashed #c3c4c7;
+	border-radius: 8px;
 	text-align: center;
-	padding: 60px 20px;
-	background: #f9f9f9;
-	border: 1px dashed #ddd;
-	border-radius: 4px;
+}
+
+.vmfa-review-empty .dashicons {
+	font-size: 64px;
+	width: 64px;
+	height: 64px;
+	color: #c3c4c7;
+	margin-bottom: 16px;
+}
+
+.vmfa-review-empty h2 {
+	margin: 0 0 8px;
+	font-size: 18px;
+	font-weight: 500;
+	color: #1d2327;
 }
 
 .vmfa-review-empty p {
 	margin: 0;
-	color: #666;
+	color: #646970;
 	font-size: 14px;
 }
 
-/* Title count badge */
-.title-count {
-	display: inline-block;
-	vertical-align: top;
-	margin-left: 5px;
-	padding: 0 8px;
-	min-width: 18px;
-	height: 22px;
-	line-height: 22px;
-	text-align: center;
-	background: #2271b1;
-	color: #fff;
-	font-size: 13px;
+/* Modal/Lightbox */
+.vmfa-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100100;
+	background: rgba(0, 0, 0, 0.85);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+	animation: vmfaFadeIn 0.2s ease;
+}
+
+@keyframes vmfaFadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.vmfa-modal-content {
+	position: relative;
+	max-width: 90vw;
+	max-height: 90vh;
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+	animation: vmfaSlideUp 0.2s ease;
+}
+
+@keyframes vmfaSlideUp {
+	from { transform: translateY(20px); opacity: 0; }
+	to { transform: translateY(0); opacity: 1; }
+}
+
+.vmfa-modal-image {
+	display: block;
+	max-width: 100%;
+	max-height: 70vh;
+	object-fit: contain;
+}
+
+.vmfa-modal-details {
+	padding: 20px;
+	background: #fff;
+}
+
+.vmfa-modal-title {
+	margin: 0 0 12px;
+	font-size: 16px;
 	font-weight: 600;
-	border-radius: 11px;
+}
+
+.vmfa-modal-meta {
+	display: flex;
+	gap: 20px;
+	font-size: 13px;
+	color: #646970;
+	margin-bottom: 16px;
+}
+
+.vmfa-modal-actions {
+	display: flex;
+	gap: 10px;
+}
+
+.vmfa-modal-close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.9);
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s;
+	z-index: 10;
+}
+
+.vmfa-modal-close:hover {
+	background: #fff;
+}
+
+.vmfa-modal-close .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 /* Pagination */
 .vmfa-review-pagination {
-	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid #dcdcde;
+}
+
+.vmfa-review-pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 12px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	color: #2271b1;
+	font-size: 13px;
+	text-decoration: none;
+	transition: all 0.15s;
+}
+
+.vmfa-review-pagination .page-numbers:hover {
+	background: #f0f0f1;
+	border-color: #8c8f94;
+}
+
+.vmfa-review-pagination .page-numbers.current {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+
+/* Processing state */
+.vmfa-media-card.is-processing {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.vmfa-media-card.is-processing::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(255, 255, 255, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

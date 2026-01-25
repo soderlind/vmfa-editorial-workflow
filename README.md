@@ -36,7 +36,23 @@ Navigate to **Media → VMF Settings → Editorial Workflow** to configure:
 
 1. **Permission Matrix** — Set view/move/upload/remove permissions per folder per role
 2. **Inbox Mapping** — Assign default upload folders for each role
-3. **Workflow Toggle** — Enable/disable the workflow system folders
+3. **Approved Folder** — Choose which folder approved items are moved to
+
+#### Supported Roles
+
+The permission settings automatically include **all roles that have the `upload_files` capability** — not just Editor and Author. This means custom roles are fully supported:
+
+- Custom roles like "Contributor with upload" or "Shop Manager" will appear automatically
+- Any role granted the `upload_files` capability via plugins (e.g., Members, User Role Editor) will be configurable
+- Administrator is excluded from settings as they always have full access to all folders
+
+#### Default Permissions
+
+Out of the box, the plugin applies sensible defaults:
+
+- **Editor** — Full access to all folders by default (can be restricted via settings)
+- **Author** — No access by default (must be explicitly granted permissions)
+- **Custom roles** — No access by default (must be explicitly granted permissions)
 
 ### Workflow Folders
 
@@ -117,13 +133,3 @@ npm run lint:js
 ## License
 
 GPL-2.0-or-later
-
-## Changelog
-
-### 1.0.0
-
-- Initial release
-- Role-based folder permissions
-- Inbox workflow with automatic routing
-- Review screen with bulk actions
-- System folder protection

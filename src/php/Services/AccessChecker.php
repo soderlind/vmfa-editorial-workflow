@@ -130,7 +130,7 @@ class AccessChecker {
 	public function can_perform_action( int $folder_id, string $action, ?int $user_id = null ): bool {
 		$user_id = $user_id ?? get_current_user_id();
 
-		// Administrators always have full access.
+		// Administrators always have full access (cannot be overridden).
 		if ( user_can( $user_id, 'manage_options' ) ) {
 			return true;
 		}
@@ -163,22 +163,98 @@ class AccessChecker {
 			return false;
 		}
 
-		// Check each role the user has.
-		foreach ( $user->roles as $role ) {
-			$allowed_actions = $this->get_folder_permissions_for_role( $folder_id, $role );
-
-			if ( in_array( $action, $allowed_actions, true ) ) {
+		// Grant view access to user's inbox folder (where their uploads go).
+		if ( self::ACTION_VIEW === $action ) {
+			$inbox_folder = $this->get_user_inbox_folder( $user_id );
+			if ( $inbox_folder && $inbox_folder === $folder_id ) {
 				return true;
 			}
 		}
 
-		// If no permissions are configured for this folder, check default behavior.
-		// Default: allow if user has upload_files capability.
-		if ( ! $this->has_configured_permissions( $folder_id ) ) {
-			return user_can( $user_id, 'upload_files' );
+		// Check each role the user has.
+		foreach ( $user->roles as $role ) {
+			// Check if this role has explicit permissions configured.
+			$has_explicit_permissions = $this->role_has_configured_permissions( $folder_id, $role );
+
+			if ( $has_explicit_permissions ) {
+				// Use explicit permissions.
+				$allowed_actions = $this->get_folder_permissions_for_role( $folder_id, $role );
+				if ( in_array( $action, $allowed_actions, true ) ) {
+					return true;
+				}
+			} else {
+				// No explicit permissions - use defaults.
+				// Editors get full access by default.
+				if ( 'editor' === $role ) {
+					return true;
+				}
+			}
 		}
 
+		// If no permissions are configured for this folder at all, only Editors have default access.
+		// (Admins are handled at the top of can_perform_action())
+		// Authors/Contributors must have explicit permissions granted.
 		return false;
+	}
+
+	/**
+	 * Get the inbox folder for a user based on their role.
+	 *
+	 * This duplicates logic from InboxService to avoid circular dependencies.
+	 *
+	 * @param int $user_id User ID.
+	 * @return int|null Folder term ID or null.
+	 */
+	private function get_user_inbox_folder( int $user_id ): ?int {
+		$user = get_userdata( $user_id );
+		if ( ! $user ) {
+			return null;
+		}
+
+		// Administrators don't have inbox folders.
+		if ( in_array( 'administrator', $user->roles, true ) ) {
+			return null;
+		}
+
+		// Check inbox map.
+		$inbox_map = \get_option( InboxService::OPTION_INBOX_MAP, [] );
+		if ( is_array( $inbox_map ) ) {
+			foreach ( $user->roles as $role ) {
+				if ( isset( $inbox_map[ $role ] ) && is_numeric( $inbox_map[ $role ] ) ) {
+					$folder_id = (int) $inbox_map[ $role ];
+					$term      = \get_term( $folder_id, $this->taxonomy );
+					if ( $term && ! \is_wp_error( $term ) ) {
+						return $folder_id;
+					}
+				}
+			}
+		}
+
+		// Fall back to "Needs Review" workflow folder.
+		$needs_review_id = \get_option( 'vmfa_needs_review_folder', 0 );
+		if ( $needs_review_id ) {
+			$term = \get_term( (int) $needs_review_id, $this->taxonomy );
+			if ( $term && ! \is_wp_error( $term ) ) {
+				return (int) $needs_review_id;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Check if a specific role has permissions configured for a folder.
+	 *
+	 * @param int    $folder_id Folder term ID.
+	 * @param string $role      Role name.
+	 * @return bool
+	 */
+	public function role_has_configured_permissions( int $folder_id, string $role ): bool {
+		$meta_key    = self::META_PREFIX . sanitize_key( $role );
+		$permissions = get_term_meta( $folder_id, $meta_key, true );
+
+		// If the meta exists (even as empty array), permissions are explicitly configured.
+		return is_array( $permissions );
 	}
 
 	/**
@@ -205,6 +281,9 @@ class AccessChecker {
 	/**
 	 * Check if a folder has any configured permissions.
 	 *
+	 * Returns true if ANY role has permissions explicitly set on this folder,
+	 * even if those permissions are an empty array (meaning "deny all").
+	 *
 	 * @param int $folder_id Folder term ID.
 	 * @return bool
 	 */
@@ -219,8 +298,57 @@ class AccessChecker {
 			$meta_key    = self::META_PREFIX . sanitize_key( $role );
 			$permissions = get_term_meta( $folder_id, $meta_key, true );
 
-			if ( is_array( $permissions ) && ! empty( $permissions ) ) {
+			// If the meta exists (even as empty array), permissions are configured.
+			// An empty array means "explicitly deny all" vs. no meta means "use default".
+			if ( is_array( $permissions ) ) {
 				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if a user has any configured permissions on any folder.
+	 *
+	 * Used to determine if a user should use default access or restricted access.
+	 * Returns true if any folder has explicit permissions for any of the user's roles.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool True if user has any configured permissions.
+	 */
+	public function user_has_any_configured_permissions( int $user_id ): bool {
+		$user = get_userdata( $user_id );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		$user_roles = $user->roles;
+
+		if ( empty( $user_roles ) ) {
+			return false;
+		}
+
+		// Get all folders.
+		$folders = get_terms(
+			[
+				'taxonomy'   => $this->taxonomy,
+				'hide_empty' => false,
+				'fields'     => 'ids',
+			]
+		);
+
+		if ( is_wp_error( $folders ) || empty( $folders ) ) {
+			return false;
+		}
+
+		// Check if any folder has configured permissions for any of the user's roles.
+		foreach ( $folders as $folder_id ) {
+			foreach ( $user_roles as $role ) {
+				if ( $this->role_has_configured_permissions( (int) $folder_id, $role ) ) {
+					return true;
+				}
 			}
 		}
 
@@ -297,6 +425,10 @@ class AccessChecker {
 	/**
 	 * Get all permissions for a folder (all roles).
 	 *
+	 * Returns permissions for roles that have explicit configuration.
+	 * Includes roles with empty arrays (meaning "no access") to distinguish
+	 * from roles with no configuration (default behavior).
+	 *
 	 * @param int $folder_id Folder term ID.
 	 * @return array<string, array<string>> Role => actions map.
 	 */
@@ -310,9 +442,16 @@ class AccessChecker {
 		$permissions = [];
 
 		foreach ( array_keys( $wp_roles->roles ) as $role ) {
-			$actions = $this->get_folder_permissions_for_role( $folder_id, $role );
-			if ( ! empty( $actions ) ) {
-				$permissions[ $role ] = $actions;
+			$meta_key    = self::META_PREFIX . sanitize_key( $role );
+			$meta_value  = get_term_meta( $folder_id, $meta_key, true );
+
+			// Only include if the meta exists (is an array).
+			// Empty array means "explicitly deny all" and should be included.
+			if ( is_array( $meta_value ) ) {
+				$permissions[ $role ] = array_filter(
+					$meta_value,
+					fn( $action ) => in_array( $action, self::ACTIONS, true )
+				);
 			}
 		}
 

@@ -7,6 +7,7 @@
 import { useCallback, useMemo } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { buildFolderOptions } from './utils/buildFolderOptions';
 
 /**
  * Inbox Mapping component.
@@ -29,31 +30,13 @@ export default function InboxMapping( {
 	/**
 	 * Build folder options with hierarchy.
 	 */
-	const folderOptions = useMemo( () => {
-		const options = [
-			{
-				value: '',
-				label: __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
-			},
-		];
-
-		// Build hierarchy.
-		const addOptions = ( parentId, prefix = '' ) => {
-			folders
-				.filter( ( f ) => f.parent === parentId )
-				.forEach( ( folder ) => {
-					options.push( {
-						value: String( folder.id ),
-						label: prefix + folder.name,
-					} );
-					addOptions( folder.id, prefix + '— ' );
-				} );
-		};
-
-		addOptions( 0 );
-
-		return options;
-	}, [ folders ] );
+	const folderOptions = useMemo(
+		() =>
+			buildFolderOptions( folders, {
+				emptyLabel: __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
+			} ),
+		[ folders ]
+	);
 
 	/**
 	 * Handle inbox change for a role.

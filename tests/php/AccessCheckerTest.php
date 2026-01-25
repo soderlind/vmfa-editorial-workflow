@@ -39,6 +39,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 		Functions\when( 'user_can' )->justReturn( false );
 		Functions\when( 'get_userdata' )->justReturn( (object) [ 'roles' => [ 'editor' ] ] );
 		Functions\when( 'get_term_meta' )->justReturn( [] );
+		Functions\when( 'get_option' )->justReturn( [] );
 
 		$checker = new AccessChecker();
 
@@ -57,6 +58,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 		} );
 		Functions\when( 'get_userdata' )->justReturn( (object) [ 'roles' => [ 'editor' ] ] );
 		Functions\when( 'get_term_meta' )->justReturn( [ 'view', 'move' ] );
+		Functions\when( 'get_option' )->justReturn( [] );
 
 		$checker = new AccessChecker();
 
@@ -72,6 +74,7 @@ class AccessCheckerTest extends \VMFA_TestCase {
 		Functions\when( 'user_can' )->justReturn( false );
 		Functions\when( 'get_userdata' )->justReturn( (object) [ 'roles' => [ 'author' ] ] );
 		Functions\when( 'get_term_meta' )->justReturn( [ 'view' ] ); // Only view, not move.
+		Functions\when( 'get_option' )->justReturn( [] );
 
 		$checker = new AccessChecker();
 
@@ -136,17 +139,19 @@ class AccessCheckerTest extends \VMFA_TestCase {
 			return (object) [ 'roles' => [ 'editor' ] ];
 		} );
 		Functions\when( 'get_term_meta' )->justReturn( [ 'view', 'move' ] );
+		Functions\when( 'get_option' )->justReturn( [] );
 
 		$checker = new AccessChecker();
 
-		// First call.
+		// First call - may call get_userdata multiple times (inbox check + role check).
+		$this->assertTrue( $checker->can_view_folder( 123, 1 ) );
+		$firstCallCount = $userDataCallCount;
+
+		// Second call - should use cache (no additional get_userdata calls).
 		$this->assertTrue( $checker->can_view_folder( 123, 1 ) );
 
-		// Second call - should use cache (get_userdata not called again).
-		$this->assertTrue( $checker->can_view_folder( 123, 1 ) );
-
-		// get_userdata should only be called once due to caching.
-		$this->assertEquals( 1, $userDataCallCount );
+		// get_userdata should not be called again due to caching.
+		$this->assertEquals( $firstCallCount, $userDataCallCount );
 	}
 
 	/**

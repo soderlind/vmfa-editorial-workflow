@@ -201,7 +201,8 @@ class SettingsController extends WP_REST_Controller {
 			'workflow'    => [
 				'enabled'           => $workflow_state->is_workflow_enabled(),
 				'needsReviewFolder' => $workflow_state->get_needs_review_folder(),
-				'approvedFolder'    => $workflow_state->get_approved_folder(),
+				'approvedFolder'    => $workflow_state->get_custom_approved_folder(),
+				'editorsCanReview'  => $workflow_state->editors_can_review(),
 			],
 		] );
 	}
@@ -240,6 +241,14 @@ class SettingsController extends WP_REST_Controller {
 
 			if ( isset( $workflow_data['enabled'] ) ) {
 				$workflow_state->set_workflow_enabled( (bool) $workflow_data['enabled'] );
+			}
+
+			if ( array_key_exists( 'editorsCanReview', $workflow_data ) ) {
+				$workflow_state->set_editors_can_review( (bool) $workflow_data['editorsCanReview'] );
+			}
+
+			if ( isset( $workflow_data['approvedFolder'] ) ) {
+				$workflow_state->set_approved_folder( (int) $workflow_data['approvedFolder'] );
 			}
 		}
 
@@ -327,7 +336,7 @@ class SettingsController extends WP_REST_Controller {
 		$workflow_state = new WorkflowState( $this->access_checker );
 
 		return rest_ensure_response( [
-			'enabled'           => $workflow_state->is_workflow_enabled(),
+			'editorsCanReview'  => $workflow_state->editors_can_review(),
 			'needsReviewFolder' => $workflow_state->get_needs_review_folder(),
 			'approvedFolder'    => $workflow_state->get_approved_folder(),
 		] );
@@ -343,8 +352,8 @@ class SettingsController extends WP_REST_Controller {
 		$workflow_state = new WorkflowState( $this->access_checker );
 		$data           = $request->get_json_params();
 
-		if ( isset( $data['enabled'] ) ) {
-			$workflow_state->set_workflow_enabled( (bool) $data['enabled'] );
+		if ( array_key_exists( 'editorsCanReview', $data ) ) {
+			$workflow_state->set_editors_can_review( (bool) $data['editorsCanReview'] );
 		}
 
 		return $this->get_workflow_settings( $request );

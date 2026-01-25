@@ -22,6 +22,7 @@ export default function SettingsPanel() {
 	const [ isLoading, setIsLoading ] = useState( true );
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ notice, setNotice ] = useState( null );
+	const [ isDismissing, setIsDismissing ] = useState( false );
 	const [ stats, setStats ] = useState( {} );
 
 	const [ settings, setSettings ] = useState( {
@@ -43,6 +44,23 @@ export default function SettingsPanel() {
 		fetchSettings();
 		fetchStats();
 	}, [] );
+
+	/**
+	 * Auto-dismiss success notices after 3 seconds.
+	 */
+	useEffect( () => {
+		if ( notice?.status === 'success' && ! isDismissing ) {
+			const timer = setTimeout( () => {
+				setIsDismissing( true );
+				// Wait for animation to complete before removing.
+				setTimeout( () => {
+					setNotice( null );
+					setIsDismissing( false );
+				}, 300 );
+			}, 3000 );
+			return () => clearTimeout( timer );
+		}
+	}, [ notice, isDismissing ] );
 
 	/**
 	 * Fetch settings from REST API.
@@ -154,8 +172,14 @@ export default function SettingsPanel() {
 				<Notice
 					status={ notice.status }
 					isDismissible
-					onRemove={ () => setNotice( null ) }
-					className="vmfa-notice"
+					onRemove={ () => {
+						setIsDismissing( true );
+						setTimeout( () => {
+							setNotice( null );
+							setIsDismissing( false );
+						}, 300 );
+					} }
+					className={ `vmfa-notice${ isDismissing ? ' is-dismissing' : '' }` }
 				>
 					{ notice.message }
 				</Notice>

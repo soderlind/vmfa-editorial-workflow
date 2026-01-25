@@ -63,6 +63,9 @@ class AccessEnforcer {
 		// AJAX media query enforcement.
 		add_filter( 'ajax_query_attachments_args', [ $this, 'filter_media_query_args' ], 20 );
 
+		// REST API media query enforcement (for /wp/v2/media endpoint).
+		add_filter( 'rest_attachment_query', [ $this, 'filter_rest_attachment_query' ], 20, 2 );
+
 		// Admin folder list filtering.
 		add_filter( 'get_terms', [ $this, 'filter_folder_terms' ], 10, 4 );
 	}
@@ -120,10 +123,26 @@ class AccessEnforcer {
 
 		$user_id = get_current_user_id();
 
+		// Skip filtering for administrators.
+		if ( current_user_can( 'manage_options' ) ) {
+			return $response;
+		}
+
+		// Skip filtering for editors with default full access.
+		if ( current_user_can( 'edit_others_posts' ) && ! $this->access_checker->user_has_any_configured_permissions( $user_id ) ) {
+			return $response;
+		}
+
+		// Get allowed folders for this user (includes inbox folder).
+		$allowed_folders = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_VIEW );
+
 		// Filter folders based on view permission.
 		$filtered = array_filter(
 			$data,
-			fn( $folder ) => $this->access_checker->can_view_folder( (int) $folder['id'], $user_id )
+			function ( $folder ) use ( $allowed_folders ) {
+				$folder_id = (int) $folder['id'];
+				return in_array( $folder_id, $allowed_folders, true );
+			}
 		);
 
 		// Re-index array.
@@ -156,10 +175,39 @@ class AccessEnforcer {
 
 		$user_id = get_current_user_id();
 
+		// Skip filtering for administrators.
+		if ( current_user_can( 'manage_options' ) ) {
+			return $response;
+		}
+
+		// Skip filtering for editors with default full access.
+		if ( current_user_can( 'edit_others_posts' ) && ! $this->access_checker->user_has_any_configured_permissions( $user_id ) ) {
+			return $response;
+		}
+
+		// Get allowed folders for this user.
+		$allowed_folders = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_VIEW );
+
 		// Filter counts to only include accessible folders.
 		$filtered = [];
 		foreach ( $data as $folder_id => $count ) {
-			if ( $this->access_checker->can_view_folder( (int) $folder_id, $user_id ) ) {
+			$folder_int = (int) $folder_id;
+
+			// Handle "Uncategorized" (folder_id = 0) specially.
+			if ( 0 === $folder_int ) {
+				// For users with no folder access, show only their own uncategorized media.
+				if ( empty( $allowed_folders ) ) {
+					$own_uncategorized_count = $this->count_user_uncategorized_media( $user_id );
+					if ( $own_uncategorized_count > 0 ) {
+						$filtered[ $folder_id ] = $own_uncategorized_count;
+					}
+				}
+				// Users with folder access don't see Uncategorized at all (their items are in folders).
+				continue;
+			}
+
+			// Only include folders the user can view.
+			if ( in_array( $folder_int, $allowed_folders, true ) ) {
 				$filtered[ $folder_id ] = $count;
 			}
 		}
@@ -167,6 +215,36 @@ class AccessEnforcer {
 		$response->set_data( $filtered );
 
 		return $response;
+	}
+
+	/**
+	 * Count uncategorized media for a specific user.
+	 *
+	 * @param int $user_id User ID.
+	 * @return int Count of uncategorized attachments.
+	 */
+	private function count_user_uncategorized_media( int $user_id ): int {
+		$taxonomy = defined( 'VirtualMediaFolders\Taxonomy::TAXONOMY' )
+			? \VirtualMediaFolders\Taxonomy::TAXONOMY
+			: 'vmfo_folder';
+
+		$args = [
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'author'         => $user_id,
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'tax_query'      => [
+				[
+					'taxonomy' => $taxonomy,
+					'operator' => 'NOT EXISTS',
+				],
+			],
+		];
+
+		$query = new \WP_Query( $args );
+
+		return $query->found_posts;
 	}
 
 	/**
@@ -246,18 +324,24 @@ class AccessEnforcer {
 			return $query;
 		}
 
-		// Get allowed folder IDs.
-		$allowed_folders = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_VIEW );
-
-		// If no restrictions configured, allow all.
-		if ( empty( $allowed_folders ) ) {
+		// Skip for editors with default full access (no explicit permissions configured).
+		if ( current_user_can( 'edit_others_posts' ) && ! $this->access_checker->user_has_any_configured_permissions( $user_id ) ) {
 			return $query;
 		}
 
-		// Modify tax_query to restrict to allowed folders.
+		// Get allowed folder IDs.
+		$allowed_folders = $this->access_checker->get_allowed_folders( $user_id, AccessChecker::ACTION_VIEW );
+
+		// Get the taxonomy name.
 		$taxonomy = defined( 'VirtualMediaFolders\Taxonomy::TAXONOMY' )
 			? \VirtualMediaFolders\Taxonomy::TAXONOMY
 			: 'vmfo_folder';
+
+		// If user has no allowed folders, restrict to only their own uploads.
+		if ( empty( $allowed_folders ) ) {
+			$query['author'] = $user_id;
+			return $query;
+		}
 
 		// Check if query already has a folder filter.
 		if ( isset( $query['tax_query'] ) && is_array( $query['tax_query'] ) ) {
@@ -273,9 +357,34 @@ class AccessEnforcer {
 					}
 				}
 			}
+		} else {
+			// No folder filter set - restrict to allowed folders only.
+			$query['tax_query'] = [
+				[
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $allowed_folders,
+					'operator' => 'IN',
+				],
+			];
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Filter REST API attachment query to only show media user can access.
+	 *
+	 * This filters the /wp/v2/media endpoint to ensure users only see
+	 * media they have permission to view.
+	 *
+	 * @param array           $args    Query arguments.
+	 * @param WP_REST_Request $request REST request.
+	 * @return array Modified query arguments.
+	 */
+	public function filter_rest_attachment_query( array $args, $request ): array {
+		// Use the same logic as AJAX query filtering.
+		return $this->filter_media_query_args( $args );
 	}
 
 	/**
