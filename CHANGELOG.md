@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-01-25
+
+### Added
+
+- JavaScript test suite with Vitest for React components and utilities
+- Test coverage for `buildFolderOptions`, `InboxCard`, and `PermissionMatrix`
+
+### Changed
+
+- Updated `vitest` to v4.0.18
+- Added `vite`, `@vitejs/plugin-react`, `@testing-library/react`, `@testing-library/jest-dom`, and `jsdom` dev dependencies
+
 ## [1.3.0] - 2026-01-25
 
 ### Added
