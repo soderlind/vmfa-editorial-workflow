@@ -20,10 +20,9 @@ This add-on extends [Virtual Media Folders](https://github.com/soderlind/virtual
 
 ## Installation
 
-1. Upload the `vmfa-editorial-workflow` folder to `/wp-content/plugins/`
-2. Ensure Virtual Media Folders is installed and activated
-3. Activate the plugin through the 'Plugins' menu
-4. Configure settings under Media → VMF Settings → Editorial Workflow
+1. Download [`vmfa-editorial-workflow.zip`](https://github.com/soderlind/vmfa-editorial-workflow/releases/latest/download/vmfa-editorial-workflow.zip)
+2. Upload via  `Plugins → Add New → Upload Plugin`
+3. Activate via `WordPress Admin → Plugins`
 
 ## Configuration
 
@@ -42,6 +41,13 @@ The permission settings automatically include **all roles that have the `upload_
 - Custom roles like "Contributor with upload" or "Shop Manager" will appear automatically
 - Any role granted the `upload_files` capability via plugins (e.g., Members, User Role Editor) will be configurable
 - Administrator is excluded from settings as they always have full access to all folders
+
+To add the `upload_files` capability to a custom role, you can use a role management plugin or run the following WP-CLI command:
+```bash
+# Example: Grant 'upload_files' capability to a custom role
+wp role create media_contributor "Media Contributor" --clone=subscriber 
+wp cap add media_contributor upload_files
+```
 
 #### Default Permissions
 
