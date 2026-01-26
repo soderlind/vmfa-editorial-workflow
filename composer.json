@@ -3,6 +3,16 @@
 	"description": "Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"media",
+		"folders",
+		"workflow",
+		"editorial",
+		"permissions",
+		"media-library"
+	],
 	"require": {
 		"php": ">=8.3",
 		"yahnis-elsts/plugin-update-checker": "^5.6"
