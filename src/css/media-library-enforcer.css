@@ -1,0 +1,12 @@
+/**
+ * Media Library Enforcer Styles.
+ *
+ * Forces non-admin users to use the folder sidebar view in Media Library.
+ *
+ * @package VmfaEditorialWorkflow
+ */
+
+/* Hide the folder toggle button since folder view is forced on */
+.vmf-folder-toggle-button {
+	display: none !important;
+}

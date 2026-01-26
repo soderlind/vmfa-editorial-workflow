@@ -6,6 +6,10 @@ module.exports = {
 	entry: {
 		settings: path.resolve( __dirname, 'src/js/settings/index.jsx' ),
 		review: path.resolve( __dirname, 'src/js/review/index.js' ),
+		'media-library-enforcer': path.resolve(
+			__dirname,
+			'src/js/media-library-enforcer.js'
+		),
 	},
 	output: {
 		...defaultConfig.output,

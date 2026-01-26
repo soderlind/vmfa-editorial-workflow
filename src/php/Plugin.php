@@ -89,6 +89,7 @@ final class Plugin {
 		require_once $base . 'WorkflowState.php';
 		require_once $base . 'Admin/ReviewPage.php';
 		require_once $base . 'Admin/SettingsTab.php';
+		require_once $base . 'Admin/MediaLibraryEnforcer.php';
 		require_once $base . 'REST/SettingsController.php';
 	}
 
@@ -117,6 +118,10 @@ final class Plugin {
 		if ( is_admin() ) {
 			new Admin\ReviewPage( $this->access_checker, $this->workflow_state );
 			new Admin\SettingsTab();
+
+			// Force folder view for non-admins.
+			$media_library_enforcer = new Admin\MediaLibraryEnforcer();
+			$media_library_enforcer->init();
 		}
 
 		// Initialize access enforcement.

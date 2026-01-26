@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.3.5
+Stable tag: 1.4.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,17 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 
 == Changelog ==
+
+= 1.4.0 =
+
+**Added**
+
+* Force folder sidebar view for non-admin users in Media Library
+* Non-admins can no longer toggle to list/grid view without folders
+
+**Changed**
+
+* Refactored to use external asset files instead of inline scripts/styles
 
 = 1.3.5 =
 
