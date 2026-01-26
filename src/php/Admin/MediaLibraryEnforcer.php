@@ -79,8 +79,8 @@ class MediaLibraryEnforcer {
 		wp_enqueue_script(
 			'vmfa-media-library-enforcer',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/media-library-enforcer.js',
-			array_merge( $asset['dependencies'], array( 'media-views' ) ),
-			$asset['version'],
+			array_merge( $asset[ 'dependencies' ], array( 'media-views' ) ),
+			$asset[ 'version' ],
 			true
 		);
 
@@ -89,7 +89,7 @@ class MediaLibraryEnforcer {
 			'vmfa-media-library-enforcer',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/media-library-enforcer.css',
 			array(),
-			$asset['version']
+			$asset[ 'version' ]
 		);
 	}
 }
