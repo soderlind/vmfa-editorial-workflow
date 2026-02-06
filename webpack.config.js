@@ -1,3 +1,12 @@
+/**
+ * Webpack configuration for VMFA Editorial Workflow.
+ *
+ * Extends default @wordpress/scripts webpack config to add
+ * parent plugin's shared components as external dependency.
+ *
+ * @package VmfaEditorialWorkflow
+ */
+
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const path = require( 'path' );
 
@@ -14,5 +23,10 @@ module.exports = {
 	output: {
 		...defaultConfig.output,
 		path: path.resolve( __dirname, 'build' ),
+	},
+	externals: {
+		...defaultConfig.externals,
+		// Map @vmfo/shared import to window.vmfo.shared global.
+		'@vmfo/shared': 'vmfo.shared',
 	},
 };

@@ -81,17 +81,20 @@ class SettingsTab {
 			'version'      => VMFA_EDITORIAL_WORKFLOW_VERSION,
 		];
 
+		// Add vmfo-shared to dependencies to use AddonShell components.
+		$dependencies = array_merge( $asset['dependencies'], [ 'vmfo-shared' ] );
+
 		wp_enqueue_style(
 			'vmfa-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.css',
-			[ 'wp-components' ],
+			[ 'wp-components', 'vmfo-shared' ],
 			$asset[ 'version' ]
 		);
 
 		wp_enqueue_script(
 			'vmfa-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.js',
-			$asset[ 'dependencies' ],
+			$dependencies,
 			$asset[ 'version' ],
 			true
 		);
@@ -106,12 +109,13 @@ class SettingsTab {
 			'vmfa-settings',
 			'vmfaSettings',
 			[
-				'restUrl' => rest_url( 'vmfa-editorial/v1' ),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'roles'   => $this->get_editable_roles(),
-				'folders' => $this->get_folders(),
-				'actions' => $this->get_actions(),
-				'i18n'    => [
+				'restUrl'       => rest_url( 'vmfa-editorial/v1' ),
+				'nonce'         => wp_create_nonce( 'wp_rest' ),
+				'reviewPageUrl' => admin_url( 'upload.php?page=vmfa-review' ),
+				'roles'         => $this->get_editable_roles(),
+				'folders'       => $this->get_folders(),
+				'actions'       => $this->get_actions(),
+				'i18n'          => [
 					'title'           => __( 'Editorial Workflow Settings', 'vmfa-editorial-workflow' ),
 					'permissions'     => __( 'Folder Permissions', 'vmfa-editorial-workflow' ),
 					'permissionsDesc' => __( 'Configure which roles can access each folder.', 'vmfa-editorial-workflow' ),
