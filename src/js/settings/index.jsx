@@ -12,13 +12,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 
 import { AddonShell } from '@vmfo/shared';
-import {
-	OverviewPage,
-	DashboardPage,
-	ConfigurePage,
-	ActionsPage,
-	LogsPage,
-} from '../pages';
+import { OverviewPage, DashboardPage, ConfigurePage } from '../pages';
 
 import '../../css/settings.css';
 
@@ -94,8 +88,6 @@ function EditorialWorkflowApp() {
 			overviewContent={ <OverviewPage /> }
 			dashboardContent={ <DashboardPage /> }
 			configureContent={ <ConfigurePage /> }
-			actionsContent={ <ActionsPage /> }
-			logsContent={ <LogsPage /> }
 		/>
 	);
 }

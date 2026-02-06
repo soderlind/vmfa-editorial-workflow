@@ -82,7 +82,7 @@ class SettingsTab {
 		];
 
 		// Add vmfo-shared to dependencies to use AddonShell components.
-		$dependencies = array_merge( $asset['dependencies'], [ 'vmfo-shared' ] );
+		$dependencies = array_merge( $asset[ 'dependencies' ], [ 'vmfo-shared' ] );
 
 		wp_enqueue_style(
 			'vmfa-settings',
