@@ -95,6 +95,17 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 == Changelog ==
 
+= 1.5.0 =
+
+**Fixed**
+
+* Renamed generic `vmfa-settings` script handle to `vmfa-editorial-workflow-settings`
+* Prevents script/style handle collisions with other add-ons
+
+**Changed**
+
+* Improved cross-plugin compatibility by using unique asset handles
+
 = 1.4.0 =
 
 **Added**
