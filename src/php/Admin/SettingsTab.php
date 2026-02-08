@@ -82,14 +82,14 @@ class SettingsTab {
 		];
 
 		wp_enqueue_style(
-			'vmfa-settings',
+			'vmfa-editorial-workflow-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.css',
 			[ 'wp-components' ],
 			$asset[ 'version' ]
 		);
 
 		wp_enqueue_script(
-			'vmfa-settings',
+			'vmfa-editorial-workflow-settings',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.js',
 			$asset[ 'dependencies' ],
 			$asset[ 'version' ],
@@ -97,13 +97,13 @@ class SettingsTab {
 		);
 
 		wp_set_script_translations(
-			'vmfa-settings',
+			'vmfa-editorial-workflow-settings',
 			'vmfa-editorial-workflow',
 			VMFA_EDITORIAL_WORKFLOW_PATH . 'languages'
 		);
 
 		wp_localize_script(
-			'vmfa-settings',
+			'vmfa-editorial-workflow-settings',
 			'vmfaSettings',
 			[
 				'restUrl' => rest_url( 'vmfa-editorial/v1' ),
