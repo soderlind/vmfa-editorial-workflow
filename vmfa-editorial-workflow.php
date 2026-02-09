@@ -3,7 +3,7 @@
  * Plugin Name: Virtual Media Folders - Editorial Workflow
  * Plugin URI: https://github.com/soderlind/vmfa-editorial-workflow
  * Description: Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders.
- * Version: 1.5.1
+ * Version: 1.6.0
  * Requires at least: 6.8
  * Requires PHP: 8.3
  * Tested up to: 6.9
@@ -26,23 +26,27 @@ namespace VmfaEditorialWorkflow;
 defined( 'ABSPATH' ) || exit;
 
 // Plugin constants.
-define( 'VMFA_EDITORIAL_WORKFLOW_VERSION', '1.5.1' );
+define( 'VMFA_EDITORIAL_WORKFLOW_VERSION', '1.6.0' );
 define( 'VMFA_EDITORIAL_WORKFLOW_FILE', __FILE__ );
 define( 'VMFA_EDITORIAL_WORKFLOW_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VMFA_EDITORIAL_WORKFLOW_URL', plugin_dir_url( __FILE__ ) );
 
-// Initialize GitHub updater.
+// Autoload Composer dependencies.
 if ( file_exists( VMFA_EDITORIAL_WORKFLOW_PATH . 'vendor/autoload.php' ) ) {
 	require_once VMFA_EDITORIAL_WORKFLOW_PATH . 'vendor/autoload.php';
-	require_once VMFA_EDITORIAL_WORKFLOW_PATH . 'src/php/Update/GitHubPluginUpdater.php';
-	Update\GitHubPluginUpdater::create_with_assets(
-		'https://github.com/soderlind/vmfa-editorial-workflow',
-		__FILE__,
-		'vmfa-editorial-workflow',
-		'/vmfa-editorial-workflow\.zip/',
-		'main'
-	);
 }
+
+// Update checker via GitHub releases.
+if ( ! class_exists( \Soderlind\WordPress\GitHubUpdater::class ) ) {
+	require_once __DIR__ . '/class-github-updater.php';
+}
+\Soderlind\WordPress\GitHubUpdater::init(
+	github_url:  'https://github.com/soderlind/vmfa-editorial-workflow',
+	plugin_file: VMFA_EDITORIAL_WORKFLOW_FILE,
+	plugin_slug: 'vmfa-editorial-workflow',
+	name_regex:  '/vmfa-editorial-workflow\.zip/',
+	branch:      'main',
+);
 
 /**
  * Initialize the plugin.
