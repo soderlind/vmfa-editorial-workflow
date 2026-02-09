@@ -81,16 +81,7 @@ final class Plugin {
 	 * @return void
 	 */
 	private function load_dependencies(): void {
-		$base = VMFA_EDITORIAL_WORKFLOW_PATH . 'src/php/';
-
-		require_once $base . 'Services/AccessChecker.php';
-		require_once $base . 'Services/InboxService.php';
-		require_once $base . 'AccessEnforcer.php';
-		require_once $base . 'WorkflowState.php';
-		require_once $base . 'Admin/ReviewPage.php';
-		require_once $base . 'Admin/SettingsTab.php';
-		require_once $base . 'Admin/MediaLibraryEnforcer.php';
-		require_once $base . 'REST/SettingsController.php';
+		// Dependencies are loaded via Composer PSR-4 autoloading.
 	}
 
 	/**
