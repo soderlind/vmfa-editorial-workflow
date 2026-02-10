@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,9 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 
 == Changelog ==
+
+= 1.6.0 =
+* Changed: Replaced inline plugin updater with shared `class-github-updater.php`
 
 = 1.5.1 =
 
