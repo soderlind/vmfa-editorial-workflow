@@ -3,7 +3,7 @@ node_modules/
 vendor/
 
 # Build outputs (uncomment if you want to exclude from repo)
-# build/
+build/
 
 # OS files
 .DS_Store
