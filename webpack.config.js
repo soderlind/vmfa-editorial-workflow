@@ -10,6 +10,7 @@ module.exports = {
 			__dirname,
 			'src/js/media-library-enforcer.js'
 		),
+		'wp7-compat': path.resolve( __dirname, 'src/js/wp7-compat.js' ),
 	},
 	output: {
 		...defaultConfig.output,

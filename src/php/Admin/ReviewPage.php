@@ -157,6 +157,21 @@ class ReviewPage {
 		// Enqueue dashicons for icons.
 		wp_enqueue_style( 'dashicons' );
 
+		// WP 7+ design-token overrides.
+		if ( function_exists( 'vmfo_is_wp7' ) && vmfo_is_wp7() ) {
+			$wp7_asset_file = VMFA_EDITORIAL_WORKFLOW_PATH . 'build/wp7-compat.asset.php';
+			$wp7_version    = file_exists( $wp7_asset_file )
+				? ( include $wp7_asset_file )['version'] ?? VMFA_EDITORIAL_WORKFLOW_VERSION
+				: VMFA_EDITORIAL_WORKFLOW_VERSION;
+
+			wp_enqueue_style(
+				'vmfa-editorial-workflow-wp7',
+				VMFA_EDITORIAL_WORKFLOW_URL . 'build/wp7-compat.css',
+				[ 'vmfa-review', 'wp-base-styles' ],
+				$wp7_version
+			);
+		}
+
 		wp_localize_script(
 			'vmfa-review',
 			'vmfaReview',
