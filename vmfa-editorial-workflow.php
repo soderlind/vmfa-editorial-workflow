@@ -37,15 +37,15 @@ if ( file_exists( VMFA_EDITORIAL_WORKFLOW_PATH . 'vendor/autoload.php' ) ) {
 }
 
 // Update checker via GitHub releases.
-if ( ! class_exists( \Soderlind\WordPress\GitHubUpdater::class ) ) {
+if ( ! class_exists( \Soderlind\WordPress\GitHubUpdater::class) ) {
 	require_once __DIR__ . '/class-github-updater.php';
 }
 \Soderlind\WordPress\GitHubUpdater::init(
-	github_url:  'https://github.com/soderlind/vmfa-editorial-workflow',
+	github_url: 'https://github.com/soderlind/vmfa-editorial-workflow',
 	plugin_file: VMFA_EDITORIAL_WORKFLOW_FILE,
 	plugin_slug: 'vmfa-editorial-workflow',
-	name_regex:  '/vmfa-editorial-workflow\.zip/',
-	branch:      'main',
+	name_regex: '/vmfa-editorial-workflow\.zip/',
+	branch: 'main',
 );
 
 /**
