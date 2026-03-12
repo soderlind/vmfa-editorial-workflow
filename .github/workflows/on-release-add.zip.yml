@@ -24,7 +24,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          composer install --no-dev
+          composer install --no-dev --optimize-autoloader
 
       - name: Archive Release
         uses: thedoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554 #0.7.6
@@ -50,7 +50,8 @@ jobs:
           if unzip -l vmfa-editorial-workflow.zip | grep -q "vendor/yahnis-elsts/plugin-update-checker"; then
             echo "✓ Plugin Update Checker is included"
           else
-            echo "✗ WARNING: Plugin Update Checker may be missing"
+            echo "✗ ERROR: Plugin Update Checker is missing from the release!"
+            exit 1
           fi
 
       - name: Release
