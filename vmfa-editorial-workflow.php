@@ -60,18 +60,7 @@ function init(): void {
 		return;
 	}
 
-	// Load text domain.
-	load_plugin_textdomain(
-		'vmfa-editorial-workflow',
-		false,
-		dirname( plugin_basename( __FILE__ ) ) . '/languages'
-	);
-
-	// Require autoloader or manual includes.
-	require_once VMFA_EDITORIAL_WORKFLOW_PATH . 'src/php/Plugin.php';
-
-	// Boot the plugin.
-	Plugin::get_instance();
+	Plugin::get_instance()->init();
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\init', 15 );
 
