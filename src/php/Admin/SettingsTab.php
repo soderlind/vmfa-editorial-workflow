@@ -11,143 +11,96 @@ declare(strict_types=1);
 
 namespace VmfaEditorialWorkflow\Admin;
 
-// Prevent direct access.
 defined( 'ABSPATH' ) || exit;
+
+use VirtualMediaFolders\Addon\AbstractSettingsTab;
 
 /**
  * Settings Tab class.
  *
  * Adds a settings tab to VMF settings page.
  */
-class SettingsTab {
+class SettingsTab extends AbstractSettingsTab {
 
-	/**
-	 * Tab ID.
-	 *
-	 * @var string
-	 */
-	public const TAB_ID = 'editorial-workflow';
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->init_hooks();
+	/** @inheritDoc */
+	protected function get_tab_slug(): string {
+		return 'editorial-workflow';
 	}
 
-	/**
-	 * Initialize hooks.
-	 *
-	 * @return void
-	 */
-	private function init_hooks(): void {
-		// Register tab with VMF settings.
-		add_filter( 'vmfo_settings_tabs', [ $this, 'register_tab' ] );
-
-		// Enqueue settings assets.
-		add_action( 'vmfo_settings_enqueue_scripts', [ $this, 'enqueue_assets' ], 10, 2 );
+	/** @inheritDoc */
+	protected function get_tab_label(): string {
+		return __( 'Editorial Workflow', 'vmfa-editorial-workflow' );
 	}
 
-	/**
-	 * Register settings tab.
-	 *
-	 * @param array $tabs Existing tabs.
-	 * @return array Modified tabs.
-	 */
-	public function register_tab( array $tabs ): array {
-		$tabs[ self::TAB_ID ] = [
-			'title'    => __( 'Editorial Workflow', 'vmfa-editorial-workflow' ),
-			'callback' => [ $this, 'render_tab' ],
+	/** @inheritDoc */
+	protected function get_text_domain(): string {
+		return 'vmfa-editorial-workflow';
+	}
+
+	/** @inheritDoc */
+	protected function get_build_path(): string {
+		return VMFA_EDITORIAL_WORKFLOW_PATH . 'build/';
+	}
+
+	/** @inheritDoc */
+	protected function get_build_url(): string {
+		return VMFA_EDITORIAL_WORKFLOW_URL . 'build/';
+	}
+
+	/** @inheritDoc */
+	protected function get_languages_path(): string {
+		return VMFA_EDITORIAL_WORKFLOW_PATH . 'languages';
+	}
+
+	/** @inheritDoc */
+	protected function get_plugin_version(): string {
+		return VMFA_EDITORIAL_WORKFLOW_VERSION;
+	}
+
+	/** @inheritDoc */
+	protected function get_localized_name(): string {
+		return 'vmfaSettings';
+	}
+
+	/** @inheritDoc */
+	protected function get_asset_entry(): string {
+		return 'settings';
+	}
+
+	/** @inheritDoc */
+	protected function get_app_container_id(): string {
+		return 'vmfa-settings-root';
+	}
+
+	/** @inheritDoc */
+	protected function get_localized_data(): array {
+		return [
+			'restUrl' => rest_url( 'vmfa-editorial/v1' ),
+			'nonce'   => wp_create_nonce( 'wp_rest' ),
+			'roles'   => $this->get_editable_roles(),
+			'folders' => $this->get_folders(),
+			'actions' => $this->get_actions(),
+			'i18n'    => [
+				'title'           => __( 'Editorial Workflow Settings', 'vmfa-editorial-workflow' ),
+				'permissions'     => __( 'Folder Permissions', 'vmfa-editorial-workflow' ),
+				'permissionsDesc' => __( 'Configure which roles can access each folder.', 'vmfa-editorial-workflow' ),
+				'inbox'           => __( 'Inbox Mapping', 'vmfa-editorial-workflow' ),
+				'inboxDesc'       => __( 'Set the default upload folder for each role.', 'vmfa-editorial-workflow' ),
+				'workflow'        => __( 'Workflow Settings', 'vmfa-editorial-workflow' ),
+				'workflowDesc'    => __( 'Configure workflow states and behavior.', 'vmfa-editorial-workflow' ),
+				'enableWorkflow'  => __( 'Enable workflow folders', 'vmfa-editorial-workflow' ),
+				'save'            => __( 'Save Changes', 'vmfa-editorial-workflow' ),
+				'saving'          => __( 'Saving…', 'vmfa-editorial-workflow' ),
+				'saved'           => __( 'Settings saved.', 'vmfa-editorial-workflow' ),
+				'error'           => __( 'Error saving settings.', 'vmfa-editorial-workflow' ),
+				'selectFolder'    => __( 'Select folder…', 'vmfa-editorial-workflow' ),
+				'noInbox'         => __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
+				'view'            => __( 'View', 'vmfa-editorial-workflow' ),
+				'move'            => __( 'Move to', 'vmfa-editorial-workflow' ),
+				'upload'          => __( 'Upload to', 'vmfa-editorial-workflow' ),
+				'delete'          => __( 'Delete', 'vmfa-editorial-workflow' ),
+			],
 		];
-
-		return $tabs;
-	}
-
-	/**
-	 * Enqueue assets for settings tab.
-	 *
-	 * @param string $active_tab    Currently active tab.
-	 * @param string $active_subtab Currently active subtab.
-	 * @return void
-	 */
-	public function enqueue_assets( string $active_tab, string $active_subtab ): void {
-		if ( self::TAB_ID !== $active_tab ) {
-			return;
-		}
-
-		$asset_file = VMFA_EDITORIAL_WORKFLOW_PATH . 'build/settings.asset.php';
-		$asset      = file_exists( $asset_file ) ? require $asset_file : [
-			'dependencies' => [ 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n' ],
-			'version'      => VMFA_EDITORIAL_WORKFLOW_VERSION,
-		];
-
-		wp_enqueue_style(
-			'vmfa-editorial-workflow-settings',
-			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.css',
-			[ 'wp-components' ],
-			$asset[ 'version' ]
-		);
-
-		wp_enqueue_script(
-			'vmfa-editorial-workflow-settings',
-			VMFA_EDITORIAL_WORKFLOW_URL . 'build/settings.js',
-			$asset[ 'dependencies' ],
-			$asset[ 'version' ],
-			true
-		);
-
-		wp_set_script_translations(
-			'vmfa-editorial-workflow-settings',
-			'vmfa-editorial-workflow',
-			VMFA_EDITORIAL_WORKFLOW_PATH . 'languages'
-		);
-
-		// WP 7+ design-token overrides.
-		if ( function_exists( 'vmfo_is_wp7' ) && vmfo_is_wp7() ) {
-			$wp7_asset_file = VMFA_EDITORIAL_WORKFLOW_PATH . 'build/wp7-compat.asset.php';
-			$wp7_version    = file_exists( $wp7_asset_file )
-				? ( include $wp7_asset_file )['version'] ?? VMFA_EDITORIAL_WORKFLOW_VERSION
-				: VMFA_EDITORIAL_WORKFLOW_VERSION;
-
-			wp_enqueue_style(
-				'vmfa-editorial-workflow-wp7',
-				VMFA_EDITORIAL_WORKFLOW_URL . 'build/wp7-compat.css',
-				[ 'vmfa-editorial-workflow-settings', 'wp-base-styles' ],
-				$wp7_version
-			);
-		}
-
-		wp_localize_script(
-			'vmfa-editorial-workflow-settings',
-			'vmfaSettings',
-			[
-				'restUrl' => rest_url( 'vmfa-editorial/v1' ),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'roles'   => $this->get_editable_roles(),
-				'folders' => $this->get_folders(),
-				'actions' => $this->get_actions(),
-				'i18n'    => [
-					'title'           => __( 'Editorial Workflow Settings', 'vmfa-editorial-workflow' ),
-					'permissions'     => __( 'Folder Permissions', 'vmfa-editorial-workflow' ),
-					'permissionsDesc' => __( 'Configure which roles can access each folder.', 'vmfa-editorial-workflow' ),
-					'inbox'           => __( 'Inbox Mapping', 'vmfa-editorial-workflow' ),
-					'inboxDesc'       => __( 'Set the default upload folder for each role.', 'vmfa-editorial-workflow' ),
-					'workflow'        => __( 'Workflow Settings', 'vmfa-editorial-workflow' ),
-					'workflowDesc'    => __( 'Configure workflow states and behavior.', 'vmfa-editorial-workflow' ),
-					'enableWorkflow'  => __( 'Enable workflow folders', 'vmfa-editorial-workflow' ),
-					'save'            => __( 'Save Changes', 'vmfa-editorial-workflow' ),
-					'saving'          => __( 'Saving…', 'vmfa-editorial-workflow' ),
-					'saved'           => __( 'Settings saved.', 'vmfa-editorial-workflow' ),
-					'error'           => __( 'Error saving settings.', 'vmfa-editorial-workflow' ),
-					'selectFolder'    => __( 'Select folder…', 'vmfa-editorial-workflow' ),
-					'noInbox'         => __( 'No inbox (use default)', 'vmfa-editorial-workflow' ),
-					'view'            => __( 'View', 'vmfa-editorial-workflow' ),
-					'move'            => __( 'Move to', 'vmfa-editorial-workflow' ),
-					'upload'          => __( 'Upload to', 'vmfa-editorial-workflow' ),
-					'delete'          => __( 'Delete', 'vmfa-editorial-workflow' ),
-				],
-			]
-		);
 	}
 
 	/**
@@ -159,7 +112,7 @@ class SettingsTab {
 	 */
 	public function render_tab( string $active_tab, string $active_subtab ): void {
 		?>
-		<div id="vmfa-settings-root">
+		<div id="<?php echo esc_attr( $this->get_app_container_id() ); ?>">
 			<p class="description">
 				<?php esc_html_e( 'Loading settings…', 'vmfa-editorial-workflow' ); ?>
 			</p>
@@ -177,19 +130,17 @@ class SettingsTab {
 		$wp_roles = wp_roles();
 
 		foreach ( $wp_roles->roles as $role_key => $role_data ) {
-			// Skip administrator - they always have full access.
 			if ( 'administrator' === $role_key ) {
 				continue;
 			}
 
-			// Only include roles that can upload files.
-			if ( ! isset( $role_data[ 'capabilities' ][ 'upload_files' ] ) || ! $role_data[ 'capabilities' ][ 'upload_files' ] ) {
+			if ( ! isset( $role_data['capabilities']['upload_files'] ) || ! $role_data['capabilities']['upload_files'] ) {
 				continue;
 			}
 
 			$roles[] = [
 				'key'  => $role_key,
-				'name' => translate_user_role( $role_data[ 'name' ] ),
+				'name' => translate_user_role( $role_data['name'] ),
 			];
 		}
 

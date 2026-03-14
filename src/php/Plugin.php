@@ -9,119 +9,66 @@ declare(strict_types=1);
 
 namespace VmfaEditorialWorkflow;
 
-// Prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use VirtualMediaFolders\Addon\AbstractPlugin;
+
 /**
- * Plugin singleton class.
+ * Plugin bootstrap class.
  *
  * Orchestrates all plugin components.
  */
-final class Plugin {
+final class Plugin extends AbstractPlugin {
 
-	/**
-	 * Singleton instance.
-	 *
-	 * @var Plugin|null
-	 */
-	private static ?Plugin $instance = null;
-
-	/**
-	 * Access checker service.
-	 *
-	 * @var Services\AccessChecker
-	 */
 	private Services\AccessChecker $access_checker;
-
-	/**
-	 * Access enforcer.
-	 *
-	 * @var AccessEnforcer
-	 */
 	private AccessEnforcer $access_enforcer;
-
-	/**
-	 * Inbox service.
-	 *
-	 * @var Services\InboxService
-	 */
 	private Services\InboxService $inbox_service;
-
-	/**
-	 * Workflow state manager.
-	 *
-	 * @var WorkflowState
-	 */
 	private WorkflowState $workflow_state;
+	private ?Admin\SettingsTab $settings_tab = null;
 
-	/**
-	 * Get singleton instance.
-	 *
-	 * @return Plugin
-	 */
-	public static function get_instance(): Plugin {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
+	/** @inheritDoc */
+	protected function get_text_domain(): string {
+		return 'vmfa-editorial-workflow';
 	}
 
-	/**
-	 * Private constructor.
-	 */
-	private function __construct() {
-		$this->load_dependencies();
-		$this->init_services();
-		$this->init_hooks();
+	/** @inheritDoc */
+	protected function get_plugin_file(): string {
+		return VMFA_EDITORIAL_WORKFLOW_FILE;
 	}
 
-	/**
-	 * Load required files.
-	 *
-	 * @return void
-	 */
-	private function load_dependencies(): void {
-		// Dependencies are loaded via Composer PSR-4 autoloading.
-	}
-
-	/**
-	 * Initialize service classes.
-	 *
-	 * @return void
-	 */
-	private function init_services(): void {
+	/** @inheritDoc */
+	protected function init_services(): void {
 		$this->access_checker  = new Services\AccessChecker();
 		$this->workflow_state  = new WorkflowState( $this->access_checker );
 		$this->inbox_service   = new Services\InboxService( $this->access_checker, $this->workflow_state );
 		$this->access_enforcer = new AccessEnforcer( $this->access_checker );
+		$this->settings_tab    = new Admin\SettingsTab();
 	}
 
-	/**
-	 * Initialize WordPress hooks.
-	 *
-	 * @return void
-	 */
-	private function init_hooks(): void {
-		// Register REST routes.
+	/** @inheritDoc */
+	protected function init_hooks(): void {
+		// REST routes.
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		// Initialize admin components.
+		// Admin components.
 		if ( is_admin() ) {
 			new Admin\ReviewPage( $this->access_checker, $this->workflow_state );
-			new Admin\SettingsTab();
 
-			// Force folder view for non-admins.
+			if ( $this->supports_parent_tabs() ) {
+				add_filter( 'vmfo_settings_tabs', [ $this->settings_tab, 'register_tab' ] );
+				add_action( 'vmfo_settings_enqueue_scripts', [ $this->settings_tab, 'enqueue_tab_scripts' ], 10, 2 );
+			} else {
+				add_action( 'admin_menu', [ $this->settings_tab, 'register_admin_menu' ] );
+				add_action( 'admin_enqueue_scripts', [ $this->settings_tab, 'enqueue_admin_assets' ] );
+			}
+
 			$media_library_enforcer = new Admin\MediaLibraryEnforcer();
 			$media_library_enforcer->init();
 		}
 
-		// Initialize access enforcement.
+		// Access enforcement & inbox routing.
 		$this->access_enforcer->init();
-
-		// Initialize inbox routing.
 		$this->inbox_service->init();
-
-		// Initialize workflow state protection.
 		$this->workflow_state->init();
 	}
 
@@ -135,47 +82,15 @@ final class Plugin {
 		$settings_controller->register_routes();
 	}
 
-	/**
-	 * Get access checker instance.
-	 *
-	 * @return Services\AccessChecker
-	 */
 	public function get_access_checker(): Services\AccessChecker {
 		return $this->access_checker;
 	}
 
-	/**
-	 * Get inbox service instance.
-	 *
-	 * @return Services\InboxService
-	 */
 	public function get_inbox_service(): Services\InboxService {
 		return $this->inbox_service;
 	}
 
-	/**
-	 * Get workflow state instance.
-	 *
-	 * @return WorkflowState
-	 */
 	public function get_workflow_state(): WorkflowState {
 		return $this->workflow_state;
-	}
-
-	/**
-	 * Prevent cloning.
-	 *
-	 * @return void
-	 */
-	private function __clone() {}
-
-	/**
-	 * Prevent unserialization.
-	 *
-	 * @return void
-	 * @throws \Exception Always.
-	 */
-	public function __wakeup(): void {
-		throw new \Exception( 'Cannot unserialize singleton.' );
 	}
 }

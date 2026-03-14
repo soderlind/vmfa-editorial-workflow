@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 7.0
 Requires PHP: 8.3
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,11 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 
 == Changelog ==
+
+= 1.8.0 =
+* Changed: Refactored Plugin class to extend VMF core `AbstractPlugin` base class
+* Changed: Refactored SettingsTab to extend `AbstractSettingsTab`
+* Changed: Removed duplicated singleton boilerplate and manual textdomain loading
 
 = 1.7.0 =
 * Added: WP 7.0+ design-token style overrides for settings and review pages
