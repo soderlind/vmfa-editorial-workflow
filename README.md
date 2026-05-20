@@ -20,6 +20,10 @@ This add-on extends [Virtual Media Folders](https://wordpress.org/plugins/virtua
 
 ## Installation
 
+Recommended: Use the [Add-On Manager](https://github.com/soderlind/vmfa) to install the add-on.
+
+Manual installation:
+
 1. Download [`vmfa-editorial-workflow.zip`](https://github.com/soderlind/vmfa-editorial-workflow/releases/latest/download/vmfa-editorial-workflow.zip)
 2. Upload via  `Plugins → Add New → Upload Plugin`
 3. Activate via `WordPress Admin → Plugins`
