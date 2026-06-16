@@ -95,7 +95,7 @@ class ReviewPage {
 		}
 
 		$count      = $this->workflow_state->get_review_count();
-		$menu_title = __( 'Review', 'vmfa-editorial-workflow' );
+		$menu_title = __( 'VMF Review', 'vmfa-editorial-workflow' );
 
 		// Add badge if items need review.
 		if ( $count > 0 ) {
@@ -105,12 +105,14 @@ class ReviewPage {
 			);
 		}
 
-		add_media_page(
+		add_submenu_page(
+			'upload.php',
 			__( 'Media Review', 'vmfa-editorial-workflow' ),
 			$menu_title,
 			$capability,
 			self::PAGE_SLUG,
-			[ $this, 'render_page' ]
+			[ $this, 'render_page' ],
+			902
 		);
 	}
 
