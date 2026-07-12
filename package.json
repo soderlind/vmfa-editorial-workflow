@@ -1,6 +1,6 @@
 {
 	"name": "vmfa-editorial-workflow",
-	"version": "1.8.0",
+	"version": "1.8.2",
 	"description": "Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders.",
 	"author": "Per Soderlind",
 	"license": "GPL-2.0-or-later",
@@ -21,14 +21,14 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
 		"@vitejs/plugin-react": "^5.1.2",
-		"@wordpress/scripts": "^31.3.0",
+		"@wordpress/scripts": "^32.6.0",
 		"jsdom": "^27.4.0",
 		"vite": "^7.3.1",
 		"vitest": "^4.0.18"
 	},
 	"dependencies": {
 		"@wordpress/api-fetch": "^6.55.0",
-		"@wordpress/components": "^27.6.0",
+		"@wordpress/components": "^36.1.0",
 		"@wordpress/element": "^5.35.0",
 		"@wordpress/i18n": "^4.58.0"
 	}
