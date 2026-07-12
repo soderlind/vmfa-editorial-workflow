@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 7.0
 Requires PHP: 8.3
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,10 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 
 == Changelog ==
+
+= 1.8.2 =
+* Security: Resolved the majority of Dependabot alerts by updating build/test dependencies (`@wordpress/scripts` 31 → 32, `@wordpress/components` → 36). Remaining alerts are dev-only transitive dependencies.
+* Changed: Added grouped `.github/dependabot.yml` config to consolidate future dependency update PRs.
 
 = 1.8.1 =
 * Changed: Renamed "Review" menu to "VMF Review" for consistency.
