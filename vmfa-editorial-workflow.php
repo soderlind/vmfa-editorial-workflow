@@ -3,10 +3,10 @@
  * Plugin Name: Virtual Media Folders - Editorial Workflow
  * Plugin URI: https://github.com/soderlind/vmfa-editorial-workflow
  * Description: Role-based folder access, move restrictions, and Inbox workflow for Virtual Media Folders.
- * Version: 1.8.2
+ * Version: 1.8.3
  * Requires at least: 6.8
  * Requires PHP: 8.3
- * Tested up to: 6.9
+ * Tested up to: 7.1
  * Requires Plugins: virtual-media-folders
  * Author: Per Soderlind
  * Author URI: https://soderlind.no
@@ -26,7 +26,7 @@ namespace VmfaEditorialWorkflow;
 defined( 'ABSPATH' ) || exit;
 
 // Plugin constants.
-define( 'VMFA_EDITORIAL_WORKFLOW_VERSION', '1.8.2' );
+define( 'VMFA_EDITORIAL_WORKFLOW_VERSION', '1.8.3' );
 define( 'VMFA_EDITORIAL_WORKFLOW_FILE', __FILE__ );
 define( 'VMFA_EDITORIAL_WORKFLOW_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VMFA_EDITORIAL_WORKFLOW_URL', plugin_dir_url( __FILE__ ) );
@@ -54,8 +54,8 @@ if ( ! class_exists( \Soderlind\WordPress\GitHubUpdater::class) ) {
  * @return void
  */
 function init(): void {
-	// Verify parent plugin is active (fallback for WP < 6.5).
-	if ( ! defined( 'VMFO_VERSION' ) ) {
+	// The parent plugin (Virtual Media Folders 2.0.0+) provides the add-on base class.
+	if ( ! class_exists( \VirtualMediaFolders\Addon\AbstractPlugin::class ) ) {
 		add_action( 'admin_notices', __NAMESPACE__ . '\\missing_parent_notice' );
 		return;
 	}
