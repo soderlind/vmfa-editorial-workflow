@@ -24,7 +24,7 @@
 		"@wordpress/scripts": "^32.6.0",
 		"jsdom": "^27.4.0",
 		"vite": "^7.3.1",
-		"vitest": "^4.0.18"
+		"vitest": "^5.0.0"
 	},
 	"dependencies": {
 		"@wordpress/api-fetch": "^6.55.0",
