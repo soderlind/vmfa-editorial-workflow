@@ -4,7 +4,7 @@ Tags: media, folders, workflow, editorial, permissions
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 8.3
-Stable tag: 1.8.3
+Stable tag: 1.9.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,12 @@ Existing media is not affected. The workflow only applies to new uploads and exp
 
 
 == Changelog ==
+
+= 1.9.0 =
+* Changed: Styles use WordPress Design System tokens, so the UI follows WordPress 7 styling. On WordPress 6.8–6.9 with Virtual Media Folders 2.2.0+, the classic admin palette is used.
+* Changed: Built-in token fallbacks keep the add-on looking right with older Virtual Media Folders versions.
+* Changed: Accent colors follow the admin color scheme.
+* Removed: Separate WordPress 7 override stylesheet.
 
 = 1.8.3 =
 * Fixed: Prevent a fatal error when the "Virtual Media Folders" parent plugin is missing or older than 2.0.0; show an admin notice instead.

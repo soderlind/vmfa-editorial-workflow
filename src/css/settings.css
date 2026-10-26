@@ -54,9 +54,9 @@
 
 /* Card styles - matches VMF add-ons */
 .vmfa-card {
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	border-radius: 4px;
+	background: var(--wpds-color-background-surface-neutral-strong);
+	border: 1px solid var(--wpds-color-stroke-surface-neutral);
+	border-radius: var(--wpds-border-radius-md);
 	margin-bottom: 20px;
 }
 
@@ -65,14 +65,14 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 16px 20px;
-	border-bottom: 1px solid #f0f0f1;
+	border-bottom: 1px solid var(--wpds-color-stroke-surface-neutral-weak);
 }
 
 .vmfa-card-header h3 {
 	margin: 0;
 	font-size: 14px;
 	font-weight: 600;
-	color: #1d2327;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 .vmfa-card-header .components-toggle-control {
@@ -89,7 +89,7 @@
 
 .vmfa-card-description {
 	margin: 0 0 20px;
-	color: #50575e;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 }
 
 /* Stats Card - 4 column layout like other VMF add-ons */
@@ -102,7 +102,7 @@
 
 .vmfa-stat-item {
 	padding: 0 16px;
-	border-right: 1px solid #f0f0f1;
+	border-right: 1px solid var(--wpds-color-stroke-surface-neutral-weak);
 }
 
 .vmfa-stat-item:last-child {
@@ -113,12 +113,12 @@
 	font-size: 32px;
 	font-weight: 600;
 	line-height: 1.2;
-	color: #1d2327;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 .vmfa-stat-label {
 	font-size: 13px;
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 	margin-top: 4px;
 }
 
@@ -142,9 +142,9 @@
 .vmfa-workflow-settings {
 	margin-bottom: 20px;
 	padding: 16px;
-	background: #f0f6fc;
-	border-radius: 4px;
-	border-left: 4px solid #0073aa;
+	background: rgba(var(--wp-admin-theme-color--rgb, 34, 113, 177), 0.06);
+	border-radius: var(--wpds-border-radius-md);
+	border-left: 4px solid var(--wp-admin-theme-color, #2271b1);
 }
 
 .vmfa-workflow-settings .components-checkbox-control__label {
@@ -152,7 +152,7 @@
 }
 
 .vmfa-workflow-settings .components-base-control__help {
-	color: #3c434a;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 /* Workflow folder info display */
@@ -167,19 +167,19 @@
 	align-items: flex-start;
 	gap: 12px;
 	padding: 16px;
-	background: #f6f7f7;
-	border-radius: 4px;
+	background: var(--wpds-color-background-surface-neutral-weak);
+	border-radius: var(--wpds-border-radius-md);
 }
 
 .vmfa-folder-icon {
 	font-size: 24px;
 	width: 24px;
 	height: 24px;
-	color: #2271b1;
+	color: var(--wp-admin-theme-color, #2271b1);
 }
 
 .vmfa-folder-icon.dashicons-yes-alt {
-	color: #00a32a;
+	color: var(--wpds-color-foreground-content-success-weak);
 }
 
 .vmfa-folder-details {
@@ -190,23 +190,23 @@
 
 .vmfa-folder-details strong {
 	font-size: 13px;
-	color: #1d2327;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 .vmfa-folder-path {
 	font-size: 12px;
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 }
 
 /* Permissions list - expandable roles */
 .vmfa-permissions-list {
-	border: 1px solid #dcdcde;
-	border-radius: 4px;
+	border: 1px solid var(--wpds-color-stroke-surface-neutral);
+	border-radius: var(--wpds-border-radius-md);
 	overflow: hidden;
 }
 
 .vmfa-permission-role {
-	border-bottom: 1px solid #dcdcde;
+	border-bottom: 1px solid var(--wpds-color-stroke-surface-neutral);
 }
 
 .vmfa-permission-role:last-child {
@@ -216,7 +216,7 @@
 .vmfa-role-header-row {
 	display: flex;
 	align-items: center;
-	background: #f6f7f7;
+	background: var(--wpds-color-background-surface-neutral-weak);
 }
 
 .vmfa-role-header {
@@ -233,7 +233,11 @@
 }
 
 .vmfa-role-header:hover {
-	background: #f0f0f1;
+	background: var(--wpds-color-background-interactive-neutral-weak-active);
+}
+
+.vmfa-role-header:hover .vmfa-role-count {
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 .vmfa-bulk-menu {
@@ -248,7 +252,7 @@
 
 .vmfa-role-toggle {
 	margin-right: 8px;
-	color: #50575e;
+	color: var(--wpds-color-foreground-interactive-neutral-weak);
 }
 
 .vmfa-role-toggle .dashicons {
@@ -260,17 +264,17 @@
 .vmfa-role-name {
 	flex: 1;
 	font-weight: 500;
-	color: #1d2327;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 .vmfa-role-count {
 	font-size: 12px;
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 }
 
 .vmfa-role-folders {
 	padding: 16px;
-	background: #fff;
+	background: var(--wpds-color-background-surface-neutral-strong);
 }
 
 /* Folders table within role */
@@ -284,13 +288,13 @@
 .vmfa-folders-table td {
 	padding: 8px 12px;
 	text-align: left;
-	border-bottom: 1px solid #f0f0f1;
+	border-bottom: 1px solid var(--wpds-color-stroke-surface-neutral-weak);
 }
 
 .vmfa-folders-table th {
 	font-weight: 500;
-	color: #646970;
-	background: #f9f9f9;
+	color: var(--wpds-color-foreground-content-neutral-weak);
+	background: var(--wpds-color-background-surface-neutral-weak);
 }
 
 .vmfa-folders-table th:not(:first-child) {
@@ -314,35 +318,35 @@
 	cursor: pointer;
 	font-size: 12px;
 	font-weight: 500;
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 	transition: background-color 0.15s;
 }
 
 .vmfa-column-toggle:hover {
-	background: #f0f0f1;
-	color: #2271b1;
+	background: var(--wpds-color-background-interactive-neutral-weak-active);
+	color: var(--wp-admin-theme-color-darker-20, #135e96);
 }
 
 .vmfa-column-indicator {
 	width: 12px;
 	height: 12px;
-	border: 2px solid #c3c4c7;
-	border-radius: 2px;
-	background: #fff;
+	border: 2px solid var(--wpds-color-stroke-surface-neutral);
+	border-radius: var(--wpds-border-radius-sm);
+	background: var(--wpds-color-background-surface-neutral-strong);
 }
 
 .vmfa-column-indicator.some {
-	background: linear-gradient(135deg, #2271b1 50%, #fff 50%);
-	border-color: #2271b1;
+	background: linear-gradient(135deg, var(--wp-admin-theme-color, #2271b1) 50%, var(--wpds-color-background-surface-neutral-strong) 50%);
+	border-color: var(--wp-admin-theme-color, #2271b1);
 }
 
 .vmfa-column-indicator.all {
-	background: #2271b1;
-	border-color: #2271b1;
+	background: var(--wp-admin-theme-color, #2271b1);
+	border-color: var(--wp-admin-theme-color, #2271b1);
 }
 
 .vmfa-folders-table tbody tr:hover {
-	background: #f9f9f9;
+	background: var(--wpds-color-background-surface-neutral-weak);
 }
 
 .vmfa-folders-table tbody tr:last-child td {
@@ -358,7 +362,7 @@
 }
 
 .vmfa-system-folder td:first-child {
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 }
 
 .vmfa-system-folder .dashicons-lock {
@@ -366,7 +370,7 @@
 	width: 14px;
 	height: 14px;
 	margin-right: 4px;
-	color: #a7aaad;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 	vertical-align: text-bottom;
 }
 
@@ -388,13 +392,13 @@
 
 /* Empty state */
 .vmfa-empty-state {
-	color: #646970;
+	color: var(--wpds-color-foreground-content-neutral-weak);
 	font-style: italic;
 	padding: 20px;
 	text-align: center;
-	background: #f9f9f9;
-	border: 1px dashed #dcdcde;
-	border-radius: 4px;
+	background: var(--wpds-color-background-surface-neutral-weak);
+	border: 1px dashed var(--wpds-color-stroke-surface-neutral);
+	border-radius: var(--wpds-border-radius-md);
 }
 
 /* Full access role badge */
@@ -404,6 +408,7 @@
 	gap: 6px;
 	font-size: 11px;
 	font-weight: 600;
+	/* Solid success badge; there is no strong success background token. */
 	color: #fff;
 	background: #00a32a;
 	padding: 2px 8px;
@@ -428,15 +433,15 @@
 	gap: 8px;
 	padding: 12px 16px;
 	margin: 0 0 12px;
-	background: #edfaef;
-	border-left: 4px solid #00a32a;
-	border-radius: 0 4px 4px 0;
-	color: #1e4620;
+	background: var(--wpds-color-background-surface-success-weak);
+	border-left: 4px solid var(--wpds-color-stroke-surface-success-strong);
+	border-radius: 0 var(--wpds-border-radius-md) var(--wpds-border-radius-md) 0;
+	color: var(--wpds-color-foreground-content-success);
 	font-size: 13px;
 }
 
 .vmfa-full-access-notice .dashicons {
-	color: #00a32a;
+	color: var(--wpds-color-foreground-content-success-weak);
 	font-size: 18px;
 	width: 18px;
 	height: 18px;
@@ -449,15 +454,15 @@
 	gap: 8px;
 	padding: 12px 16px;
 	margin: 0 0 12px;
-	background: #f0f6fc;
-	border-left: 4px solid #2271b1;
-	border-radius: 0 4px 4px 0;
-	color: #1d4ed8;
+	background: rgba(var(--wp-admin-theme-color--rgb, 34, 113, 177), 0.06);
+	border-left: 4px solid var(--wp-admin-theme-color, #2271b1);
+	border-radius: 0 var(--wpds-border-radius-md) var(--wpds-border-radius-md) 0;
+	color: var(--wp-admin-theme-color-darker-20, #135e96);
 	font-size: 13px;
 }
 
 .vmfa-default-access-notice .dashicons {
-	color: #2271b1;
+	color: var(--wp-admin-theme-color, #2271b1);
 	font-size: 18px;
 	width: 18px;
 	height: 18px;
@@ -469,7 +474,7 @@
 	align-items: center;
 	gap: 6px;
 	font-weight: 500;
-	color: #1d2327;
+	color: var(--wpds-color-foreground-content-neutral);
 }
 
 /* Disabled checkbox styling */
@@ -482,7 +487,7 @@
 .vmfa-settings-actions {
 	margin-top: 20px;
 	padding-top: 20px;
-	border-top: 1px solid #dcdcde;
+	border-top: 1px solid var(--wpds-color-stroke-surface-neutral);
 }
 
 /* Responsive adjustments */
