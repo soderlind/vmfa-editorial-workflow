@@ -84,11 +84,16 @@ class MediaLibraryEnforcer {
 			true
 		);
 
+		$style_deps = array();
+		if ( wp_style_is( 'vmfo-tokens', 'registered' ) ) {
+			$style_deps[] = 'vmfo-tokens';
+		}
+
 		// Enqueue CSS.
 		wp_enqueue_style(
 			'vmfa-media-library-enforcer',
 			VMFA_EDITORIAL_WORKFLOW_URL . 'build/media-library-enforcer.css',
-			array(),
+			$style_deps,
 			$asset[ 'version' ]
 		);
 	}
